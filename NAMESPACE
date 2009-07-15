@@ -1,0 +1,2 @@
+export(exact2x2Pvals,exact2x2,exact2x2CI,exact2x2Plot,blaker.exact,fisher.exact)
+

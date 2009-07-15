@@ -1,0 +1,80 @@
+% LaTeX Article Template
+\documentclass[12pt]{article}
+\topmargin -0.7in
+\textheight 9.0in
+%\textwidth 6in
+\textwidth 6.5in
+%\oddsidemargin 0.25in
+%\oddsidemargin -.25in
+\oddsidemargin 0.0in
+
+% \VignetteIndexEntry{exact2x2: Overview}
+% \VignetteKeyword{Confidence Interval}
+% \VignetteKeyword{Exact Test}
+
+\begin{document}
+
+\begin{center}
+{\Large \bf exact2x2: Exact Conditional Tests and Matching Confidence Intervals for 2 by 2 Tables} \\
+Michael P. Fay \\
+\today
+\end{center}
+
+<<echo=FALSE,results=hide,eval=T>>=
+library(exact2x2)
+@
+
+
+\section{Motivation for Package and an Example}
+\label{sec-overview}
+
+Here is the problem which motivated this package. Consider the following $2x2$ table
+<<>>=
+ x<-matrix(c(6,12,12,5),2,2,dimnames=list(c("Group A","Group B"),c("Event","No Event")))
+x
+@
+When we perform the two-sided Fisher's exact test on this table we get
+<<echo=TRUE>>=
+ft<-fisher.test(x)
+ft
+@
+The two-sided p-value is less than 0.05 but the 95 percent confidence interval on the odds ratio contains 1. 
+What we want is a matching confidence 
+interval that goes with the test, but what fisher.test outputs is a confidence interval that matches a different test. The confidence interval 
+that fisher.test outputs matches with a two-sided Fisher's exact test whose p-value is twice the minimum one-sided p-value. 
+We call that test the central 
+Fisher's exact test, since the matching confidence interval is a central confidence interval (i.e., there is a maximum of $\alpha/2$ probability 
+that the true odds ratio is lower than the lower limit and analogously for the upper limit). 
+
+The function exact2x2 gives the proper matching interval. Here are the two types of two-sided Fisher's exact test. We use the option 
+"minlike" for the usual two-sided Fisher's exact test since it is based on the priciple of minimum likelihood.   
+<<>>=
+exact2x2(x,tsmethod="minlike")
+exact2x2(x,tsmethod="central")
+@
+
+Additionally, exact2x2 gives another exact conditional test proposed by Blaker (2000), which we call Blaker's exact test. This test is always more powerful than 
+the central Fisher's exact test, but does not necessarily have central confidence intervals. It will often have the same p-value as the usual two-sided 
+Fisher's exact test, as it does in this example:
+<<>>=
+exact2x2(x,tsmethod="blaker")
+@
+
+There are some theoretical nuiances  since when you invert the two-sided Fisher's exact test (or Blaker's exact test)
+the resulting confidence set may not be an interval. 
+See Fay (2009) for a complete discussion of these issues.   
+
+
+\section*{References}
+
+\begin{description}
+\item Blaker, H. (2000). ``Confidence curves and improved exact confidence intervals for discrete distributions''
+{\it Canadian Journal of Statistics} {\bf 28,} 783-798 (correction {\bf 29,} 681).
+\item Fay, M.P. (2009). ``Confidence Intervals that Match Fisher's Exact or Blaker's Exact Tests'' (unpublished manuscript. 
+See fisherci.pdf in doc 
+directory of this package).
+\end{description}
+
+\end{document}
+
+
