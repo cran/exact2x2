@@ -33,6 +33,8 @@ exact2x2Plot(x, OR = NULL, ndiv = 1000, method = "minlike", orRange = c(0.01, 10
 example1<-matrix(c(6,12,12,5),2,2,dimnames=list(c("Group A","Group B"),c("Event","No Event")))
 example1
 exact2x2Plot(example1)
+## add lines from central Fisher's exact
+exact2x2Plot(example1,method="central",dolines=TRUE,newplot=FALSE,col="red")
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

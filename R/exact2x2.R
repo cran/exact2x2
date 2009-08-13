@@ -5,6 +5,7 @@ function(x, y = NULL, or = 1, alternative = "two.sided",
     tol=0.00001,conditional=TRUE) 
 {
     if (!conditional) stop("unconditional exact tests not supported")
+    if (tol<.Machine$double.eps^.5) warning("tol set very small, make sure pnhyper in exact2x2CI is this accurate")
     # copied setup code from fisher.test, july 1,2009
     DNAME <- deparse(substitute(x))
     METHOD <- "Fisher's Exact Test for Count Data"
@@ -60,13 +61,21 @@ function(x, y = NULL, or = 1, alternative = "two.sided",
         if (tsmethod!="blaker" & tsmethod!="minlike" & tsmethod!="central") stop("tsmethod must be 'blaker', 'central' or 'minlike'.")
         if (tsmethod=="minlike"){
             OUT<-fisher.test(xmat,or=or,alternative="two.sided",conf.int=FALSE) 
-            OUT$conf.int<-exact2x2CI(xmat,method="minlike",conf.level=conf.level,
-                tol=tol)
+            if (conf.int){
+                OUT$conf.int<-exact2x2CI(xmat,method="minlike",conf.level=conf.level,
+                    tol=tol)
+            } else {
+                OUT$conf.int<-NULL
+            }
             OUT$method<-"Two-sided Fisher's Exact Test (usual method using minimum likelihood)"
         } else if (tsmethod=="blaker"){
             OUT<-fisher.test(xmat,or=or,alternative="two.sided",conf.int=FALSE) 
-            OUT$conf.int<-exact2x2CI(xmat,method="blaker",conf.level=conf.level,
-                tol=tol)
+            if (conf.int){
+                OUT$conf.int<-exact2x2CI(xmat,method="blaker",conf.level=conf.level,
+                    tol=tol)
+            } else {
+                OUT$conf.int<-NULL
+            }
             OUT$p.value<-exact2x2Pvals(xmat,or,method="blaker")$pvals
             OUT$method<-"Blaker's Exact Test"
         } else if (tsmethod=="central"){
@@ -81,6 +90,3 @@ function(x, y = NULL, or = 1, alternative = "two.sided",
     OUT$data.name<-DNAME
     OUT
 }
-#x<-matrix(c(6,12,12,5),2,2,dimnames=list(c("Group A","Group B"),c("Event","No Event")))
-#exact2x2(x,tsmethod="minlike")
-#exact2x2(x,tsmethod="central")

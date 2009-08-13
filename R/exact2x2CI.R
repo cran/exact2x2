@@ -1,5 +1,8 @@
-exact2x2CI<-function(x,method="minlike",conf.level=.95,tol=.00001){
-    orRange<-c(10^-10,10^10)
+exact2x2CI<-function(x,method="minlike",conf.level=.95,tol=.00001,orRange=c(10^-10,10^10)){
+    alpha<-1-conf.level
+    # can make tol for uniroot functions less than tol if you want, edit urtol
+    # but it is not helpful for the current algorithm
+    urtol<-tol     
     m<-sum(x[1,])
     n<-sum(x[2,])
     k<-sum(x[,1])
@@ -51,7 +54,7 @@ exact2x2CI<-function(x,method="minlike",conf.level=.95,tol=.00001){
             }
             out
         }
-        uniroot(rootfunc,ORRange,tol=min(.Machine$double.eps^0.25,tol)   )$root
+        uniroot(rootfunc,ORRange,tol=urtol )$root
     }
 
     Bnds<-function(xlo,xhi,ORRange,ndiv=1){
@@ -66,7 +69,8 @@ exact2x2CI<-function(x,method="minlike",conf.level=.95,tol=.00001){
         list(or=OR,estimate=estimate,bndlo=L,bndhi=U)
     }
     refine<-function(xlo,xhi,ORRange,NDIV=100,maxiter=50,limit="upper"){
-        getCLbnds<-function(b,ndiv=NDIV){
+        getCLbnds<-function(b){
+            nb<-length(b$bndhi)
             HI<-max(b$bndhi)
             LO<-min(b$bndlo)
             if (HI<=alpha){
@@ -83,27 +87,19 @@ exact2x2CI<-function(x,method="minlike",conf.level=.95,tol=.00001){
                 CLbnds<-c(NA,NA)
                 if (limit=="upper"){
                     if (any(b$bndlo>alpha)){
-                        CLbnds[1]<-max( b$or[1:ndiv][b$bndlo>alpha] )
-                    } else {
+                        CLbnds[1]<-max( b$or[2:(nb+1)][b$bndlo>alpha] )
+                    } else { 
                         CLbnds[1]<- min(b$or)
                     }
-                    if (any(b$bndhi<=alpha)){
-                        CLbnds[2]<- min( b$or[2:(ndiv+1)][b$bndhi<=alpha])
-                    } else {
-                        CLbnds[2]<-max(b$or)
-                    }
+                    CLbnds[2]<- max( b$or[2:(nb+1)][b$bndhi>alpha])
                 } else {
                 # limit=lower
                     if (any(b$bndlo>alpha)){
-                        CLbnds[2]<-min( b$or[2:(ndiv+1)][b$bndlo>alpha] )
+                        CLbnds[2]<-min( b$or[1:nb][b$bndlo>alpha] )
                     } else {
                         CLbnds[2]<-max(b$or)
                     }
-                    if (any(b$bndhi<=alpha)){
-                        CLbnds[1]<-max( b$or[1:ndiv][b$bndhi<=alpha] )
-                    } else {
-                        CLbnds[1]<-min(b$or)
-                    }
+                    CLbnds[1]<-min( b$or[1:nb][b$bndhi>alpha] )
                 }
                 continue<-TRUE
             }
@@ -111,7 +107,7 @@ exact2x2CI<-function(x,method="minlike",conf.level=.95,tol=.00001){
             out
         }
         b<-Bnds(xlo,xhi,ORRange,ndiv=1)
-        clb<-getCLbnds(b,ndiv=1)     
+        clb<-getCLbnds(b)     
         if (!is.null(clb$CLbnds) & clb$continue){
             ORRANGE<-clb$CLbnds
             for (i in 1:maxiter){
@@ -141,7 +137,6 @@ exact2x2CI<-function(x,method="minlike",conf.level=.95,tol=.00001){
         CINT[1]<-0
         lower.prec<-c(0,0)
     }
-    alpha<-1-conf.level
     xless<-lo:(x-1)
     if (is.na(CINT[2])){
         xgreater<-hi:(x+1)
@@ -161,12 +156,13 @@ exact2x2CI<-function(x,method="minlike",conf.level=.95,tol=.00001){
                         }
                         out
                     }
-                    CINT[2]<-uniroot(rootfunc,c(ints[i],orRange[2]),tol=min(.Machine$double.eps^0.25,tol))$root
-                    upper.prec<-c(CINT[2]-tol/2,CINT[2]+tol/2)
+                    if (rootfunc(orRange[2])<0) stop("very large odds ratio, modify orRange in exact2x2CI")
+                    CINT[2]<-uniroot(rootfunc,c(ints[i],orRange[2]),tol=urtol)$root
+                    upper.prec<-c(CINT[2]-urtol/2,CINT[2]+urtol/2)
                     break()
                 } else if (F==alpha){
                     CINT[2]<-ints[i]
-                    upper.prec<-c(CINT[2]-tol/2,CINT[2]+tol/2)
+                    upper.prec<-c(CINT[2]-urtol/2,CINT[2]+urtol/2)
                     break()
                 }
             } else if (i>1){
@@ -177,7 +173,7 @@ exact2x2CI<-function(x,method="minlike",conf.level=.95,tol=.00001){
                     break()
                 } else if (i==ngreater){
                     CINT[2]<-ints[i]
-                    upper.prec<-c(ints[i]-tol/2,ints[i]+tol/2)
+                    upper.prec<-c(ints[i]-urtol/2,ints[i]+urtol/2)
                 }
             }
         }
@@ -199,12 +195,13 @@ exact2x2CI<-function(x,method="minlike",conf.level=.95,tol=.00001){
                         }
                         out
                     }
-                    CINT[1]<-uniroot(rootfunc,c(orRange[1],ints[i]),tol=min(.Machine$double.eps^0.25,tol))$root
-                    lower.prec<-c(CINT[1]-tol/2,CINT[1]+tol/2)
+                    if (rootfunc(orRange[1])<0) stop("very small odds ratio, modify orRange in exact2x2CI")
+                    CINT[1]<-uniroot(rootfunc,c(orRange[1],ints[i]),tol=urtol)$root
+                    lower.prec<-c(CINT[1]-urtol/2,CINT[1]+urtol/2)
                     break()
                 } else if (F==alpha){
                     CINT[1]<-ints[i]
-                    lower.prec<-c(CINT[1]-tol/2,CINT[1]+tol/2)
+                    lower.prec<-c(CINT[1]-urtol/2,CINT[1]+urtol/2)
                     break()
                 }
             } else if (i>1){
@@ -215,7 +212,7 @@ exact2x2CI<-function(x,method="minlike",conf.level=.95,tol=.00001){
                     break()
                 } else if (i==nless){
                     CINT[1]<-ints[i]
-                    lower.prec<-c(ints[i]-tol/2,ints[i]+tol/2)
+                    lower.prec<-c(ints[i]-urtol/2,ints[i]+urtol/2)
                 }
             }
         }

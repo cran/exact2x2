@@ -1,13 +1,9 @@
 `exact2x2Pvals` <-
 function(x,or,relErr=1+10^(-7),method="minlike"){
-
     m<-sum(x[1,])
     n<-sum(x[2,])
     k<-sum(x[,1])
     x<-x[1,1]
-
-
-
     if (method=="fisher"){
         method<-"minlike"
         warning("method='fisher' changed to 'minlike' ")
@@ -58,8 +54,8 @@ function(x,or,relErr=1+10^(-7),method="minlike"){
             f<-dnhyper(or[i])
             pvals[i]<-2*min(sum(f[Xlo]),sum(f[Xhi]))
         }
-        pvals<-pmin(1,pvals)
     }
+    pvals<-pmin(1,pvals)
     out<-list(or=or,pvals=pvals)
     out
 }

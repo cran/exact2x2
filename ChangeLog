@@ -1,0 +1,10 @@
+0.9-1 First release
+
+0.9-3
+
+- fix problem with exact2x2CI, gave wrong confidence interval for some 2x2 tables
+- fix conf.int=FALSE to work correctly for 'blaker' and 'minlike' methods, still ignored for 'central'
+- fix p-value for blaker test to be always less than or equal to 1
+- fix blaker.exact and fisher.exact to work correctly when y!=NULL
+- minor editing of some man pages
+- minor editing of some code for clarity

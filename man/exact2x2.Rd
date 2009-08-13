@@ -22,9 +22,10 @@ blaker.exact(x, y = NULL, or = 1, alternative = "two.sided", conf.int = TRUE, co
   \item{alternative}{indicates the alternative hypothesis and must be
     one of \code{"two.sided"}, \code{"greater"} or \code{"less"}.
     if "two.sided" uses method defined by tsmethod.}
-  \item{tsmethod}{one of "minlike","central", or "blaker". Defines type of two-sided method (see details).}
+  \item{tsmethod}{one of "minlike","central", or "blaker". 
+Defines type of two-sided method (see details). Ignored if alternative="less" or "greater".}
   \item{conf.int}{logical indicating if a confidence interval should be
-    computed (and returned).}
+    computed.}
   \item{conf.level}{confidence level for the returned confidence
     interval.  Only used if
     \code{conf.int = TRUE}.}

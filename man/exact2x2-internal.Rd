@@ -5,13 +5,13 @@
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Internal functions for exact2x2. Not to be called by user.}
 \description{
-The function \code{fisher.blaker.pvals} can calculate p-values for a vector of odds ratios.
-The function \code{exact2x2.tsci} is the code that calculates the confidence intervals for the two-sided 
+The function \code{exact2x2Pvals} can calculate p-values for a vector of odds ratios.
+The function \code{exact2x2CI} is the code that calculates the confidence intervals for the two-sided 
 Fisher's exact test and Blaker's exact test.  
 }
 \usage{
 exact2x2Pvals(x, or, relErr=1+10^(-7),method = "minlike")
-exact2x2CI(x, method="minlike", conf.level=0.95, tol=0.00001)
+exact2x2CI(x, method="minlike", conf.level=0.95, tol=0.00001, orRange=c(10^-10,10^10))
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -21,11 +21,12 @@ exact2x2CI(x, method="minlike", conf.level=0.95, tol=0.00001)
   \item{method}{either "minlike","blaker", "central"}
   \item{conf.level}{confidence level}
   \item{tol}{tolerance}
+  \item{orRange}{range for search for odds ratio confidence interval}
 }
 \details{P-values for both the two-sided Fisher's exact and Blaker's exact test add probabilities from the opposite tail if 
 either the cumulative probabilities (for Blaker's test) or the probabilities (Fisher's test) are less than or equal to those 
 of the observed tail. Since sometimes the p-value at odds ratio=1 is important, we may have problems if the opposite tail is 
-some very small different probability do to computer rounding, when mathematically the probabilities are exactly the same 
+some very small different probability due to computer rounding, when mathematically the probabilities are exactly the same 
 and should be included. To get around this problem \code{\link[stats]{fisher.test}} uses relErr so that it chooses all
 d<= d[i]*relErr and if mathematically d[i] is equal to another value in d but there is a slightly computer rounding error, that value
 will be included. We use the same tactic here.
