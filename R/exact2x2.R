@@ -1,8 +1,8 @@
 `exact2x2` <-
 function(x, y = NULL, or = 1, alternative = "two.sided", 
-    tsmethod="minlike", 
+    tsmethod=NULL, 
     conf.int = TRUE, conf.level = 0.95, 
-    tol=0.00001,conditional=TRUE) 
+    tol=0.00001,conditional=TRUE, paired=FALSE) 
 {
     if (!conditional) stop("unconditional exact tests not supported")
     if (tol<.Machine$double.eps^.5) warning("tol set very small, make sure pnhyper in exact2x2CI is this accurate")
@@ -45,47 +45,59 @@ function(x, y = NULL, or = 1, alternative = "two.sided",
     if (length(alternative) > 1 || is.na(alternative)) 
         stop("alternative must be \"two.sided\", \"less\" or \"greater\"")
     # end of setup code from fisher.test
+
+    ## default to usual two-sided Fisher's exact test for paired=FALSE
+    ## and usual exact McNemar confidence intervals for paired=TRUE
+    if (is.null(tsmethod) & paired){ tsmethod<-"central"
+    } else if (is.null(tsmethod)) tsmethod<-"minlike"
+
     nr <- nrow(x)
     nc <- ncol(x)
     if (nr!=2 || nc!=2) stop("table must be 2 by 2")
-    if (alternative=="less" | alternative=="greater"){
-        OUT<-fisher.test(x,or=or,alternative=alternative,conf.int=conf.int,conf.level=conf.level)
-        OUT$method<-"One-sided Fisher's Exact Test"
+
+    if (paired){
+        OUT<-mcnemar.exact.calc(x[1,2],x[2,1],or=or,alternative=alternative,tsmethod=tsmethod,conf.level=conf.level)
     } else {
-        xmat<-x
-        m <- sum(x[, 1])
-        n <- sum(x[, 2])
-        k <- sum(x[1, ])
-        x <- x[1, 1]
-        tsmethod<-char.expand(tsmethod,c("minlike","blaker","central"))
-        if (tsmethod!="blaker" & tsmethod!="minlike" & tsmethod!="central") stop("tsmethod must be 'blaker', 'central' or 'minlike'.")
-        if (tsmethod=="minlike"){
-            OUT<-fisher.test(xmat,or=or,alternative="two.sided",conf.int=FALSE) 
-            if (conf.int){
-                OUT$conf.int<-exact2x2CI(xmat,method="minlike",conf.level=conf.level,
-                    tol=tol)
-            } else {
-                OUT$conf.int<-NULL
-            }
-            OUT$method<-"Two-sided Fisher's Exact Test (usual method using minimum likelihood)"
-        } else if (tsmethod=="blaker"){
-            OUT<-fisher.test(xmat,or=or,alternative="two.sided",conf.int=FALSE) 
-            if (conf.int){
-                OUT$conf.int<-exact2x2CI(xmat,method="blaker",conf.level=conf.level,
-                    tol=tol)
-            } else {
-                OUT$conf.int<-NULL
-            }
-            OUT$p.value<-exact2x2Pvals(xmat,or,method="blaker")$pvals
-            OUT$method<-"Blaker's Exact Test"
-        } else if (tsmethod=="central"){
-            OUT<-fisher.test(xmat,or=or,alternative=alternative,conf.int=conf.int,
-                conf.level=conf.level)
-            pless<-fisher.test(xmat,or=or,alternative="less",conf.int=FALSE)$p.value
-            pgreater<-fisher.test(xmat,or=or,alternative="greater",conf.int=FALSE)$p.value
-            OUT$p.value<-min(1,2*min(pless,pgreater))
-            OUT$method<-"Central Fisher's Exact Test"
-        } 
+
+        if (alternative=="less" | alternative=="greater"){
+            OUT<-fisher.test(x,or=or,alternative=alternative,conf.int=conf.int,conf.level=conf.level)
+            OUT$method<-"One-sided Fisher's Exact Test"
+        } else {
+            xmat<-x
+            m <- sum(x[, 1])
+            n <- sum(x[, 2])
+            k <- sum(x[1, ])
+            x <- x[1, 1]
+            tsmethod<-char.expand(tsmethod,c("minlike","blaker","central"))
+            if (tsmethod!="blaker" & tsmethod!="minlike" & tsmethod!="central") stop("tsmethod must be 'blaker', 'central' or 'minlike'.")
+            if (tsmethod=="minlike"){
+                OUT<-fisher.test(xmat,or=or,alternative="two.sided",conf.int=FALSE) 
+                if (conf.int){
+                    OUT$conf.int<-exact2x2CI(xmat,method="minlike",conf.level=conf.level,
+                        tol=tol)
+                } else {
+                    OUT$conf.int<-NULL
+                }
+                OUT$method<-"Two-sided Fisher's Exact Test (usual method using minimum likelihood)"
+            } else if (tsmethod=="blaker"){
+                OUT<-fisher.test(xmat,or=or,alternative="two.sided",conf.int=FALSE) 
+                if (conf.int){
+                    OUT$conf.int<-exact2x2CI(xmat,method="blaker",conf.level=conf.level,
+                        tol=tol)
+                } else {
+                    OUT$conf.int<-NULL
+                }
+                OUT$p.value<-exact2x2Pvals(xmat,or,method="blaker")$pvals
+                OUT$method<-"Blaker's Exact Test"
+            } else if (tsmethod=="central"){
+                OUT<-fisher.test(xmat,or=or,alternative=alternative,conf.int=conf.int,
+                    conf.level=conf.level)
+                pless<-fisher.test(xmat,or=or,alternative="less",conf.int=FALSE)$p.value
+                pgreater<-fisher.test(xmat,or=or,alternative="greater",conf.int=FALSE)$p.value
+                OUT$p.value<-min(1,2*min(pless,pgreater))
+                OUT$method<-"Central Fisher's Exact Test"
+            } 
+        }
     }
     OUT$data.name<-DNAME
     OUT

@@ -1,5 +1,6 @@
 \name{exact2x2-internal}
 \alias{exact2x2CI}
+\alias{mcnemar.exact.calc}
 %\name{fisher.blaker.pvals}
 \alias{exact2x2Pvals}
 %- Also NEED an '\alias' for EACH other topic documented here.
@@ -12,6 +13,7 @@ Fisher's exact test and Blaker's exact test.
 \usage{
 exact2x2Pvals(x, or, relErr=1+10^(-7),method = "minlike")
 exact2x2CI(x, method="minlike", conf.level=0.95, tol=0.00001, orRange=c(10^-10,10^10))
+mcnemar.exact.calc(bb,cc,or,alternative,tsmethod="central",conf.level=.95)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -22,6 +24,8 @@ exact2x2CI(x, method="minlike", conf.level=0.95, tol=0.00001, orRange=c(10^-10,1
   \item{conf.level}{confidence level}
   \item{tol}{tolerance}
   \item{orRange}{range for search for odds ratio confidence interval}
+ \item{alternative}{indicates the alternative hypothesis and must be
+    one of \code{"two.sided"}, \code{"greater"} or \code{"less"}.}
 }
 \details{P-values for both the two-sided Fisher's exact and Blaker's exact test add probabilities from the opposite tail if 
 either the cumulative probabilities (for Blaker's test) or the probabilities (Fisher's test) are less than or equal to those 
@@ -30,6 +34,12 @@ some very small different probability due to computer rounding, when mathematica
 and should be included. To get around this problem \code{\link[stats]{fisher.test}} uses relErr so that it chooses all
 d<= d[i]*relErr and if mathematically d[i] is equal to another value in d but there is a slightly computer rounding error, that value
 will be included. We use the same tactic here.
+
+
+The function \code{mcnemar.exact.calc} is just a simple call to \code{binom.test} with 
+\code{p=.5}.
+
+
  }
 \value{
   Output from \code{exact2x2Pvals} is a LIST, with

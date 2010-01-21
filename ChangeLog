@@ -1,4 +1,10 @@
-0.9-1 First release
+1.0-0
+- add exact McNemar's test (paired=TRUE), for that the package now depends on the exactci package
+- add envir=parent.frame to do.call in fisher.exact, without it gave error if name of first input is "y"
+- do same as above for blaker.exact
+- update reference to Fay (2009), add citation file
+
+
 
 0.9-3
 
@@ -8,3 +14,5 @@
 - fix blaker.exact and fisher.exact to work correctly when y!=NULL
 - minor editing of some man pages
 - minor editing of some code for clarity
+
+0.9-1 First release

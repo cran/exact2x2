@@ -2,16 +2,23 @@
 \alias{exact2x2}
 \alias{fisher.exact}
 \alias{blaker.exact}
+\alias{mcnemar.exact}
 \alias{exact2x2-package}
 \title{Exact Conditional Tests for 2 by 2 Tables of Count Data}
 \description{
-  Performs either Fisher's exact test or Blaker's exact test for testing hypotheses about the odds ratio from a two by two contingency 
-table with fixed marginals. The commands follow the style of  \code{\link[stats]{fisher.test}}, the difference is that the 
-confidence intervals are matching ones (see details).}
+  Performs exact conditional tests for two by two tables. For independent binary responses, performs 
+either Fisher's exact test or Blaker's exact test for testing hypotheses about the odds ratio. 
+The commands follow the style of  \code{\link[stats]{fisher.test}}, the difference is that
+for two-sided tests there are three methods for calculating the exact test, and for each of the three methods
+its matching 
+confidence interval is returned (see details).  
+For paired binary data resulting in a two by two table, performs an exact McNemar's test.}
 \usage{
-exact2x2(x, y = NULL, or = 1, alternative = "two.sided", tsmethod = "minlike", conf.int = TRUE, conf.level = 0.95, tol = 0.00001, conditional = TRUE)
+exact2x2(x, y = NULL, or = 1, alternative = "two.sided", tsmethod = NULL, conf.int = TRUE, conf.level = 0.95, 
+    tol = 0.00001, conditional = TRUE, paired=FALSE)
 fisher.exact(x, y = NULL, or = 1, alternative = "two.sided", tsmethod = "minlike", conf.int = TRUE, conf.level = 0.95, tol = 0.00001)
 blaker.exact(x, y = NULL, or = 1, alternative = "two.sided", conf.int = TRUE, conf.level = 0.95, tol = 0.00001)
+mcnemar.exact(x,y=NULL, conf.level=.95)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -22,7 +29,8 @@ blaker.exact(x, y = NULL, or = 1, alternative = "two.sided", conf.int = TRUE, co
   \item{alternative}{indicates the alternative hypothesis and must be
     one of \code{"two.sided"}, \code{"greater"} or \code{"less"}.
     if "two.sided" uses method defined by tsmethod.}
-  \item{tsmethod}{one of "minlike","central", or "blaker". 
+  \item{tsmethod}{one of "minlike","central", or "blaker". NULL defaults to "minlike" when 
+  paired=FALSE and "central" when paired=TRUE.
 Defines type of two-sided method (see details). Ignored if alternative="less" or "greater".}
   \item{conf.int}{logical indicating if a confidence interval should be
     computed.}
@@ -31,6 +39,7 @@ Defines type of two-sided method (see details). Ignored if alternative="less" or
     \code{conf.int = TRUE}.}
   \item{tol}{tolerance for confidence interval estimation.}
   \item{conditional}{TRUE. Unconditional exact tests not supported at this time.}
+  \item{paired}{logical. TRUE gives exact McNemar's test, FALSE are all other tests}
 }
 \details{
   The motivation for this package is to match the different two-sided conditional exact tests 
@@ -77,6 +86,15 @@ options in  \code{exact2x2}.
   \code{alternative = "greater"} is a test of the odds ratio being bigger
   than \code{or}.
 
+ When paired=TRUE, this denotes there is some pairing of the data. For example, 
+ instead of Group A and Group B, we may have pretest and posttest binary responses. 
+ The proper two-sided test for such a setup is McNemar's Test, which only uses the off-diagonal
+ elements of the 2x2 table, and tests that both are equal or not. The exact version 
+ is based on the binomial distribution on one of the off-diagonal values conditioned on the total 
+ of both off-diagonal values. We use \code{\link[exactci]{binom.exact}} from the \code{exactci} package, and convert the 
+ p estimates and confidence intervals (see note) to odds ratios (see Breslow and Day, 1980, p. 165). The function 
+ \code{mcnemar.exact} is just a wrapper to call \code{exact2x2} with \code{paired=TRUE, alternative="two.sided",tsmethod="central"}. 
+ One-sided exact McNemar-type tests may be calculated using the  \code{exact2x2} function with \code{paired=TRUE}.
 }
 \value{
   A list with class \code{"htest"} containing the following components:
@@ -95,8 +113,12 @@ options in  \code{exact2x2}.
 Blaker, H. (2000) Confidence curves and improved exact confidence intervals for discrete distributions.
 Canadian Journal of Statistics 28: 783-798.
 
-Fay, M. P. (2009). Confidence intervals for Fisher's exact and Blaker's exact tests.
-  (unpublished manuscript, see pdf in doc directory of this package).
+Breslow, NE and Day NE (1980). Staistical Methods in Cancer Research: Vol 1-The analysis of Case-Control Studies.
+    IARC Scientific Publications. IARC, Lyon.
+
+Fay, M. P. (2009). Confidence intervals that Match Fisher's exact and Blaker's exact tests. Biostatistics,
+  doi:10.1093/biostatistics/kxp050 (go to doc directory for earlier version or 
+  \url{http://www3.niaid.nih.gov/about/organization/dcr/BRB/staff/michael.htm} for link to official version).
 
 Fisher, R.A. (1935) The logic of inductive inference. Journal of the Royal Statistical Society
 Series A 98:39-54.
@@ -104,9 +126,11 @@ Series A 98:39-54.
 \author{
 Michael Fay
 }
-%\note{}
+\note{ The default exact confidence intervals for the odds ratio when paired=TRUE (those matching the exact McNemar's test) 
+are transformations of the Clopper-Pearson exact confidence intervals for a single binomial parameter which are central intervals. 
+See note for \code{\link[exactci]{binom.exact}} for discussion of exact binomial confidence intervals. }
 \seealso{
-  \code{\link[stats]{fisher.test}}
+  \code{\link[stats]{fisher.test}} or \code{\link[stats]{mcnemar.test}}
 }
 \examples{
 ## In example 1, notice how fisher.test rejects the null at the 5 percent level, 
@@ -119,14 +143,14 @@ fisher.test(example1)
 fisher.exact(example1,tsmethod="minlike")
 fisher.exact(example1,tsmethod="central")
 blaker.exact(example1)
-## In example 2, this same thing happens, in some examples... this cannot be avoided because of the 
+## In example 2, this same thing happens, for tsmethod="minlike"... this cannot be avoided because of the 
 ## holes in the confidence set.
 ##  
 example2<-matrix(c(7,255,30,464),2,2,dimnames=list(c("Group A","Group B"),c("Event","No Event")))
 example2
 fisher.test(example2)
 exact2x2(example2,tsmethod="minlike")
+## you can never get a test-CI inconsistency when tsmethod="central"
 exact2x2(example2,tsmethod="central")
-exact2x2(example2,tsmethod="blaker")
 }
 \keyword{htest}

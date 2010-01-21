@@ -64,15 +64,18 @@ There are some theoretical nuiances  since when you invert the two-sided Fisher'
 the resulting confidence set may not be an interval. 
 See Fay (2009) for a complete discussion of these issues.   
 
+There is an option for paired data which gives an exact version of McNemar's test, 
+see {\sf vignette("exactMcNemar") } for a description.
+
 
 \section*{References}
 
 \begin{description}
 \item Blaker, H. (2000). ``Confidence curves and improved exact confidence intervals for discrete distributions''
 {\it Canadian Journal of Statistics} {\bf 28,} 783-798 (correction {\bf 29,} 681).
-\item Fay, M.P. (2009). ``Confidence Intervals that Match Fisher's Exact or Blaker's Exact Tests'' (unpublished manuscript. 
+\item Fay, M.P. (2009). ``Confidence Intervals that Match Fisher's Exact or Blaker's Exact Tests'' (to appear Biostatistics. 
 See Fay2009MatchingCI.pdf in doc 
-directory of this package).
+directory of this package for earlier version which is essentially the paper plus the supplement).
 \end{description}
 
 \end{document}
