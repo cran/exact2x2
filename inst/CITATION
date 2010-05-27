@@ -9,19 +9,19 @@ citEntry(entry="Article",
   number       = "",  
   pages        = "",
   url ="http://www3.niaid.nih.gov/about/organization/dcr/BRB/staff/michael.htm",
-  textVersion  ="Fay MP (2009). Confidence intervals that match Fisher's exact or Blaker's exact tests. Biostatistics. doi:10.1093/biostatistics/kxp050",
+  textVersion  ="Fay MP (2009). Confidence intervals that match Fisher's exact or Blaker's exact tests. Biostatistics. 11:373-374",
   header = "When using Fisher's exact or Blaker's exact test for 2x2 tables cite:"
 )
 
-citEntry(entry = "Article",
-  title        = "The exact2x2 R package",
-  author       = personList(as.person("Michael P. Fay")),
-  journal      = "",
-  year         = "2009",
+citEntry(entry="Article",
+  title        = "Two-sided Exact Tests and Matching Confidence Intervals for Discrete Data",
+  author       = personList(as.person("Michael P. Fay")), 
+  journal      = "unpublished manuscript, submitted to R Journal",
+  year         = "2010",
   volume       = "",
-  number       = "",
+  number       = "",  
   pages        = "",
-  url          = "http://cran-r.project.org",
-  textVersion  ="Fay MP (2009). The exact2x2 R package. URL http://cran-r.project.org",
+  url ="http://journal.r-project.org/",
+  textVersion  ="Fay MP (2010). Two-sided Exact Tests and Matching Confidence Intervals for Discrete Data. (unpublished manuscript, submitted to R Journal)",
   header = "When using the exact McNemar's test (paired=TRUE) cite:"
 )

@@ -1,3 +1,8 @@
+1.0-1
+- update reference to Fay (2009) to reflect print version, Fay (2010)
+- add plot option to exact2x2 function to plot p-value function
+- change exact2x2Plot and internal function so that method is now tsmethod
+
 1.0-0
 - add exact McNemar's test (paired=TRUE), for that the package now depends on the exactci package
 - add envir=parent.frame to do.call in fisher.exact, without it gave error if name of first input is "y"

@@ -1,4 +1,4 @@
-exact2x2CI<-function(x,method="minlike",conf.level=.95,tol=.00001,orRange=c(10^-10,10^10)){
+exact2x2CI<-function(x,tsmethod="minlike",  conf.level=.95,tol=.00001,orRange=c(10^-10,10^10)){
     alpha<-1-conf.level
     # can make tol for uniroot functions less than tol if you want, edit urtol
     # but it is not helpful for the current algorithm
@@ -37,7 +37,7 @@ exact2x2CI<-function(x,method="minlike",conf.level=.95,tol=.00001,orRange=c(10^-
         }
         out
     }
-    intercept<-function(xlo,xhi,ORRange=orRange,TSmethod=method){
+    intercept<-function(xlo,xhi,ORRange=orRange,TSmethod=tsmethod){
         if (TSmethod=="minlike"){
             Xlo<- support==xlo
             Xhi<- support==xhi

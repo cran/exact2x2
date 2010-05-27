@@ -15,7 +15,7 @@ confidence interval is returned (see details).
 For paired binary data resulting in a two by two table, performs an exact McNemar's test.}
 \usage{
 exact2x2(x, y = NULL, or = 1, alternative = "two.sided", tsmethod = NULL, conf.int = TRUE, conf.level = 0.95, 
-    tol = 0.00001, conditional = TRUE, paired=FALSE)
+    tol = 0.00001, conditional = TRUE, paired=FALSE, plot=FALSE)
 fisher.exact(x, y = NULL, or = 1, alternative = "two.sided", tsmethod = "minlike", conf.int = TRUE, conf.level = 0.95, tol = 0.00001)
 blaker.exact(x, y = NULL, or = 1, alternative = "two.sided", conf.int = TRUE, conf.level = 0.95, tol = 0.00001)
 mcnemar.exact(x,y=NULL, conf.level=.95)
@@ -40,6 +40,7 @@ Defines type of two-sided method (see details). Ignored if alternative="less" or
   \item{tol}{tolerance for confidence interval estimation.}
   \item{conditional}{TRUE. Unconditional exact tests not supported at this time.}
   \item{paired}{logical. TRUE gives exact McNemar's test, FALSE are all other tests}
+\item{plot}{logical. TRUE gives basic plot of point null odds ratios by p-values, for greater plot control use \code{\link{exact2x2Plot}}}
 }
 \details{
   The motivation for this package is to match the different two-sided conditional exact tests 
@@ -63,7 +64,7 @@ associated with  \code{tsmethod}="central". The probability that the
 methods.   
  The confidence intervals in for \code{exact2x2} match the test associated 
 with alternative. In other words, the confidence interval is the smallest interval that contains the confidence set that is 
-the inversion of the associated test (see Fay, 2009).
+the inversion of the associated test (see Fay, 2010).
 The functions \code{fisher.exact} and \code{blaker.exact} are just wrappers for certain
 options in  \code{exact2x2}.
 
@@ -116,8 +117,8 @@ Canadian Journal of Statistics 28: 783-798.
 Breslow, NE and Day NE (1980). Staistical Methods in Cancer Research: Vol 1-The analysis of Case-Control Studies.
     IARC Scientific Publications. IARC, Lyon.
 
-Fay, M. P. (2009). Confidence intervals that Match Fisher's exact and Blaker's exact tests. Biostatistics,
-  doi:10.1093/biostatistics/kxp050 (go to doc directory for earlier version or 
+Fay, M. P. (2010). Confidence intervals that Match Fisher's exact and Blaker's exact tests. Biostatistics,
+  11: 373-374 (go to doc directory for earlier version or 
   \url{http://www3.niaid.nih.gov/about/organization/dcr/BRB/staff/michael.htm} for link to official version).
 
 Fisher, R.A. (1935) The logic of inductive inference. Journal of the Royal Statistical Society

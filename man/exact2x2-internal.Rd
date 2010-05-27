@@ -11,8 +11,8 @@ The function \code{exact2x2CI} is the code that calculates the confidence interv
 Fisher's exact test and Blaker's exact test.  
 }
 \usage{
-exact2x2Pvals(x, or, relErr=1+10^(-7),method = "minlike")
-exact2x2CI(x, method="minlike", conf.level=0.95, tol=0.00001, orRange=c(10^-10,10^10))
+exact2x2Pvals(x, or, relErr=1+10^(-7),tsmethod = "minlike", alternative="two.sided")
+exact2x2CI(x, tsmethod="minlike", conf.level=0.95, tol=0.00001, orRange=c(10^-10,10^10))
 mcnemar.exact.calc(bb,cc,or,alternative,tsmethod="central",conf.level=.95)
 }
 %- maybe also 'usage' for other objects documented here.
@@ -20,7 +20,7 @@ mcnemar.exact.calc(bb,cc,or,alternative,tsmethod="central",conf.level=.95)
   \item{x}{matrix representing 2 by 2 table}
   \item{or}{odds ratio, may be a vector}
   \item{relErr}{relative error. This is used to handle true ties on the computer. (see details). }
-  \item{method}{either "minlike","blaker", "central"}
+  \item{tsmethod}{either "minlike","blaker", "central"}
   \item{conf.level}{confidence level}
   \item{tol}{tolerance}
   \item{orRange}{range for search for odds ratio confidence interval}

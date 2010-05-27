@@ -1,8 +1,8 @@
 `exact2x2` <-
 function(x, y = NULL, or = 1, alternative = "two.sided", 
-    tsmethod=NULL, 
+    tsmethod=NULL,
     conf.int = TRUE, conf.level = 0.95, 
-    tol=0.00001,conditional=TRUE, paired=FALSE) 
+    tol=0.00001,conditional=TRUE, paired=FALSE, plot=FALSE) 
 {
     if (!conditional) stop("unconditional exact tests not supported")
     if (tol<.Machine$double.eps^.5) warning("tol set very small, make sure pnhyper in exact2x2CI is this accurate")
@@ -63,42 +63,55 @@ function(x, y = NULL, or = 1, alternative = "two.sided",
             OUT<-fisher.test(x,or=or,alternative=alternative,conf.int=conf.int,conf.level=conf.level)
             OUT$method<-"One-sided Fisher's Exact Test"
         } else {
-            xmat<-x
-            m <- sum(x[, 1])
-            n <- sum(x[, 2])
-            k <- sum(x[1, ])
-            x <- x[1, 1]
+            #xmat<-x
+            #m <- sum(x[, 1])
+            #n <- sum(x[, 2])
+            #k <- sum(x[1, ])
+            #x <- x[1, 1]
             tsmethod<-char.expand(tsmethod,c("minlike","blaker","central"))
             if (tsmethod!="blaker" & tsmethod!="minlike" & tsmethod!="central") stop("tsmethod must be 'blaker', 'central' or 'minlike'.")
             if (tsmethod=="minlike"){
-                OUT<-fisher.test(xmat,or=or,alternative="two.sided",conf.int=FALSE) 
+                OUT<-fisher.test(x,or=or,alternative="two.sided",conf.int=FALSE) 
                 if (conf.int){
-                    OUT$conf.int<-exact2x2CI(xmat,method="minlike",conf.level=conf.level,
+                    OUT$conf.int<-exact2x2CI(x,tsmethod="minlike",conf.level=conf.level,
                         tol=tol)
                 } else {
                     OUT$conf.int<-NULL
                 }
                 OUT$method<-"Two-sided Fisher's Exact Test (usual method using minimum likelihood)"
             } else if (tsmethod=="blaker"){
-                OUT<-fisher.test(xmat,or=or,alternative="two.sided",conf.int=FALSE) 
+                OUT<-fisher.test(x,or=or,alternative="two.sided",conf.int=FALSE) 
                 if (conf.int){
-                    OUT$conf.int<-exact2x2CI(xmat,method="blaker",conf.level=conf.level,
+                    OUT$conf.int<-exact2x2CI(x,tsmethod="blaker",conf.level=conf.level,
                         tol=tol)
                 } else {
                     OUT$conf.int<-NULL
                 }
-                OUT$p.value<-exact2x2Pvals(xmat,or,method="blaker")$pvals
+                OUT$p.value<-exact2x2Pvals(x,or,tsmethod="blaker")$pvals
                 OUT$method<-"Blaker's Exact Test"
             } else if (tsmethod=="central"){
-                OUT<-fisher.test(xmat,or=or,alternative=alternative,conf.int=conf.int,
+                OUT<-fisher.test(x,or=or,alternative=alternative,conf.int=conf.int,
                     conf.level=conf.level)
-                pless<-fisher.test(xmat,or=or,alternative="less",conf.int=FALSE)$p.value
-                pgreater<-fisher.test(xmat,or=or,alternative="greater",conf.int=FALSE)$p.value
+                pless<-fisher.test(x,or=or,alternative="less",conf.int=FALSE)$p.value
+                pgreater<-fisher.test(x,or=or,alternative="greater",conf.int=FALSE)$p.value
                 OUT$p.value<-min(1,2*min(pless,pgreater))
                 OUT$method<-"Central Fisher's Exact Test"
             } 
         }
     }
+    if (plot){
+        ci<-OUT$conf.int
+        if (is.null(ci)){
+             ci<-fisher.test(x,or=or,alternative=alternative,
+                    conf.level=conf.level)$conf.int
+        }
+        lowerRange<-ifelse(ci[1]==0, .8*min(or,ci[2]), .8*min(ci[1],or) )
+        upperRange<-ifelse(ci[2]==Inf, 1.2*max(or,ci[1]), 1.2*max(ci[2],or) )
+        exact2x2Plot(x, tsmethod = tsmethod, alternative=alternative, orRange=c(lowerRange,upperRange),paired=paired, doci=TRUE, alphaline=TRUE,col="gray",pch=16,cex=.5)
+        points(or,OUT$p.value,col="black")
+    }
+
+
     OUT$data.name<-DNAME
-    OUT
+    return(OUT)
 }

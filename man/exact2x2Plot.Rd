@@ -8,18 +8,28 @@ Plots two-sided p-values as a function of odds ratios. Can plot three types of p
 Fisher's exact (i.e., twice the one-sided Fisher's exact), and Blaker's exact.
 }
 \usage{
-exact2x2Plot(x, OR = NULL, ndiv = 1000, method = "minlike", orRange = c(0.01, 10), dolog = TRUE, dolines = FALSE, dopoints = FALSE, newplot = TRUE, ...)
+exact2x2Plot(x, y=NULL, OR = NULL, ndiv = 1000, tsmethod=NULL, method = NULL, paired=FALSE, 
+orRange = NULL, dolog = TRUE, dolines = FALSE, dopoints = TRUE, 
+doci=TRUE,  alternative=c("two.sided","less","greater"),
+conf.level=.95, alphaline=TRUE, newplot = TRUE, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{matrix representing the 2 by 2 table}
+  \item{y}{a factor object; ignored if \code{x} is a matrix.}
   \item{OR}{odds ratio values for plot, if NULL divides orRange into ndiv pieces}
   \item{ndiv}{number of pieces to divide up odds ratio range}
-  \item{method}{either "minlike","blaker" or "central"}
+  \item{tsmethod}{either "minlike","blaker" or "central"}
+  \item{method}{same as tsmethod, kept for backward compatability}
+\item{paired}{logical, do paired analysis giving McNemar's test p-values}
   \item{orRange}{range for calculating odds ratios}
   \item{dolog}{logical,plot odds ratios on log scale?}
   \item{dolines}{logical, add lines to a plot?}
   \item{dopoints}{logical, add points to a plot?}
+  \item{doci}{logical, add vertical lines at confidence interval?}
+  \item{alternative}{one of "two.sided","less","greater", type of alternative for p-values}
+  \item{conf.level}{when doci=TRUE, level for confidence interval to be plotted}
+  \item{alphaline}{logical, if doci=TRUE should a line be drawn at the significance level?}  
   \item{newplot}{logical,start a new plot?}
   \item{\dots}{values passed to plot, points, or lines statement}
 }
