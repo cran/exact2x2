@@ -96,6 +96,7 @@ options in  \code{exact2x2}.
  p estimates and confidence intervals (see note) to odds ratios (see Breslow and Day, 1980, p. 165). The function 
  \code{mcnemar.exact} is just a wrapper to call \code{exact2x2} with \code{paired=TRUE, alternative="two.sided",tsmethod="central"}. 
  One-sided exact McNemar-type tests may be calculated using the  \code{exact2x2} function with \code{paired=TRUE}.
+For details of McNemar-type tests see Fay (2010, R Journal). 
 }
 \value{
   A list with class \code{"htest"} containing the following components:
@@ -120,6 +121,8 @@ Breslow, NE and Day NE (1980). Staistical Methods in Cancer Research: Vol 1-The 
 Fay, M. P. (2010). Confidence intervals that Match Fisher's exact and Blaker's exact tests. Biostatistics,
   11: 373-374 (go to doc directory for earlier version or 
   \url{http://www3.niaid.nih.gov/about/organization/dcr/BRB/staff/michael.htm} for link to official version).
+
+Fay M.P. (2010). Two-sided Exact Tests and Matching Confidence Intervals for Discrete Data. R Journal 2(1):53-58.
 
 Fisher, R.A. (1935) The logic of inductive inference. Journal of the Royal Statistical Society
 Series A 98:39-54.
