@@ -38,23 +38,36 @@ exact2x2CI<-function(x,tsmethod="minlike",  conf.level=.95,tol=.00001,orRange=c(
         out
     }
     intercept<-function(xlo,xhi,ORRange=orRange,TSmethod=tsmethod){
+        ## old intercept function did not always work correctly with 
+        ## minlike method. The problem was when the density function 
+        ## was very very small for one of the ends of the orRange
+        ## then it would give f[Xlo]==0 and f[Xhi]==0 and the uniroot 
+        ## would stop at the limit of the range.
+
+        ## After thinking about it, we do not even need to use uniroot
+        ## we just need to solve the following for beta:
+        ## logf0[Xlo] + xlo*log(beta) = logf0[Xhi]+xhi*log(beta)
+        ## 
         if (TSmethod=="minlike"){
             Xlo<- support==xlo
             Xhi<- support==xhi
+            beta<- exp( (logf0[Xlo] - logf0[Xhi])/(xhi-xlo) )
+
         } else if (TSmethod=="blaker"){
             Xlo<- support<=xlo
             Xhi<- support>=xhi
-        } 
-        rootfunc<-function(beta){
-            nb<-length(beta)
-            out<-rep(NA,nb)
-            for (i in 1:nb){
-                f<-dnhyper(beta[i])
-                out[i]<- sum(f[Xlo]) - sum(f[Xhi]) 
+            rootfunc<-function(beta){
+                nb<-length(beta)
+                out<-rep(NA,nb)
+                for (i in 1:nb){
+                    f<-dnhyper(beta[i])
+                    out[i]<- sum(f[Xlo]) - sum(f[Xhi]) 
+                }
+                out
             }
-            out
+            beta<-uniroot(rootfunc,ORRange,tol=urtol )$root
         }
-        uniroot(rootfunc,ORRange,tol=urtol )$root
+        beta
     }
 
     Bnds<-function(xlo,xhi,ORRange,ndiv=1){
@@ -166,8 +179,8 @@ exact2x2CI<-function(x,tsmethod="minlike",  conf.level=.95,tol=.00001,orRange=c(
                     break()
                 }
             } else if (i>1){
-                rout<- refine(x,xgreater[i-1],c(ints[i],ints[i-1]),limit="upper")
-               if (!rout$continue){ 
+                rout<- refine(x,xgreater[i-1],c(ints[i],ints[i-1]),limit="upper") 
+              if (!rout$continue){ 
                     CINT[2]<-rout$CLbnds[2]
                     upper.prec<-rout$CLbnds
                     break()
@@ -223,3 +236,8 @@ exact2x2CI<-function(x,tsmethod="minlike",  conf.level=.95,tol=.00001,orRange=c(
     CINT<-round(CINT,floor(-log10(tol))-1)
     CINT
 }
+
+## example that shows problem with version 1.0-1.1
+##x<-matrix(c(17,126,64,769),2,2)
+##exact2x2CI(x,tsmethod="minlike")
+##exact2x2CI(x,tsmethod="minlike",orRange=c(10^-3,10^3))
