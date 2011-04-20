@@ -34,8 +34,17 @@ function(x, y = NULL, or = 1, alternative = "two.sided",
             stop("'x' and 'y' must have the same length")
         DNAME <- paste(DNAME, "and", deparse(substitute(y)))
         OK <- complete.cases(x, y)
-        x <- factor(x[OK])
-        y <- factor(y[OK])
+        ## 2011-4-20: fix so that if x and y are input as factors, they remain factors as input
+        ##   previously had
+        #
+        #    x <- factor(x[OK])
+        #    y <- factor(y[OK])
+        ##
+        ##   so if x<-factor(c(0,1,0)) and y<-factor(c(0,0,0),levels=c(0,1)) then you would get an 
+        ##   error
+        x <- as.factor(x[OK])
+        y <- as.factor(y[OK])
+
         if ((nlevels(x) < 2) || (nlevels(y) < 2)) 
             stop("'x' and 'y' must have at least 2 levels")
         x <- table(x, y)

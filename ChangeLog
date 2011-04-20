@@ -1,3 +1,8 @@
+1.1-1.0
+- fix problem for exact2x2 function when input uses `x,y'-style input and both x and y are factors with 2 levels, 
+  but one of x or y has only one level observed.(Thanks to Hamilton Gross for finding this error).
+
+
 1.1-0.0
 - fix problem with the exact2x2CI function. Now calculates this in a much faster and more accurate way. Previously, 
   it gave incorrect intervals for the tsmethod="minlike" in some cases with large counts. See comments in 
