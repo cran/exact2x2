@@ -1,3 +1,8 @@
+1.2-0.0
+- fix McNemar's test (exact2x2 paired=TRUE) so that if both off diagonal values are 0, then gives p-value of 1 instead of error.
+- moved vignettes to vignette directory
+
+
 1.1-1.0
 - fix problem for exact2x2 function when input uses `x,y'-style input and both x and y are factors with 2 levels, 
   but one of x or y has only one level observed.(Thanks to Hamilton Gross for finding this error).

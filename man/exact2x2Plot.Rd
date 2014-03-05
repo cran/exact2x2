@@ -8,10 +8,11 @@ Plots two-sided p-values as a function of odds ratios. Can plot three types of p
 Fisher's exact (i.e., twice the one-sided Fisher's exact), and Blaker's exact.
 }
 \usage{
-exact2x2Plot(x, y=NULL, OR = NULL, ndiv = 1000, tsmethod=NULL, method = NULL, paired=FALSE, 
-orRange = NULL, dolog = TRUE, dolines = FALSE, dopoints = TRUE, 
-doci=TRUE,  alternative=c("two.sided","less","greater"),
-conf.level=.95, alphaline=TRUE, newplot = TRUE, ...)
+exact2x2Plot(x, y=NULL, OR = NULL, ndiv = 1000, tsmethod=NULL,
+    method = NULL, paired=FALSE, orRange = NULL, dolog = TRUE,
+    dolines = FALSE, dopoints = TRUE, doci=TRUE,  
+    alternative=c("two.sided","less","greater"),
+    conf.level=.95, alphaline=TRUE, newplot = TRUE, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

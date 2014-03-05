@@ -98,7 +98,12 @@ exact2x2Plot<-function(x, y=NULL,
         p<-OR/(1+OR)
         ## earlier versions used method not tsmethod
         if (packageDescription("exactci",fields="Version")<="1.0-0"){
-            p2sided<-exactbinomPvals(x[1,2],x[1,2]+x[2,1],p,method=tsmethod)$pvals
+            stop("update exactci package to a Version>1.0-0")
+            # for old version use method=tsmethod
+            # see following lines...
+            #p2sided<-exactbinomPvals(x[1,2],
+            #    x[1,2]+x[2,1],p,
+            #    method=tsmethod)$pvals
         } else {
             p2sided<-exactbinomPvals(x[1,2],x[1,2]+x[2,1],p,tsmethod=tsmethod)$pvals
         }

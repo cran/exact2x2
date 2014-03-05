@@ -2,10 +2,16 @@ mcnemar.exact.calc<-function(bb,cc,or,alternative, tsmethod="central",conf.level
     ## for following see equation 5.2, p. 164, Breslow and Day, 1980,
     ## Statistical Methods in Cancer Research, Vol 1
     p<- or/(or+1)
-    x<-binom.exact(bb,bb+cc,p=p,alternative=alternative,tsmethod=tsmethod,conf.level=conf.level)
+    ## April 22,2013 fix to allow bb=0 and cc=0
+    if (bb+cc==0){
+        x<-list(p.value=1,estimate=NA, statistic=bb, conf.int=c(0,1), parameter=bb+cc)
+    } else {
+        x<-binom.exact(bb,bb+cc,p=p,alternative=alternative,tsmethod=tsmethod,conf.level=conf.level)
+    }
     x$estimate<- x$estimate/(1-x$estimate)
     attr(x$estimate,"names")<-"odds ratio"
     x$conf.int<- x$conf.int/(1-x$conf.int)
+
     if (alternative=="two.sided"){ x$method<-"Exact McNemar Test"
     } else x$method<-"Exact McNemar-type Test"
 
@@ -29,5 +35,3 @@ mcnemar.exact.calc<-function(bb,cc,or,alternative, tsmethod="central",conf.level
     x$data.name<-paste(x$statistic,"and",x$parameter)
     x
 }
-
-#mcnemar.exact.calc(2,9,1,"two.sided",tsmethod="minlike",conf.level=.95)

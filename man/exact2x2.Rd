@@ -14,10 +14,15 @@ its matching
 confidence interval is returned (see details).  
 For paired binary data resulting in a two by two table, performs an exact McNemar's test.}
 \usage{
-exact2x2(x, y = NULL, or = 1, alternative = "two.sided", tsmethod = NULL, conf.int = TRUE, conf.level = 0.95, 
-    tol = 0.00001, conditional = TRUE, paired=FALSE, plot=FALSE)
-fisher.exact(x, y = NULL, or = 1, alternative = "two.sided", tsmethod = "minlike", conf.int = TRUE, conf.level = 0.95, tol = 0.00001)
-blaker.exact(x, y = NULL, or = 1, alternative = "two.sided", conf.int = TRUE, conf.level = 0.95, tol = 0.00001)
+exact2x2(x, y = NULL, or = 1, alternative = "two.sided",
+    tsmethod = NULL, conf.int = TRUE, conf.level = 0.95,
+    tol = 0.00001, conditional = TRUE, paired=FALSE, 
+    plot=FALSE)
+fisher.exact(x, y = NULL, or = 1, alternative = "two.sided",
+    tsmethod = "minlike", conf.int = TRUE, conf.level = 0.95,
+    tol = 0.00001)
+blaker.exact(x, y = NULL, or = 1, alternative = "two.sided",
+    conf.int = TRUE, conf.level = 0.95, tol = 0.00001)
 mcnemar.exact(x,y=NULL, conf.level=.95)
 }
 %- maybe also 'usage' for other objects documented here.
@@ -147,8 +152,9 @@ fisher.test(example1)
 fisher.exact(example1,tsmethod="minlike")
 fisher.exact(example1,tsmethod="central")
 blaker.exact(example1)
-## In example 2, this same thing happens, for tsmethod="minlike"... this cannot be avoided because of the 
-## holes in the confidence set.
+## In example 2, this same thing happens, for
+## tsmethod="minlike"... this cannot be avoided because 
+## of the holes in the confidence set.
 ##  
 example2<-matrix(c(7,255,30,464),2,2,dimnames=list(c("Group A","Group B"),c("Event","No Event")))
 example2
