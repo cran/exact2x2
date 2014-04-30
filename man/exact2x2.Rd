@@ -3,7 +3,7 @@
 \alias{fisher.exact}
 \alias{blaker.exact}
 \alias{mcnemar.exact}
-\alias{exact2x2-package}
+%\alias{exact2x2-package}
 \title{Exact Conditional Tests for 2 by 2 Tables of Count Data}
 \description{
   Performs exact conditional tests for two by two tables. For independent binary responses, performs 

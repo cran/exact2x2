@@ -1,3 +1,4 @@
-export(exact2x2Pvals,exact2x2,exact2x2CI,exact2x2Plot,blaker.exact,fisher.exact,mcnemar.exact,mcnemar.exact.calc)
+export(exact2x2Pvals,exact2x2,exact2x2CI,exact2x2Plot,blaker.exact,fisher.exact,mcnemar.exact,mcnemar.exact.calc,power2x2,ss2x2,binomMeld.test)
 import(exactci)
+importFrom(ssanv,uniroot.integer)
 

@@ -1,3 +1,8 @@
+1.3.0
+ - add functions to calculate exact sample size and power
+ - add function to calculate the melded binomial confidence interval. Provides confidence intervals for difference, ratio, and odds ratio designed to guarantee coverage. 
+
+
 1.2-0.0
 - fix McNemar's test (exact2x2 paired=TRUE) so that if both off diagonal values are 0, then gives p-value of 1 instead of error.
 - moved vignettes to vignette directory

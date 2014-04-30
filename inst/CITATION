@@ -25,3 +25,14 @@ citEntry(entry="Article",
   textVersion  ="Fay MP (2010). Two-sided Exact Tests and Matching Confidence Intervals for Discrete Data. R Journal 2(1):53-58.",
   header = "When using the exact McNemar's test (paired=TRUE) cite:"
 )
+
+citEntry(entry="Article",
+  title        = "Combining one sample confience procedures for inference in the two sample case",
+  author       = personList(as.person("Michael P. Fay"),as.person("Michael A. Proschan"),as.person("Erica H. Brittain")), 
+  journal      = "unpublished manuscript",
+  year ="2014",
+  url ="http://www3.niaid.nih.gov/about/organization/dcr/BRB/staff/michael.htm",
+  textVersion  ="Fay MP,  Proschan, MA, Brittain, E, (2014). Combining one sample confience procedures for inference in the two sample case.",
+  header = "When using binomMeld.test cite:"
+)
+
