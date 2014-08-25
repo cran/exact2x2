@@ -213,11 +213,15 @@ function(x1,n1,x2,n2,nullparm=NULL,
         } else if (x1==n1 & x2>0){
             if (conf.int) lower<- g( 1, qbeta(alpha,x2,n2-x2+1) )
             if (ptype=="difference"){
-                pg<- 1-pbeta(1+nullparm,x2,n2-x2+1)
+                ## Aug 22, 2014: Fixed following line
+                ## WRONG: pg<- 1-pbeta(1+nullparm,x2,n2-x2+1)
+                pg<- pbeta(1+nullparm,x2,n2-x2+1)
             } else if (ptype=="ratio"){
                 pg<-pbeta(nullparm,x2,n2-x2+1)
             } else if (ptype=="oddsratio"){
-                pg<-pbeta(nullparm/(1-nullparm),x2,n2-x2+1)
+                ## Aug 22, 2014: Fixed following line
+                ## WRONG:pg<-pbeta(nullparm/(1-nullparm),x2,n2-x2+1)
+                pg<-1
             }
         } else if (x2==0 & x1==n1){
             if (conf.int) lower<- g( 1, 0 )
@@ -268,7 +272,9 @@ function(x1,n1,x2,n2,nullparm=NULL,
         } else if (x2==n2){
             if (conf.int) upper<- g(qbeta(alpha,x1,n1-x1+1), 1)
             if (ptype=="difference"){
-               pl<-pbeta(1+nullparm, x1, n1-x1+1)
+                ## Aug 22, 2014: Fixed following line
+                ## WRONG:pl<-pbeta(1+nullparm, x1, n1-x1+1)
+                pl<-pbeta(1-nullparm, x1, n1-x1+1)
             } else if (ptype=="ratio"){
                pl<-pbeta(1/nullparm,x1,n1-x1+1)
             } else if (ptype=="oddsratio"){

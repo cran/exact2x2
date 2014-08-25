@@ -14,9 +14,9 @@ The \code{\link{exact2x2}} function calculates the exact conditional tests with 
 \tabular{ll}{
 Package: \tab bpcp\cr
 Type: \tab Package\cr
-Version: \tab 1.3.0\cr
-Date: \tab 2014-04-30\cr
-License: \tab GPL2\cr
+Version: \tab 1.4.0\cr
+Date: \tab 2014-08-25\cr
+License: \tab GPL3\cr
 LazyLoad: \tab yes\cr
 }
 }
@@ -34,7 +34,7 @@ Fay, M. P. (2010a). Confidence intervals that Match Fisher's exact and Blaker's 
 Fay, M.P. (2010b). Two-sided Exact Tests and Matching Confidence Intervals for Discrete Data. R Journal 2(1):53-58.
 
 
-Fay, MP, Proschan, MA, and Brittain, E (2014). Combining One Sample Confidence Procedures for Inference in the Two Sample Case (unpublished manuscript). 
+Fay, MP, Proschan, MA, and Brittain, E (2014). Combining One Sample Confidence Procedures for Inference in the Two Sample Case (to appear in Biometrics). 
 }
 \keyword{ package }
 \keyword{htest}

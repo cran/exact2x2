@@ -27,12 +27,12 @@ citEntry(entry="Article",
 )
 
 citEntry(entry="Article",
-  title        = "Combining one sample confience procedures for inference in the two sample case",
-  author       = personList(as.person("Michael P. Fay"),as.person("Michael A. Proschan"),as.person("Erica H. Brittain")), 
-  journal      = "unpublished manuscript",
+  title        = "Combining one sample confidence procedures for inference in the two sample case",
+  author       = personList(as.person("Michael P. Fay"),as.person("Michael A. Proschan"),as.person("Erica Brittain")), 
+  journal      = "Biometrics",
   year ="2014",
   url ="http://www3.niaid.nih.gov/about/organization/dcr/BRB/staff/michael.htm",
-  textVersion  ="Fay MP,  Proschan, MA, Brittain, E, (2014). Combining one sample confience procedures for inference in the two sample case.",
+  textVersion  ="Fay MP,  Proschan, MA, Brittain, E, (2014). Combining one sample confience procedures for inference in the two sample case. (to appear in Biometrics)",
   header = "When using binomMeld.test cite:"
 )
 

@@ -46,7 +46,7 @@ An object of class 'htest'. A list with elements
 \item{data.name}{character explicit description of data}
 }
 \references{
-Fay, MP, Proschan, MA, and Brittain, E (2014) Combining One Sample Confidence Procedures for Inferences in the Two Sample Case (unpublished manuscript). 
+Fay, MP, Proschan, MA, and Brittain, E (2014) Combining One Sample Confidence Procedures for Inferences in the Two Sample Case (to appear in Biometrics). 
 
 }
 \author{Michael P. Fay}
