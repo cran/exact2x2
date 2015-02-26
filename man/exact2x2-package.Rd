@@ -14,8 +14,8 @@ The \code{\link{exact2x2}} function calculates the exact conditional tests with 
 \tabular{ll}{
 Package: \tab bpcp\cr
 Type: \tab Package\cr
-Version: \tab 1.4.0\cr
-Date: \tab 2014-08-25\cr
+Version: \tab 1.4.1\cr
+Date: \tab 2015-02-26\cr
 License: \tab GPL3\cr
 LazyLoad: \tab yes\cr
 }

@@ -57,14 +57,25 @@ In R this test is given by the function `mcnemar.test'.
  
 Case-control data may be analyzed this way as well. Suppose you have a set of people with some rare disease (e.g., a certain type of cancer); these 
 are called the cases. 
-For this design you match each case with a contol who is as similar as feasible on all important covariates except the exposure of interest. Here is a table:
+For this design you match each case with a contol who is as similar as feasible on all important covariates except the exposure of interest. Here is a table\footnote{Table was incorrect in earlier versions}:
+
+% fixed Thanks to Eric Leifer
+%\begin{center}
+%\begin{tabular}{lcc}
+% & \multicolumn{2}{c}{Exposed} \\
+%Not Exposed & Control  & Case \\ \hline 
+%Control & a & b \\
+%Case & c & d \\
+%\end{tabular}
+%\end{center}
+
 
 \begin{center}
 \begin{tabular}{lcc}
- & \multicolumn{2}{c}{Exposed} \\
-Not Exposed & Control  & Case \\ \hline 
-Control & a & b \\
-Case & c & d \\
+ & \multicolumn{2}{c}{Control} \\
+Case & Exposed  & Not Exposed \\ \hline 
+Exposed & a & b \\
+Not Exposed & c & d \\
 \end{tabular}
 \end{center}
 

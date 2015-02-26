@@ -1,3 +1,9 @@
+1.4.1
+ - fix Table for Case-Control studies in exact McNemar vignette (thanks to Eric Leifer for pointing out the error).  
+ - fix ss2x2 so that it does not run forever in certain situations. The problem was that the exact calculation assumes that the starting value underestimates the power. Now we check to make sure that is true, and if not change the starting value. (Thanks to Wolfgang Hartman for pointing out this error).
+
+
+
 1.4.0
  - fix binomMeld.test when values are at the extremes for the difference test. See code for changes. Also created doc file giving the details.
 - update citations
