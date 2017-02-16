@@ -13,6 +13,7 @@
 % \VignetteKeyword{Exact Test}
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 
 \begin{center}
 {\Large \bf exact2x2: Exact Conditional Tests and Matching Confidence Intervals for 2 by 2 Tables} \\

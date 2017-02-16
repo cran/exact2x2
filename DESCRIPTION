@@ -1,15 +1,16 @@
 Package: exact2x2
 Type: Package
-Title: Exact Conditional Tests and Confidence Intervals for 2x2 tables
-Version: 1.4.1
-Date: 2015-02-26
-Author: Michael P. Fay
+Title: Exact Tests and Confidence Intervals for 2x2 Tables
+Version: 1.5.2
+Date: 2017-02-13
+Author: Michael P. Fay, Sally A. Hunsberger
 Maintainer: Michael P. Fay <mfay@niaid.nih.gov>
-Depends: stats, exactci, ssanv
-Description: Calculates Fisher's exact test, Blaker's exact test, or the exact McNemar's test with appropriate matching confidence intervals. Provides power and sample size calculations. Also gives melded confidence intervals for the binomial case. 
+Depends: stats (>= 3.1.1), exactci, ssanv
+Description: Calculates conditional exact tests (Fisher's exact test, Blaker's exact test, or  exact McNemar's test) and unconditional exact tests (including score-based tests on differences in proportions, ratios of proportions, and odds ratios, and Boshcloo's test) with appropriate matching confidence intervals, and provides power and sample size calculations. Also gives melded confidence intervals for the binomial case. 
 License: GPL-3
 LazyLoad: yes
-Packaged: 2015-02-26 15:03:14 UTC; faym
+Suggests: testthat, Exact
 NeedsCompilation: no
+Packaged: 2017-02-16 19:59:55 UTC; faym
 Repository: CRAN
-Date/Publication: 2015-02-26 16:50:39
+Date/Publication: 2017-02-16 22:40:11

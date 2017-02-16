@@ -1,3 +1,8 @@
+1.5.2
+ - add exact unconditional tests (see help for uncondExact2x2) including Boschloo test (see boschloo function). Includes plotting function for ordering function (plotT), vignettes on details and validation. Sally Hunsberger helped with writing these functions. 
+ - add extra Appendix to Exact McNemar vignette to explain equation 1 better (thanks to Christian Holm Hansen for pointing out the lack of clarity there and for comments on the new explanation, and for Michael Proschan for help with the new Appendix A).
+
+
 1.4.1
  - fix Table for Case-Control studies in exact McNemar vignette (thanks to Eric Leifer for pointing out the error).  
  - fix ss2x2 so that it does not run forever in certain situations. The problem was that the exact calculation assumes that the starting value underestimates the power. Now we check to make sure that is true, and if not change the starting value. (Thanks to Wolfgang Hartman for pointing out this error).

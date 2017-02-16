@@ -1,0 +1,582 @@
+% LaTeX Article Template
+\documentclass[12pt]{article}
+\topmargin -0.7in
+\textheight 9.0in
+%\textwidth 6in
+\textwidth 6.5in
+%\oddsidemargin 0.25in
+%\oddsidemargin -.25in
+\oddsidemargin 0.0in
+
+% \VignetteIndexEntry{exact2x2: Unconditional Exact Tests}
+% \VignetteKeyword{Confidence Interval}
+% \VignetteKeyword{Exact Test}
+
+\newcommand{\code}[1]{{\sf #1}}
+
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+
+\begin{center}
+{\Large \bf Unconditional Exact Tests in the exact2x2 R package} \\
+Michael P. Fay, Sally A. Hunsberger \\
+\today
+\end{center}
+
+%<<echo=FALSE,results=hide,eval=T>>=
+%library(exact2x2)
+%@
+
+
+\section*{Summary}
+
+These notes describe the calculations for the \code{uncondExact2x2}
+function in the \code{exact2x2} R package. This function does unconditional exact tests for the two sample binomial problem.
+It has options for serval different test statistics, mid p-value adjustments, and Berger and Boos adjustments.
+
+
+
+\section{Definition and Calculation of the Unconditional Exact Tests}
+\label{sec-uncondExact}
+
+
+\subsection{Defining the General Method}
+\label{sec-genmeth}
+
+
+
+
+Let ${\bf X} = [X_1, X_2]$ with $X_a \sim Binom(n_a, \theta_a)$ for $a=1,2$. Suppose we are interested in $\beta = b(\theta)$, where
+$b(\theta)$ is some function of $\theta_1$ and $\theta_2$. Common examples are the difference, $\beta_d= \theta_2-\theta_1$, the ratio, $\beta_r=\theta_2/\theta_1$,
+and the odds ratio, $\beta_{or} = \left\{ \theta_2 (1-\theta_1) \right\}/ \left\{ \theta_1 (1-\theta_2) \right\}$.
+
+
+We want to test hypotheses of the form $H_0: \theta \in \Theta_0$ versus $H_1: \theta \in \Theta_1$,
+where $\Theta_0$ and $\Theta_1$ are the set of all possible values of $[\theta_1, \theta_2]$ under the null hypothesis or the alternative hypothesis, repspectively.
+It is convenient to write $\Theta_0$ and $\Theta_1$ in terms of $\beta$.
+For example,
+\begin{eqnarray*}
+\Theta_0 & = & \left\{ \theta: b(\theta) = \beta_0 \right\}
+\end{eqnarray*}
+For this example, instead of writing the null hypothesis as $H_0: \theta \in \Theta_0$, we
+write it in terms of $\beta=b(\theta)$ as $H_0: \beta =\beta_0$.
+We are generally interested in  three classes of hypotheses:  two-sided hypotheses,
+\begin{eqnarray*}
+H_{0}: & & \beta=\beta_0 \\
+H_{1}: & & \beta \neq \beta_0
+\end{eqnarray*}
+or one of the one-sided hypotheses,
+\begin{eqnarray*}
+& \mbox{\underline{Alternative is Less}} & \mbox{\underline{Alternative is Greater}} \\
+& H_{0}: \beta \geq \beta_0 & H_{0}: \beta \leq \beta_0 \\
+& H_{1}: \beta < \beta_0 & H_{1}: \beta > \beta_0.
+\end{eqnarray*}
+
+First consider {\sf parmtype="difference"}.
+Let $T({\bf X})$ be some test statistic, where larger values suggest that $\theta_2$ is larger than $\theta_1$.
+ Then a valid (i.e., exact)  p-value
+for testing $H_0: \beta \geq \beta_0$ is
+\begin{eqnarray*}
+p_U({\bf x}, \beta_0) & = & \sup_{\theta: b(\theta) \geq \beta_0} Pr_{\theta} \left[ T({\bf X}) \leq T({\bf x}) \right].
+\end{eqnarray*}
+For testing $H_0: \beta \leq \beta_0$ the p-value is
+\begin{eqnarray*}
+p_L({\bf x}, \beta_0) & = & \sup_{\theta: b(\theta) \leq \beta_0} Pr_{\theta} \left[ T({\bf X}) \geq T({\bf x}) \right].
+\end{eqnarray*}
+
+
+When {\sf parmtype='ratio'} then when ${\bf x}=[0,0]$ there is no information about the ratio and  we define the p-value as 1. Similarly, when {\sf parmtype='oddsratio'} and ${\bf x}=[0,0]$ or ${\bf x}=[n_1,n_2]$ there is no information about the odds ratio and  we define the p-value as 1, and we do not calculate probabilities in p-value calculations over 
+values with no information. 
+Specifically, let $\mathcal{X}_I$ denote the set of ${\bf X}$ values with information about $\beta$.
+Then if  ${\bf x} \notin \mathcal{X}_I$ set $p_U({\bf x}, \beta_0)$  and $p_{L}({\bf x}, \beta_0)$
+ to $1$, otherwise
+let $p_U({\bf x}, \beta_0)$ be
+\begin{eqnarray}
+ \sup_{
+\theta: b(\theta) \geq \beta_0
+} P_{\theta} \left[ T({\bf X}) \leq T({\bf x}) | {\bf X} \in \mathcal{X}_I \right]  P_{\theta} \left[ {\bf X} \in \mathcal{X}_I  \right] \nonumber
+\end{eqnarray}
+and analogously, let  $p_L({\bf x}, \beta_0)$ be
+\begin{eqnarray}
+ \sup_{
+\theta: b(\theta) \leq \beta_0
+} P_{\theta} \left[ T({\bf X}) \geq T({\bf x}) | {\bf X} \in \mathcal{X}_I \right]  P_{\theta} \left[ {\bf X} \in \mathcal{X}_I  \right]. \nonumber
+\end{eqnarray}
+Since we never reject when ${\bf x} \notin \mathcal{X}_I$, these definitions give valid p-values, and additionally when ${\bf x} \notin \mathcal{X}_I$ we do not need to define $T({\bf x})$.
+
+
+
+
+The {\sf tsmethod} option gives two ways to calculate the
+two-sided p-value. The default option is `central' to give a central p-value, which is
+\begin{eqnarray*}
+p_{ts}({\bf x}, \beta_0) & = & p_{central}({\bf x}, \beta_0)  \\
+& = & \min \left\{ 1, 2 p_{U}({\bf x}, \beta_0), 2 p_{L}({\bf x}, \beta_0) \right\}
+\end{eqnarray*}
+The second options is {\sf tsmethod}=`square'. For this option,
+we square the test statistic, $T({\bf x})$, defined in the next section,
+and define the p-value as
+\begin{eqnarray*}
+p_{ts}({\bf x}, \beta_0) & = & p_{square}({\bf x}, \beta_0)  \\
+& = & 
+\left\{ 
+\begin{array}{c}
+\sup_{\theta \in \Theta_0} Pr_{\theta} \left[ T^2({\bf X}) \geq T^2({\bf x}) \right] \mbox{ (for parmtype="difference")} \\
+ \sup_{\theta \in \Theta_0} Pr_{\theta} \left[ T^2({\bf X}) \geq T^2({\bf x}) | X \in \mathcal{X}_I \right] 
+Pr_{\theta} \left[X \in \mathcal{X}_I \right] \mbox{ (otherwise).} 
+\end{array} 
+\right.
+\end{eqnarray*}
+Since the probability expression only depends on the ordering, and since the ordering of the square of $T({\bf X})$
+is the same as the ordering of absolute value of $T({\bf X})$, we can equivalently write $p_{square}$ in terms of absolute values.
+
+These exact p-values are necessarily conservative because  for most $\theta \in \Theta_0$ we have
+\[
+Pr_{\theta} \left[ p_U({\bf X}, \beta_0) \leq \alpha \right] < \alpha.
+\]
+A less conservative approach, {\em but one that is no longer valid (i.e.,  no longer exact)}, is to use a mid-p value. For example, the mid-p value
+associated with $p_U$  is
+\begin{eqnarray*}
+p_{Umid}({\bf x}, \Theta_0) & = & \sup_{\theta: b(\theta) \geq  \beta_0} \left\{  Pr_{\theta} \left[ T({\bf X}) < T({\bf x}) \right] + \frac{1}{2} Pr_{\theta} \left[ T({\bf X}) = T({\bf x}) \right] \right\}.
+\end{eqnarray*}
+Other mid p-values are defined analogously.
+
+
+
+
+
+\subsection{Options for $T({\bf x})$ }
+
+\subsubsection{Overview}
+
+We now give the $T({\bf x})$ function that is defined by
+three options:  {\sf parmtype}, {\sf nullparm }, and {\sf method}.  The option {\sf parmtype} is one of `difference',
+`ratio' or `odds ratio', and it determines the parameter
+associated with the confidence interval. The option {\sf nullparm} defines $\beta_0$.
+The default for {\sf nullparm}=NULL, which is replaced by $\beta_0=0$ for {\sf parmtype}=`difference' and
+$\beta_0=1$ for {\sf parmtype}=`ratio' or `odds ratio'.
+Finally, {\sf method} defines the type of $T$ function:
+\begin{description}
+\item[simple:] then $T$ is an estimate of the {\sf parmtype}
+using the estimates $\hat{\theta}_1=x_1/n_1$ and $\hat{\theta}_2=x_2/n_2$.
+\item[simpleTB:] simple with a tie break. Ties in $T$ using the simple method are broken based on variability, with larger variability further away from the null.
+\item[score:] here $T$ is based on a score statistic.
+\item[wald pooled:] $T$ is a Wald statistic on the difference in sample means using the pooled variance estimate.
+\item[wald unpooled:] $T$ is a Wald statistic  on the difference in sample means using an {\bf unpooled} variance estimate.
+\item[FisherAdj:] $T$ is a one-sided mid p-value using Fisher's exact test. Note that we create an exact unconditional test using the ordering by the mid p-value, so the test is valid (or exact), even though the mid p-values when used as p-values directly are not necessarily valid.  
+\end{description}
+
+
+
+
+\subsubsection{Simple: Difference}
+
+When {\sf method}=`simple' and {\sf parmtype}=`difference'
+we have,
+\begin{eqnarray*}
+T({\bf x}) = T({[x_1, x_2 ] } ) & =  & \frac{x_2}{n_2} - \frac{x_1}{n_1} - \beta_0
+\end{eqnarray*}
+The order does not change as $\beta_0$ changes.
+
+\subsubsection{Simple with Tie Break: Difference}
+
+When {\sf method}=`simpleTB' and {\sf parmtype}=`difference' and {\sf tsmethod}=`central'
+we use $T({\bf x})$ from the previous subsection, then break ties by ordering by $T^*({\bf x})$ {\it within} each tied value for $T({\bf x})$, where
+\begin{eqnarray*}
+T^*({\bf x}) & = &  \frac{\hat{\theta}_2 - \hat{\theta}_1}{\sqrt{\frac{\hat{\theta}_1(1-\hat{\theta}_1)}{n_1} + \frac{\hat{\theta}_2(1-\hat{\theta}_2)}{n_2} }}
+\end{eqnarray*}
+where $\hat{\theta}_1=x_1/n_1$ and $\hat{\theta}_2=x_2/n_2$.
+If $T^*$ gives a ratio of $0/0$ then it is set to $0$. 
+
+The idea behind $T^*$ is that with each $\hat{\beta}_d = \hat{\theta}_2-\hat{\theta}_1$ value, values with lower variability are more extreme (i.e., ranked higher when  $\hat{\beta}_d$ is positive and ranked lower when $\hat{\beta}_d$ is negative). We do not subtract $\beta_0$ from the numerator, because we do not want the order to change 
+for different hypotheses, which makes calculations more difficult and could possibly lead to non-unified inferences (e.g., reject the null at level $\alpha$ but the $1-\alpha$ CI for $\beta_d$ includes $0$).
+
+
+\subsubsection{Score:Difference}
+
+When {\sf method}=`score' and {\sf parmtype}=`difference'
+we have,
+\begin{eqnarray*}
+ T({[x_1, x_2 ] } ) & =  & \frac{ \frac{x_2}{n_2} - \frac{x_1}{n_1} - \beta_0 }{ \sqrt{ \tilde{\theta}_1 (1-\tilde{\theta}_1)/n_1 +
+ \tilde{\theta}_2 (1-\tilde{\theta}_2)/n_2} },
+\end{eqnarray*}
+where $\tilde{\theta}_1$ and $\tilde{\theta}_2$ are the maximum likelihood estimates of $\theta_1$ and $\theta_2$ under the
+restriction that $b(\theta)=\beta_0$. See the code of {\sf constMLE.difference} for the formula, or the Appendix of Farrington and Manning (1990).
+
+\subsubsection{Wald-Pooled: Difference}
+
+When {\sf method}=`wald-pooled' and {\sf parmtype}=`difference'
+we have,
+\begin{eqnarray*}
+ T({[x_1, x_2 ] } ) & =  & \frac{ \hat{\theta}_2 - \hat{\theta}_1 - \beta_0 }{ \sqrt{ \hat{\theta} (1-\hat{\theta}) \left( \frac{1}{n_1} + \frac{1}{n_2} \right) }},
+\end{eqnarray*}
+where $\hat{\theta}_1=x_1/n_1$ and $\hat{\theta}_2=x_2/n_2$ and $\hat{\theta}=(x_1+x_2)/(n_1+n_2)$.
+If $T$ gives a ratio of $0/0$ then it is set to $0$. 
+
+\subsubsection{Wald-Unpooled: Difference}
+
+When {\sf method}=`wald-unpooled' and {\sf parmtype}=`difference'
+we have,
+\begin{eqnarray*}
+ T({[x_1, x_2 ] } ) & =  & \frac{ \hat{\theta}_2 - \hat{\theta}_1 - \beta_0 }{ \sqrt{ \hat{\theta}_1 (1-\hat{\theta}_1)/n_1 +
+ \hat{\theta}_2 (1-\hat{\theta}_2)/n_2}},
+\end{eqnarray*}
+where $\hat{\theta}_1=x_1/n_1$ and $\hat{\theta}_2=x_2/n_2$.
+If $T$ gives a ratio of $0/0$ then it is set to $0$.
+
+
+
+\subsubsection{Simple: Ratio}
+
+When {\sf method}=`simple' and {\sf parmtype}=`ratio'
+we have,
+\begin{eqnarray*}
+T({\bf x}) = T({[x_1, x_2 ] } ) & =  & \log \left( \frac{\hat{\theta}_2}{ \beta_0 \hat{\theta}_1}  \right)  \\
+& = & \log ( \hat{\theta}_2) - \log( \hat{\theta}_1) -  \log (\beta_0),
+\end{eqnarray*}
+where $\hat{\theta}_a = x_a/n_a$ for $a=1,2$.
+Note $\log(0) \equiv \infty$ and $log(0)-\log(0) \equiv NA$. We do not need to define $NA$ values since 
+$x=[0,0]$ has no information (see Section~\ref{sec-genmeth}).
+
+\subsubsection{Simple with Tie Break: Ratio}
+
+
+When {\sf method}=`simpleTB' and {\sf parmtype}=`ratio'
+we used $T({\bf x})$ from the previous subsection, then break ties by ordering by $T^*({\bf x})$ {\it within} each tied value for $T({\bf x})$, where
+\begin{eqnarray*}
+T^*({\bf x}) & = & \left\{ 
+\begin{array}{cc}
+x_2 & \mbox{ if $x_1=0$ and $x_2>0$ } \\
+1/x_1 & \mbox{ if $x_1>0$ and $x_2=0$} \\
+0 & \mbox{ if $x_1=n_1$ and $x_2=n_2$ } \\
+ \frac{\log(\hat{\theta}_2) - \log(\hat{\theta}_1)}{\sqrt{\frac{1}{x_1}-\frac{1}{n_1} + \frac{1}{x_2} - \frac{1}{n_2} }} & \mbox{ if $x_1>0$ and $x_2>0$ and  not($x_1=n_1$ and $x_2=n_2$)}
+\end{array}
+\right.
+\end{eqnarray*}
+where $\hat{\theta}_1=x_1/n_1$ and $\hat{\theta}_2=x_2/n_2$.
+
+
+In words, when  $x_1/n_1=\hat{\theta}_1=0$ and $x_2>0$ then $T({\bf x}) = -\infty$ and we order by $x_2$;
+otherwise when we order  $x_2/n_2=\hat{\theta}_2=0$ and $x_1>0$ then $T({\bf x}) = \infty$ and we order by $1/x_1$; 
+otherwise when $\hat{\theta}_1=\hat{\theta}_2=1$ we do not break the ties (by setting $T^*({\bf x})=0$);
+otherwise for each $\log(\hat{\beta}_r) = \log(\hat{\theta}_2/\hat{\theta}_1)$ value, we rank values with lower variability are more extreme (i.e., ranked higher when  $\hat{\beta}_r>1$  and ranked lower when $\hat{\beta}_r<1$ is negative).
+The variance formula comes from the variance estimate of the $\log(\hat{\beta}_r)$.  Fleiss, Levin, and Paik (2003, p. 132, equation 6.112, except there is a typo) give the variance expression,
+\begin{eqnarray*}
+var(\log(\hat{\beta}_r)) & \approx & \sqrt{ \frac{n_1-x_1}{x_1 n_1} + \frac{n_2-x_2}{x_2 n_2} } = \sqrt{\frac{1}{x_1} - \frac{1}{n_1} + \frac{1}{x_2} - \frac{1}{n_2}}. 
+\end{eqnarray*}  
+ We do not subtract $\log(\beta_0)$ from the numerator in the $T^*({|bf x})$ function to keep it simple.
+
+\subsubsection{Score: Ratio}
+
+When {\sf method}=`score' and {\sf parmtype}=`ratio'
+we have,
+\begin{eqnarray*}
+ T({[x_1, x_2 ] } ) & =  & \frac{ \hat{\theta}_2 - \hat{\theta}_1  \beta_0 }{ \sqrt{ \beta_0 \tilde{\theta}_1 (1-\tilde{\theta}_1)/n_1 +
+ \tilde{\theta}_2 (1-\tilde{\theta}_2)/n_2} },
+\end{eqnarray*}
+where $\tilde{\theta}_1$ and $\tilde{\theta}_2$ are the maximum likelihood estimates of $\theta_1$ and $\theta_2$ under the
+restriction that $\beta_r = b(\theta)=\beta_0$; for the formula for $\tilde{\theta}_a$ for $a=1,2$, see either the
+{\sf constrMLE.ratio}, Miettinen and Nurminen (1985).
+%or the StatXact manual (e.g., StatXact Procs 8, p. 298)
+
+
+\subsubsection{Simple: Odds Ratio}
+
+
+When {\sf method}=`simple' and {\sf parmtype}=`odds ratio'
+we have,
+\begin{eqnarray*}
+T({\bf x}) = T({[x_1, x_2 ] } ) & =  & \log \left( \frac{\hat{\theta}_2 (1-\hat{\theta}_1)}{ \beta_0 \hat{\theta}_1 (1-\hat{\theta}_2)}  \right),
+\end{eqnarray*}
+where $\hat{\theta}_a = x_a/n_a$ for $a=1,2$.
+
+
+\subsubsection{Simple with Tie Break: Odds Ratio}
+
+
+When {\sf method}=`simpleTB' and {\sf parmtype}=`oddsratio'
+we used $T({\bf x})$ from the previous subsection, then break ties by ordering by $T^*({\bf x})$ {\it within} each tied value for $T({\bf x})$, where
+\begin{eqnarray*}
+T^*({\bf x}) & = & \left\{
+\begin{array}{cc}
+x_2 & \mbox{ if $x_1=0$ or $x_2=n_2$ } \\
+1/x_1 & \mbox{ if $x_1=n_1$ or $x_2=0$} \\
+ \frac{\log(x_2) - \log(n_2-x_2) -\log(x_1) + \log(n_1-x_1)}{\sqrt{\frac{1}{x_1}+\frac{1}{n_1-x_1} + \frac{1}{x_2} + \frac{1}{n_2-x_2} }} & \mbox{ otherwise}
+\end{array}
+\right.
+\end{eqnarray*}
+where $\hat{\theta}_1=x_1/n_1$ and $\hat{\theta}_2=x_2/n_2$.
+
+
+In words, when  $\hat{\beta}_{or}=\infty$ then we order by $x_2$;
+otherwise when   $\hat{\beta}_{or}=-\infty$  then we order by $1/x_1$;
+otherwise for each $\log(\hat{\beta}_{or})$ value, we rank values with lower variability are more extreme (i.e., ranked higher when  $\hat{\beta}_r>1$  and ranked lower when $\hat{\beta}_r<1$ is negative).
+The variance formula comes from the variance estimate of the $\log(\hat{\beta}_{or})$.  Fleiss, Levin, and Paik (2003, p. 102, equation 6.19) give the variance estimate for 
+$var(\hat{\beta}_{or})$, and using the delta method, the estimate for $var( \log(\hat{\beta}_{or}) )$ is 
+\begin{eqnarray*}
+var(\log(\hat{\beta}_{or})) & \approx & \sqrt{\frac{1}{x_1} + \frac{1}{n_1-x_1} + \frac{1}{x_2} + \frac{1}{n_2-x_2}}.
+\end{eqnarray*}
+ We do not subtract $\log(\beta_0)$ from the numerator to keep it simple.
+
+
+
+
+\subsubsection{Score: Odds Ratio}
+
+When {\sf method}=`score' and {\sf parmtype}=`oddsratio'
+we use (see Agresti and Min, 2002, p. 381, except we do not square the statistic because we want to allow one-sided inferences),
+\begin{eqnarray*}
+ T({[x_1, x_2 ] } ) & =  & \left\{ n_2 \left( \frac{x_2}{n_2} - \tilde{\theta}_2 \right) \right\} \sqrt{ \frac{1}{n_1 \tilde{\theta}_1 (1-\tilde{\theta}_1)} + \frac{1}{n_2 \tilde{\theta}_2 (1-\tilde{\theta}_2)} },
+\end{eqnarray*}
+where $\tilde{\theta}_1$ and $\tilde{\theta}_2$ are the maximum likelihood estimates of $\theta_1$ and $\theta_2$ under the
+restriction that 
+\[
+\tilde{\beta}_{or} = \frac{ \tilde{\theta}_2 (1-\tilde{\theta}_1) }{ \tilde{\theta}_1 (1-\tilde{\theta}_2) } = \beta_0.
+\]
+For the formula for $\tilde{\theta}_a$ for $a=1,2$, see either the function {\sf constrMLE.oddsratio} or Miettinen and Nurminen (1985).
+
+
+\subsubsection{FisherAdj: Difference, Ratio, or Odds Ratio}
+
+When  {\sf method}=`FisherAdj' we order by the mid p-value from a one-sided Fisher's exact test. 
+We do not change the ordering as the $\beta_0$ changes, so it can be used with any parmtype. 
+
+Using the {\sf phyper} and {\sf dhyper} functions for the hypergeometric distribution, this becomes:
+\begin{eqnarray*}
+T({[x_1, x_2 ] } ) & =  &      \mbox{phyper}(x2,n2,n1,x2+x1) - 0.5*\mbox{dhyper}(x2,n2,n1,x1+x2)
+\end{eqnarray*}
+
+\section{Comparing Orderings}
+
+In Figure~\ref{fig:diff1} we show the default orderings and the {\sf method="simple"} orderings for different values of \code{parmtype}. 
+
+\begin{figure}
+<<echo=FALSE, fig=TRUE>>=
+library(exact2x2)
+par(mfrow=c(2,2))
+n1<-n2<-8
+Tstat<-pickTstat("FisherAdj", parmtype = "difference", tsmethod="central")
+plotT(Tstat,n1,n2,0,main="FisherAdj")
+Tstat<-pickTstat("simple", parmtype = "difference", tsmethod="central")
+plotT(Tstat,n1,n2,0,main="simple difference, beta0=0")
+Tstat<-pickTstat("simple", parmtype = "ratio", tsmethod="central")
+plotT(Tstat,n1,n2,1,main="simple ratio, beta0=1")
+Tstat<-pickTstat("simple", parmtype = "oddsratio", tsmethod="central")
+plotT(Tstat,n1,n2,1,main="simple oddsratio, beta0=1")
+
+#TallTB<-calcTall(Tstat, allx=rep(0:n1,n2+1), n1, 
+#         ally=rep(0:n2, each=n1+1), n2, 
+#         delta0=0, parmtype="difference", 
+#                   alternative="two.sided", tsmethod="central", tiebreak=TRUE)
+#plotT(TallTB,n1,n2,0,main="simple difference, tie break, beta0=0")
+#Tstat<-pickTstat("wald-pooled", parmtype = "difference", tsmethod="central")
+#plotT(Tstat,n1,n2,0,main="wald-pooled (difference), beta0=0")
+par(mfrow=c(1,1))
+@
+\caption{Plots of the orderings using {\sf plotT}. Dark blue is highest, dard red is lowest, white is the middle,
+and black is no information.
+The default is method="FisherAdj" (same for all parmtypes), the method="simple" 
+order by the plug-in estimates with sample proportions. \label{fig:diff1}
+}
+\end{figure}
+
+In Figure~\ref{fig:diff1.1} we show the similarity of several of the \code{parmtype="difference"} orderings. 
+
+\begin{figure}
+<<echo=FALSE, fig=TRUE>>=
+library(exact2x2)
+par(mfrow=c(2,2))
+n1<-n2<-8
+Tstat<-pickTstat("FisherAdj", parmtype = "difference", tsmethod="central")
+plotT(Tstat,n1,n2,0,main="FisherAdj")
+TallTB<-calcTall(Tstat, allx=rep(0:n1,n2+1), n1, 
+         ally=rep(0:n2, each=n1+1), n2, 
+         delta0=0, parmtype="difference", 
+                   alternative="two.sided", tsmethod="central", tiebreak=TRUE)
+plotT(TallTB,n1,n2,0,main="simple difference, tie break, beta0=0")
+
+
+Tstat<-pickTstat("score", parmtype = "difference", tsmethod="central")
+plotT(Tstat,n1,n2,0,main="score difference, beta0=0")
+Tstat<-pickTstat("wald-pooled", tsmethod="central")
+plotT(Tstat,n1,n2,0,main="wald-pooled, beta0=0")
+
+
+#Tstat<-pickTstat("wald-pooled", parmtype = "difference", tsmethod="central")
+#plotT(Tstat,n1,n2,0,main="wald-pooled (difference), beta0=0")
+par(mfrow=c(1,1))
+@
+\caption{Plots of the orderings using {\sf plotT}. Notice how the orderings are nearly the same for the 4 methods.
+The FisherAdj method has the advantage that it does not change with  parmtype or $\beta_0$. \label{fig:diff1.1}
+}
+\end{figure}
+
+
+
+
+
+
+The wald method gives a strange ordering at $x=(0,0)$ and $x=(n_1,n_2)$ when $\beta_0$ is close to zero
+(see Figure~\ref{fig:diff2}).
+
+\begin{figure}
+<<echo=FALSE, fig=TRUE>>=
+library(exact2x2)
+par(mfrow=c(2,2))
+n1<-n2<-8
+Tstat<-pickTstat("simple", parmtype = "difference", tsmethod="central")
+plotT(Tstat,n1,n2,0.01,main="simple difference, beta0=0.01")
+TallTB<-calcTall(Tstat, allx=rep(0:n1,n2+1), n1, 
+         ally=rep(0:n2, each=n1+1), n2, 
+         delta0=0, parmtype="difference", 
+                   alternative="two.sided", tsmethod="central", tiebreak=TRUE)
+plotT(TallTB,n1,n2,0.01,main="simple diff, tie break, beta0=0.01")
+Tstat<-pickTstat("wald-pooled", parmtype = "difference", tsmethod="central")
+plotT(Tstat,n1,n2,0.01,main="wald-pooled (diff), beta0=0.01")
+Tstat<-pickTstat("wald-unpooled", parmtype = "difference", tsmethod="central")
+plotT(Tstat,n1,n2,0.01,main="wald-unpooled (diff), beta0=0.01")
+par(mfrow=c(1,1))
+@
+\caption{Plots of the orderings using {\sf plotT}. Since we define $0/0=0$, when we have 
+$\hat{\theta}_1=\hat{\theta}_2$ and $\beta_0=0$ then the Wald methods give 0 (see Figure~\ref{fig:diff1}).
+But when $\beta_0 =0.01$ these values at $x=(0,0)$ and $x=(n_1,n_2)$ 
+go to $-\infty$. \label{fig:diff2}
+}
+\end{figure}
+
+When \code{tsmethod="square"} then a small difference in $\beta_0$ can make a big difference in 
+the p-value (see Figure~\ref{fig:diff3} for ordering difference, Figure~\ref{fig:diffpvals1}
+for a p-value example). 
+
+
+
+\begin{figure}
+<<echo=FALSE, fig=TRUE>>=
+library(exact2x2)
+par(mfrow=c(2,2))
+n1<-n2<-8
+
+Tstat<-pickTstat("simple", parmtype = "difference", tsmethod="square")
+plotT(Tstat,n1,n2,0,main="simple diff, T^2, beta0=0")
+plotT(Tstat,n1,n2,0,main="simple diff, T^2, beta0=0.01")
+Tstat<-pickTstat("wald-pooled", tsmethod="square")
+plotT(Tstat,n1,n2,0,main="wald-pooled, T^2, beta0=0")
+plotT(Tstat,n1,n2,.01,main="wald-pooled, T^2, beta0=0.01")
+
+par(mfrow=c(1,1))
+@
+\caption{Plots of the orderings using {\sf plotT}. 
+Small changes in $\beta_0$ can have large changes in the ordering, because of the denominators 
+equalling $0$ at $x=(0,0)$ and $x=(n_1,n_2)$. \label{fig:diff3}
+}
+\end{figure}
+
+
+
+\begin{figure}
+<<echo=FALSE, fig=TRUE>>=
+x1<-5
+n1<-13
+x2<-12
+n2<-14
+delta<- -99:99/100
+p<-rep(NA,length(delta))
+for (i in 1:length(delta)){
+  p[i]<-uncondExact2x2(x1,n1,x2,n2, parmtype = "difference", tsmethod="square", method="wald-pooled", conf.int=FALSE, nullparm=delta[i])$p.value
+}
+plot(delta,p,xlab=expression(beta[0]))
+@
+\caption{P-values from \code{method="wald-pooled"},
+\code{tsmethod="square"}, and \code{parmtype="difference"} for the data $x_1/n_1=5/13$ and $x_2/n_2=12/14$.
+Notice the strange behaviour of the p-value at $\beta_0=0.$  This is because the denominator
+ at $x=(0,0)$ and $x=(n_1,n_2)$ is $0$ and $0/0$ is defined as zero, and the p-value is defined as the sup over the 
+ sample space which can give very large probability mass at $x=(0,0)$ or $x=(n_1,n_2)$.
+\label{fig:diffpvals1}
+}
+\end{figure}
+
+
+\clearpage
+\section{Confidence Intervals}
+
+Then we can create $100(1-\alpha)\%$ confidence regions as the set of $\beta_0$ value
+that fail to reject the associated null hypothesis. For example,
+\begin{eqnarray*}
+C_{ts}({\bf x}, 1- \alpha) & = & \left\{ \beta: p_{ts}({\bf x}, \beta) > \alpha \right\}
+\end{eqnarray*}
+gives a ``two-sided'' confidence region. The region may not be an interval if the p-value function is
+not unimodal. This problem occurs with Fisher's exact test (the Fisher-Irwin version, or `minlike' version).
+For central confidence regions we take the union of the one-sided confidence regions,
+in other words,
+\[
+C_c({\bf x}, 1-\alpha) = C_L({\bf x}, 1- \alpha/2) \cup C_U({\bf x}, 1- \alpha/2),
+\]
+where $C_L$ and $C_U$ are the one-sided
+confidence regions,
+\begin{eqnarray*}
+C_{L}({\bf x}, 1- \alpha/2) & = & \left\{ \beta: p_{L}({\bf x}, \beta) > \alpha/2 \right\}
+\end{eqnarray*}
+and
+\begin{eqnarray*}
+C_{U}({\bf x}, 1- \alpha/2) & = & \left\{ \beta: p_{U}({\bf x}, \beta) > \alpha/2 \right\}.
+\end{eqnarray*}
+If the regions are intervals, and we let $L({\bf x}, 1- \alpha/2) = \min C_L({\bf x}, 1- \alpha/2)$ and
+$U({\bf x}, 1- \alpha/2) = \max C_U({\bf x}, 1- \alpha/2)$, then the central interval is
+\begin{eqnarray*}
+C_c({\bf x}, 1- \alpha) & = & \left\{ L({\bf x}, 1- \alpha/2), U({\bf x}, 1- \alpha/2) \right\}.
+\end{eqnarray*}
+
+
+For the mid-p confidence regions, we replace the p-values with the mid-p values.
+
+\section{Berger and Boos Adjustment}
+
+The Berger-Boos (1994) adjustment is as follows. 
+Do the usual unconditional exact test, but instead of  taking the supremum over the entire null parameter space, 
+we calculate a $100(1-\gamma)\%$ confidence region over the null space, and only search within that. 
+The $100(1-\gamma)\%$ confidence region is the union of the $100(1-\gamma/2)$ exact central two-sided confidence interval
+for $\theta_1$ and the analogous $100(1-\gamma/2)$ interval for $\theta_2$. 
+This is the method used by StatXact. Searching over that space gives 
+anti-conservative p-values, so we turn those anti-conservative p-values into  valid p-values by 
+ adding $\gamma$ to them. For details see Berger and Boos (1994) or the StatXact manual. 
+
+
+\section{The E+M Adjustment}
+
+Lloyd (2008) proposed another adjustment called the estimated and maximized ($E+M$) p-value that can be applied to 
+any ordering and any parmtype. 
+In this method, we replace an ordering statistic, $T$,
+with $T^*$, where $T^*$ is an estimated p-value when testing $H_{0}: \beta \leq \beta_0$ (or the negative estimated p-value when testing $H_{0}: \beta \geq \beta_0$).
+We estimate the p-value by plugging in
+$\hat{\theta}_0=[\hat{\theta}_{10}, \hat{\theta}_{20}]$ instead of taking the supremum of $\theta$ under the null, where
+ $\hat{\theta}_0$ is the  maximum likelihood estimator of
+$\theta$ under the null hypothesis.
+For example, the approximation for $p_L$  uses $\hat{p}_L({\bf x}, \beta_0) = P_{\hat{\theta}_0} \left[ T({\bf X}) \leq T({\bf x}) \right]$. Then we ``maximize'' using $T^*({\bf x}) = \hat{p}_L({\bf x}, \beta_0)$
+instead of $T$ as the ordering function.
+For details see Loyd (2008).
+
+
+
+\section*{References}
+
+\begin{description}
+\item Agresti, A and Min, Y (2002). Biostatistics 3: 379-386.
+\item Berger, RL, and Boos, DD (1994). JASA 89: 1012-1016. 
+\item Farrington and Manning (1990). Statistics in Medicine 1447-1454.
+\item Fay, MP, and Brittain, EH (2016). ``Finite sample pointwise confidence intervals for a survival distribution with right-censored data.''
+{\it Statistics in Medicine} 35: 2726-2740.
+\item Fleiss, JL, Levin, B, Paik, MC (2003). {\it Statistical Methods for Rates and Proportions, Third edition}. Wiley: New York.
+\item Lloyd, CJ (2008). Exact p-values for discrete models obtained by estimation and maximization. 
+Australian and New Zealand Journal of Statistics 50(4): 329-345.
+\item Miettinen and Nurminen (1985). Statistics in Medicine 213-226.
+%\item Blaker, H. (2000). ``Confidence curves and improved exact confidence intervals for discrete distributions''
+%{\it Canadian Journal of Statistics} {\bf 28,} 783-798 (correction {\bf 29,} 681).
+%\item Fay, M.P. (2009). ``Confidence Intervals that Match Fisher's Exact or Blaker's Exact Tests'' (to appear Biostatistics.
+%See Fay2009MatchingCI.pdf in doc
+%directory of this package for earlier version which is essentially the paper plus the supplement).
+\end{description}
+
+\end{document}
+
+

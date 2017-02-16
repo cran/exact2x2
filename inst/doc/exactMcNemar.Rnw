@@ -13,11 +13,12 @@
 % \VignetteKeyword{Exact Test}
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 
 \begin{center}
 {\Large \bf Exact McNemar's Test and Matching Confidence Intervals} \\
 Michael P. Fay \\
-\today
+April 25, 2016\footnote{The April 25, 2016  version adds Appendix A, and moves the first appendix to Appendix B.}
 \end{center}
 
 <<echo=FALSE,results=hide,eval=T>>=
@@ -57,7 +58,8 @@ In R this test is given by the function `mcnemar.test'.
  
 Case-control data may be analyzed this way as well. Suppose you have a set of people with some rare disease (e.g., a certain type of cancer); these 
 are called the cases. 
-For this design you match each case with a contol who is as similar as feasible on all important covariates except the exposure of interest. Here is a table\footnote{Table was incorrect in earlier versions}:
+For this design you match each case with a contol who is as similar as feasible on all important covariates except the exposure of interest. Here is a table\footnote{Table was 
+incorrect in original version.}:
 
 % fixed Thanks to Eric Leifer
 %\begin{center}
@@ -111,18 +113,19 @@ Since the inferences change so much, and are on either side of the traditional 0
 
 After conditioning on the total number of discordant pairs, $b+c$, we can treat 
 the problem as  
-$B \sim Binomial(b+c, \theta)$, where $B$ is the random variable associated with $b$. Under the null hypothesis $\theta=.5$. 
-We can tranform the parameter $\theta$ into an odds ratio by 
+$B \sim Binomial(b+c, \theta)$, where $B$ is the random variable associated with $b$. 
+The odds ratio from the unconditional model is equal to the odds associated with $\theta$ from the conditional model,\footnote{Revision to April 25, 2016 version.}
 \begin{eqnarray}
  \mbox{Odds Ratio} \equiv  \phi  = \frac{\theta}{1-\theta} \label{orp}
 \end{eqnarray}
- (Breslow and Day, 1980, p. 166). 
+ (Breslow and Day, 1980, p. 166). See Appendix~A for full explanation of equation~\ref{orp}. 
+ Under the null hypothesis $\theta=.5$. 
 Since it is easy to perform exact tests on a binomial parameter, we can perform exact versions 
 of McNemar's test by using the `binom.exact' function of the package `exactci' then transform the results into odds ratios via equation~\ref{orp}. 
 This is how the calculations are done in the `exact2x2' function when paired=TRUE. The `alternative' and the `tsmethod' options work in the way one 
 would expect. So although McNemar's test was developed as a two-sided test, we can easily get one-sided exact McNemar-type Tests. For two-sided tests
 we can get three different versions of the two-sided exact McNemar's test using the 
-three `tsmethod' options.  In the appendix we show that all three two-sided methods give the same p-value and they all are equivalent to 
+three `tsmethod' options.  In Appendix~B we show that all three two-sided methods give the same p-value and they all are equivalent to 
 the exact version of McNemar's test. So there is only one defined exact McNemar's test. The difference between the 'tsmethod' options is 
 in the calculation of the confidence intervals. The default is to use 'central' confidence intervals so that the 
 probability that the 
@@ -135,7 +138,44 @@ Using $x$ defined earlier, here is the exact McNemar's test with the central con
 mcnemar.exact(x)
 @
 
-\section*{Appendix: Equivalence of two-sided p-values} 
+\section*{Appendix A: Relationship of Odds for Conditional Data and Odds Ratio for Unconditional Data} 
+
+Let $Y_{ij}$ be the $j$th binary response from the $i$th pair. For example, $Y_{i1}$ could be the binary response from the twin randomized to the control group in the  $i$th set of twins,
+and $Y_{i2}$ could be the binary response from the twin randomized to the test group in the $i$th set of twins. 
+Let $\pi_{ij} = Pr[ Y_{ij}=1]$.  Then the odds ratio (i.e., ratio of odds(test)/odds(control)) for the $i$th set of twins is 
+\[
+\phi_i = \frac{\pi_{i2}/(1-\pi_{i2}) }{ \pi_{i1}/(1-\pi_{i1}) } =   \frac{\pi_{i2} (1-\pi_{i1})  }{ \pi_{i1} (1-\pi_{i2}) }.
+\]
+Suppose we have a logistic model with the log odds modeled as 
+\[
+\log \left( \frac{\pi_{ij}}{1-\pi_{ij}} \right) = \mu_i + I[j=2] \beta,
+\]
+where $I[j=2]=1$ when $j=2$ and $0$ when $j=1$,  $\mu_i$ is a random twin effect, and $\exp(\beta)$ is the effect of the test compared to the control on the log odds. 
+Under this model, $\phi_i \equiv \phi =  \exp(\beta)$. In other words, the odds ratio does not change from twin set to twin set. 
+
+Now consider conditioning on $Y_{i1}+Y_{i2}=1$, so that we only consider the pairs with one positive response. 
+Then the probability that the test member passes under the above model conditioning that one member of the twin set passes is
+\begin{eqnarray*}
+\theta_i & = & Pr[ Y_{i2}=1 | Y_{i1}+Y_{i2}=1, \mu_i, \beta ]  \\
+ & = & \frac{Pr[ Y_{i2}=1 \mbox{ and } Y_{i1}=0 | \mu_i, \beta] }{Pr[ \left( Y_{i2}=1 \mbox{ and } Y_{i1}=0 \right) \mbox{ or } \left( Y_{i2}=0 \mbox{ and } Y_{i1}=1 \right) | \mu_i, \beta ]  }  \\
+ & = & \frac{ \pi_{i2} (1-\pi_{i1}) }{ \pi_{i2} (1-\pi_{i1}) + \pi_{i1} (1-\pi_{i2})  }.
+\end{eqnarray*}
+Then the odds that the test member in the $i$th set passes, conditioning on only one member  passing, is 
+\begin{eqnarray*}
+\frac{\theta_i}{1-\theta_i} & = & \frac{ \pi_{i2} (1-\pi_{i1}) }{  \pi_{i1} (1-\pi_{i2})  }  = \phi.
+\end{eqnarray*}
+By algebra, we can rewrite the conditional probability for the $i$th set, $\theta_i$, in terms of the conditional odds as
+\[
+\theta_i = \frac{\phi}{1+\phi}.
+\]
+So $\theta_i$ does not depend on $i$ and we write $\theta_i \equiv \theta$. 
+
+If we take $n=b+c$ of these conditional pairs, then $B = \sum_{i: Y_{i1}+Y_{i2}=1}  Y_{i2}$ is binomial with parameters $n$ and $\theta$,
+ where $\theta = Pr[ Y_{i2}=1 | Y_{i1}+Y_{i2}=1]$ is the probability of a postive response in a test member of a set with only one positive response. 
+Then if we transform that probability into an odds we get $\theta/(1-\theta) = \phi$. 
+In other words, the odds of the conditional random variable is the same as the odds ratio of interest under the full unconditional model. 
+  
+\section*{Appendix B: Equivalence of two-sided p-values} 
 
 For the two-sided exact tests, the sample space is $B \in \{ 0,1,\ldots, b+c \}$. Let $n=b+c$ and let the binomial mass function under the null hypothesis 
 of $\theta=.5$ (i.e., $\phi=1$) be  

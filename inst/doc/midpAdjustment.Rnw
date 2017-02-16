@@ -1,0 +1,202 @@
+% LaTeX Article Template
+\documentclass[12pt]{article}
+\topmargin -0.7in
+\textheight 9.0in
+%\textwidth 6in
+\textwidth 6.5in
+%\oddsidemargin 0.25in
+%\oddsidemargin -.25in
+\oddsidemargin 0.0in
+
+% \VignetteIndexEntry{exact2x2: mid-p adjustment}
+% \VignetteKeyword{Confidence Interval}
+% \VignetteKeyword{Exact Test}
+
+\newcommand{\code}[1]{{\sf #1}}
+
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+
+\begin{center}
+{\Large \bf Mid-p Adjustment for exact2x2: Computational Details} \\
+Michael P. Fay \\
+\today
+\end{center}
+
+<<echo=FALSE,results=hide,eval=T>>=
+library(exact2x2)
+@
+
+\section*{Overview}
+
+These notes give details on how the mid-p adjustment is done. Section~\ref{sec-usual} describes the mid-p adjustment as it is done  for the \code{exact2x2} and  \code{uncondExact2x2} 
+functions. Section~\ref{sec-meld} describes the mid-p adjustment as implemented in the \code{binomMeld.test} function.
+
+\section{Usual Mid-p Adjustment for Two Binomial Distributions}
+\label{sec-usual}
+
+
+The following is how the usual mid-p adjustment is done (for example in the \code{exact2x2} and  \code{uncondExact2x2} 
+functions). The mid-p value has a long history (see e.g., Lancaster, 1961 or the list of references in Hirji 2006, p. 50). 
+
+Let ${\bf X} = [X_1, X_2]$ with $X_a \sim Binom(n_a, \theta_a)$ for $a=1,2$. Suppose we are interested in $\beta = b(\theta)$, where 
+$b(\theta)$ is some function of $\theta_1$ and $\theta_2$. Common examples are the difference, $\beta_d= \theta_2-\theta_1$, the ratio, $\beta_r=\theta_2/\theta_1$,
+and the odds ratio, $\beta_{or} = \left\{ \theta_2 (1-\theta_1) \right\}/ \left\{ \theta_1 (1-\theta_2) \right\}$. 
+
+Let $T({\bf X})$ be some test statistic, where larger values are most extreme with respect to the null hypothesis. 
+Let $\Theta_0$ be the set of all possible values of $[\theta_1, \theta_2]$ under the null hypothesis. Then a valid (i.e., exact)  p-value 
+is 
+\begin{eqnarray*}
+p({\bf x}, \Theta_0) & = & \sup_{\theta \in \Theta_0} Pr_{\theta} \left[ T({\bf X}) \geq T({\bf x}) \right].
+\end{eqnarray*}
+These exact p-values are necessarily conservative because  for most $\theta \in \Theta_0$ we have \\ $Pr_{\theta} \left[ p({\bf X}, \Theta_0) \leq \alpha \right] < \alpha$.
+A less conservative approach, {\em but on that is no longer valid (i.e.,  no longer exact)}, is to use a mid-p value. The mid-p value is 
+\begin{eqnarray*}
+p_{mid}({\bf x}, \Theta_0) & = & \sup_{\theta \in \Theta_0} \left\{  Pr_{\theta} \left[ T({\bf X}) > T({\bf x}) \right] + \frac{1}{2} Pr_{\theta} \left[ T({\bf X}) = T({\bf x}) \right] \right\}.
+\end{eqnarray*}
+
+It is convenient to write $\Theta_0$ in terms of $\beta$. 
+For example, 
+\begin{eqnarray*}
+\Theta_0 & = & \left\{ \theta: b(\theta) = \beta_0 \right\} 
+\end{eqnarray*}
+For this example, instead of writing the null hypothesis as $H_0: \theta \in \Theta_0$, we 
+write it in terms of $\beta=b(\theta)$ as $H_0: \beta =\beta_0$. 
+We are generally interested in  three classes of hypotheses:  two-sided hypotheses,
+\begin{eqnarray*}
+H_{0}: & & \beta=\beta_0 \\
+H_{1}: & & \beta \neq \beta_0
+\end{eqnarray*}
+or one of the one-sided hypotheses,
+\begin{eqnarray*}
+& \mbox{\underline{Alternative is Less}} & \mbox{\underline{Alternative is Greater}} \\
+& H_{0}: \beta \geq \beta_0 & H_{0}: \beta \leq \beta_0 \\
+& H_{1}: \beta < \beta_0 & H_{1}: \beta > \beta_0.
+\end{eqnarray*}
+Let $p_{ts}({\bf x}, \beta_0)$ be the p-value for testing the two-sided hypotheses,
+let $p_{U}({\bf x}, \beta_0)$ be the p-value for testing $H_0: \beta \geq \beta_0$,
+and $p_{L}({\bf x}, \beta_0)$ be the p-value for testing $H_0: \beta \leq \beta_0$.
+
+Then we can create $100(1-\alpha)\%$ confidence regions as the set of $\beta_0$ value 
+that fail to reject the associated null hypothesis. For example, 
+\begin{eqnarray*}
+C_{ts}({\bf x}, 1- \alpha) & = & \left\{ \beta: p_{ts}({\bf x}, \beta) > \alpha \right\} 
+\end{eqnarray*}
+gives a ``two-sided'' confidence region. The region may not be an interval if the p-value function is 
+not unimodal. This problem occurs with Fisher's exact test (the Fisher-Irwin version, or `minlike' version). 
+For central confidence regions we take the union of the one-sided confidence regions,
+in other words,
+\[
+C_c({\bf x}, 1-\alpha) = C_L({\bf x}, 1- \alpha/2) \cup C_U({\bf x}, 1- \alpha/2),
+\]
+where $C_L$ and $C_U$ are the one-sided 
+confidence regions, 
+\begin{eqnarray*}
+C_{L}({\bf x}, 1- \alpha/2) & = & \left\{ \beta: p_{L}({\bf x}, \beta) > \alpha/2 \right\} 
+\end{eqnarray*}
+and
+\begin{eqnarray*}
+C_{U}({\bf x}, 1- \alpha/2) & = & \left\{ \beta: p_{U}({\bf x}, \beta) > \alpha/2 \right\}. 
+\end{eqnarray*}
+If the regions are intervals, and we let $L({\bf x}, 1- \alpha/2) = \min C_L({\bf x}, 1- \alpha/2)$ and 
+$U({\bf x}, 1- \alpha/2) = \max C_U({\bf x}, 1- \alpha/2)$, then the central interval is  
+\begin{eqnarray*}
+C_c({\bf x}, 1- \alpha) & = & \left\{ L({\bf x}, 1- \alpha/2), U({\bf x}, 1- \alpha/2) \right\}. 
+\end{eqnarray*} 
+
+
+For the mid-p confidence regions, we replace the p-values with the mid-p values. 
+
+
+
+\section{Mid-p Modifications with Binomial Melding}
+\label{sec-meld}
+
+For a single binomial response, the mid p-value and associated central confidence interval can be represented using 
+confidence distribution random variables. Suppose that the exact central 100(1-$\alpha$) percent binomial confidence interval for 
+a single binomial random variable (i.e., the default in \code{binom.test}) is $\left( L(1-\alpha/2), U(1-\alpha/2) \right)$. 
+Then the lower and upper confidence distribution random variables are respectively, $W_L = L(A_1)$ and $W_U=U(A_2)$, where $A_1$ and $A_2$ 
+and independent uniform random variables. Let $B$ be an independent Bernoulli random variable with parameter $1/2$. Then 
+the 95 percent central mid-p confidence interval for the binomial parameter is the middle  95 percent of the distribution of $W = B*W_L+(1-B)*W_U$. 
+This is shown in the appendix of Fay and Brittain (2016). 
+
+The way the \code{midp=TRUE} option is done in \code{binomMeld.test} is to replace the upper and lower confidence distribution random variables in the 
+ usual melding equations, with the ``mid-p'' confidence distribution random variable (CD-RV) 
+ analogous to $W$ for each group. For example if the lower and upper 
+ CD-RVs for group 1 are $W_{1L}$ and $W_{1U}$, then the mid-p CD-RV is $W_1 = B_1*W_{1L}+(1-B_1)*W_{1U}$,
+ where $B_1$ is a Bernoulli random variable with parameter $1/2$. The mid-p CD-RV $W_2$ is defined analogously. 
+It is fairly simple to program a Monte Carlo estimate of the ``mid'' p-value and associated 
+confidence interval. Let $g(\theta_1,\theta_2)$ be the parameter of interest (e.g., $g(\theta_1,\theta_2)=\theta_2-\theta_1$ for \code{parmtype="difference"}). The one-sided p-values are the proportion of times that $g(W_1,W_2)$
+is $\leq$ \code{nullparm} (for \code{alternative="greater"}) 
+or $\geq$ \code{nullparm} (for \code{alternative="less"}). The confidence intervals 
+just use the appropriate quantiles of the Monte Carlo values of $g(W1,W_2)$. 
+
+When \code{nmc=0}, we estimate the one-sided p-values with numeric  integration. 
+Conceptually, the usual melded p-value might be, for example when \code{alternative="greater"}
+and \code{nullparm}$=\beta_0$: 
+\begin{eqnarray*}
+Pr [ g(W_{1U},W_{2L}) \leq \beta_0 ] & = & \int Pr[ g(W_1, w_2) \leq \beta_0 | W_2=w_2] Pr[ W_2=w_2 ] 
+\end{eqnarray*}
+where $W_{1U}$ is the upper confidence distribution random variable (CD-RV) for group 1
+and $W_{2L}$ is the lower CD-RV for group 2. These CD-RVs are beta distributions (see Fay, Proschan, and Brittain, 2015).
+For the mid-p version, we use 
+\begin{eqnarray*}
+Pr [ g(W_{1},W_{2}) \leq \beta_0 ] & = &  \frac{1}{4} \int Pr[ g(W_{1L}, w_2) \leq \beta_0 | W_{2L}=w] Pr[ W_{2L}=w ] + \\
+& &  \frac{1}{4} \int Pr[ g(W_{1L}, w_2)  \leq \beta_0 | W_{2U}=w] Pr[ W_{2U}=w ] + \\
+& &  \frac{1}{4} \int Pr[ g(W_{1U}, w_2) \leq \beta_0 | W_{2L}=w] Pr[ W_{2L}=w ] + \\
+& &  \frac{1}{4} \int Pr[ g(W_{1U}, w_2)  \leq \beta_0 | W_{2U}=w] Pr[ W_{2U}=w ].
+\end{eqnarray*}
+The integration simplifies for special cases (e.g., when $x_1=0$), and in other case we just use the \code{integrate}
+function. For the confidence intervals we solve for the $\beta_0$ values such that the p-values 
+equal either $\alpha$ (for one-sided alternatives) or $\alpha/2$ (for two-sided alternatives), 
+where \code{alpha=1-conf.level}. If there is no $\beta_0$ value that solves that, we set the confidence limit 
+to the appropriate extreme.
+
+
+It is known that the p-values that match the melded confidence intervals for two independent binomial observations exactly
+equal the one-sided Fisher's exact p-values (see Fay, et al, 2015).
+For example,
+<<echo=TRUE>>=
+x1<-6
+n1<-12
+x2<-15
+n2<- 17
+exact2x2(matrix(c(x2,n2-x2,x1,n1-x1),2,2), tsmethod="central", midp=FALSE)
+binomMeld.test(x1,n1,x2,n2, parmtype="oddsratio",  midp=FALSE)
+@ 
+Note, the confidence intervals for the two methods are not equal.
+ 
+This does not necessarily mean that the midp versions give equivalent p-values:
+<<echo=TRUE>>=
+x1<-6
+n1<-12
+x2<-15
+n2<- 17
+exact2x2(matrix(c(x2,n2-x2,x1,n1-x1),2,2), tsmethod="central", midp=TRUE)
+binomMeld.test(x1,n1,x2,n2, parmtype="oddsratio",  midp=TRUE)
+@ 
+ 
+
+
+
+\section*{References}
+
+\begin{description}
+\item Fay, MP, and Brittain, EH (2016). ``Finite sample pointwise confidence intervals for a survival distribution with right-censored data.''
+{\it Statistics in Medicine} 35: 2726-2740.
+\item Fay, MP, Proschan, MA, and Brittain, E (2015). ``Combining One-Sample Confidence Procedures for Inference in the Two-Sample Case.''
+{\it Biometrics } 71: 146-156. 
+\item hirji, K. F. (2006). {\it Exact Analysis of Discrete Data.} Chapman and Hal/CRC, New York.
+\item Lancaster, H.O. (1961). Significance Tests in Discrete Distributions. {\it Journal of the American Statistical Association.}
+56: 223-234.
+%\item Blaker, H. (2000). ``Confidence curves and improved exact confidence intervals for discrete distributions''
+%{\it Canadian Journal of Statistics} {\bf 28,} 783-798 (correction {\bf 29,} 681).
+%\item Fay, M.P. (2009). ``Confidence Intervals that Match Fisher's Exact or Blaker's Exact Tests'' (to appear Biostatistics. 
+%See Fay2009MatchingCI.pdf in doc 
+%directory of this package for earlier version which is essentially the paper plus the supplement).
+\end{description}
+
+\end{document}
+
+

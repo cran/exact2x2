@@ -8,7 +8,7 @@ citEntry(entry="Article",
   volume       = "11",
   number       = "2",  
   pages        = "373--374",
-  url ="http://www3.niaid.nih.gov/about/organization/dcr/BRB/staff/michael.htm",
+  url ="https://www.niaid.nih.gov/about/brb-staff-fay",
   textVersion  ="Fay MP (2010). Confidence intervals that match Fisher's exact or Blaker's exact tests. Biostatistics. 11:373-374",
   header = "When using Fisher's exact or Blaker's exact test for 2x2 tables cite:"
 )
@@ -21,7 +21,7 @@ citEntry(entry="Article",
   volume       = "2",
   number       = "1",  
   pages        = "53--58",
-  url ="http://journal.r-project.org/",
+  url ="https://journal.r-project.org/",
   textVersion  ="Fay MP (2010). Two-sided Exact Tests and Matching Confidence Intervals for Discrete Data. R Journal 2(1):53-58.",
   header = "When using the exact McNemar's test (paired=TRUE) cite:"
 )
@@ -31,8 +31,8 @@ citEntry(entry="Article",
   author       = personList(as.person("Michael P. Fay"),as.person("Michael A. Proschan"),as.person("Erica Brittain")), 
   journal      = "Biometrics",
   year ="2014",
-  url ="http://www3.niaid.nih.gov/about/organization/dcr/BRB/staff/michael.htm",
-  textVersion  ="Fay MP,  Proschan, MA, Brittain, E, (2014). Combining one sample confience procedures for inference in the two sample case. (to appear in Biometrics)",
+  url ="https://www.niaid.nih.gov/about/brb-staff-fay",
+  textVersion  ="Fay MP,  Proschan, MA, Brittain, E, (2015). Combining one sample confience procedures for inference in the two sample case. Biometrics 71: 146-156.",
   header = "When using binomMeld.test cite:"
 )
 

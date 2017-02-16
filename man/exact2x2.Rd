@@ -17,10 +17,10 @@ For paired binary data resulting in a two by two table, performs an exact McNema
 exact2x2(x, y = NULL, or = 1, alternative = "two.sided",
     tsmethod = NULL, conf.int = TRUE, conf.level = 0.95,
     tol = 0.00001, conditional = TRUE, paired=FALSE, 
-    plot=FALSE)
+    plot=FALSE, midp=FALSE)
 fisher.exact(x, y = NULL, or = 1, alternative = "two.sided",
     tsmethod = "minlike", conf.int = TRUE, conf.level = 0.95,
-    tol = 0.00001)
+    tol = 0.00001, midp=FALSE)
 blaker.exact(x, y = NULL, or = 1, alternative = "two.sided",
     conf.int = TRUE, conf.level = 0.95, tol = 0.00001)
 mcnemar.exact(x,y=NULL, conf.level=.95)
@@ -35,7 +35,7 @@ mcnemar.exact(x,y=NULL, conf.level=.95)
     one of \code{"two.sided"}, \code{"greater"} or \code{"less"}.
     if "two.sided" uses method defined by tsmethod.}
   \item{tsmethod}{one of "minlike","central", or "blaker". NULL defaults to "minlike" when 
-  paired=FALSE and "central" when paired=TRUE.
+  paired=FALSE and "central" when paired=TRUE or midp=TRUE.
 Defines type of two-sided method (see details). Ignored if alternative="less" or "greater".}
   \item{conf.int}{logical indicating if a confidence interval should be
     computed.}
@@ -43,9 +43,10 @@ Defines type of two-sided method (see details). Ignored if alternative="less" or
     interval.  Only used if
     \code{conf.int = TRUE}.}
   \item{tol}{tolerance for confidence interval estimation.}
-  \item{conditional}{TRUE. Unconditional exact tests not supported at this time.}
+  \item{conditional}{TRUE. Unconditional exact tests should use \code{\link{uncondExact2x2}}.}
   \item{paired}{logical. TRUE gives exact McNemar's test, FALSE are all other tests}
-\item{plot}{logical. TRUE gives basic plot of point null odds ratios by p-values, for greater plot control use \code{\link{exact2x2Plot}}}
+\item{midp}{logical. TRUE gives mid p-values and mid-p CIs. Not supported for tsmethod='minlike' or 'blaker' }
+\item{plot}{logical. TRUE gives basic plot of point null odds ratios by p-values, for greater plot control use \code{\link{exact2x2Plot}}. Not supported for midp=TRUE.}
 }
 \details{
   The motivation for this package is to match the different two-sided conditional exact tests 
@@ -102,6 +103,8 @@ options in  \code{exact2x2}.
  \code{mcnemar.exact} is just a wrapper to call \code{exact2x2} with \code{paired=TRUE, alternative="two.sided",tsmethod="central"}. 
  One-sided exact McNemar-type tests may be calculated using the  \code{exact2x2} function with \code{paired=TRUE}.
 For details of McNemar-type tests see Fay (2010, R Journal). 
+
+The mid p-value is an adjusted p-value to account for discreteness. The mid-p adjustment is not guaranteed to give type I error rates that are less than or equal to nominal levels, but gives p-values that lead to the probability of rejection that is sometimes less than the nominal level and sometimes greater than the nominal level. This adjustment is sometimes used because exact p-values for discrete data cannot give actual type I error rates equal to the nominal value unless randomization is done (and that is not typically done because two researchers doing the same method could get different answers). Essentially, exact p-values lead to the probability of rejecting being less than the nominal level for most parameter values in the null hypothesis in order to make sure that it is not greater than the nominal level for ANY parameter values in the null hypothesis. The mid p-value was studied by Lancaster (1961), and for the 2x2 case by Hirji et al (1991).
 }
 \value{
   A list with class \code{"htest"} containing the following components:
@@ -125,12 +128,16 @@ Breslow, NE and Day NE (1980). Staistical Methods in Cancer Research: Vol 1-The 
 
 Fay, M. P. (2010). Confidence intervals that Match Fisher's exact and Blaker's exact tests. Biostatistics,
   11: 373-374 (go to doc directory for earlier version or 
-  \url{http://www3.niaid.nih.gov/about/organization/dcr/BRB/staff/michael.htm} for link to official version).
+  \url{https://www.niaid.nih.gov/about/brb-staff-fay} for link to official version).
 
 Fay M.P. (2010). Two-sided Exact Tests and Matching Confidence Intervals for Discrete Data. R Journal 2(1):53-58.
 
 Fisher, R.A. (1935) The logic of inductive inference. Journal of the Royal Statistical Society
 Series A 98:39-54.
+
+Hirji, K.F., Tan, S-J, and Elashoff, R.M. (1991). A quasi-exact test for comparing two binomial proportions. Statistics in Medicine 10: 1137-1153.
+
+Lancaster, H.O. (1961). Significance tests in discrete distributions. JASA 56: 223-234.
 }
 \author{
 Michael Fay

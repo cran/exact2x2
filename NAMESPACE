@@ -1,4 +1,29 @@
-export(exact2x2Pvals,exact2x2,exact2x2CI,exact2x2Plot,blaker.exact,fisher.exact,mcnemar.exact,mcnemar.exact.calc,power2x2,ss2x2,binomMeld.test)
+export(exact2x2Pvals,exact2x2,exact2x2CI,exact2x2Plot,
+ blaker.exact,fisher.exact,mcnemar.exact,
+ mcnemar.exact.calc,power2x2,ss2x2,
+ binomMeld.test,uncondExact2x2, uncondExact2x2Pvals,
+ fisherCalcMidp,  boschloo,  
+  unirootGrid, power2gridRatio, power2gridDifference,
+   calcTall, constrMLE.difference,     constrMLE.ratio,
+ constrMLE.oddsratio, getDeltaGrid, getPDQD, getPI, getPrange,
+ pickTstat, power2grid, 
+ ucControl, createR, fillsquare, getColor, plotRankMat, plotT, orderMat,
+ Power2x2, SS2x2, uncondPower2x2)
+
+S3method("plotT", "function")
+S3method("plotT", "numeric")
+
+S3method("orderMat", "function")
+S3method("orderMat", "numeric")
+
 import(exactci)
 importFrom(ssanv,uniroot.integer)
+importFrom(stats,pbeta,dbeta,qbeta, rbeta, quantile, integrate,uniroot,
+ complete.cases,fisher.test, dhyper, phyper, qnorm, pnorm,
+ dbinom,pbinom,qbinom,approx,rbinom, binom.test)
+
+importFrom(utils,packageDescription)
+importFrom(graphics, points, lines, plot, polygon, par, mtext)
+importFrom(grDevices, colorRampPalette)
+
 

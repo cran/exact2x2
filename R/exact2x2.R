@@ -2,9 +2,10 @@
 function(x, y = NULL, or = 1, alternative = "two.sided", 
     tsmethod=NULL,
     conf.int = TRUE, conf.level = 0.95, 
-    tol=0.00001,conditional=TRUE, paired=FALSE, plot=FALSE) 
+    tol=0.00001,conditional=TRUE, paired=FALSE, plot=FALSE,
+    midp=FALSE) 
 {
-    if (!conditional) stop("unconditional exact tests not supported")
+    if (!conditional) stop("for unconditional exact tests use uncondExact2x2")
     if (tol<.Machine$double.eps^.5) warning("tol set very small, make sure pnhyper in exact2x2CI is this accurate")
     # copied setup code from fisher.test, july 1,2009
     DNAME <- deparse(substitute(x))
@@ -34,14 +35,16 @@ function(x, y = NULL, or = 1, alternative = "two.sided",
             stop("'x' and 'y' must have the same length")
         DNAME <- paste(DNAME, "and", deparse(substitute(y)))
         OK <- complete.cases(x, y)
-        ## 2011-4-20: fix so that if x and y are input as factors, they remain factors as input
+        ## 2011-4-20: fix so that if x and y are input 
+        ## as factors, they remain factors as input
         ##   previously had
         #
         #    x <- factor(x[OK])
         #    y <- factor(y[OK])
         ##
-        ##   so if x<-factor(c(0,1,0)) and y<-factor(c(0,0,0),levels=c(0,1)) then you would get an 
-        ##   error
+        ##   so if x<-factor(c(0,1,0)) and 
+        ##   y<-factor(c(0,0,0),levels=c(0,1)) then 
+        ##   you would get an error
         x <- as.factor(x[OK])
         y <- as.factor(y[OK])
 
@@ -55,10 +58,21 @@ function(x, y = NULL, or = 1, alternative = "two.sided",
         stop("alternative must be \"two.sided\", \"less\" or \"greater\"")
     # end of setup code from fisher.test
 
-    ## default to usual two-sided Fisher's exact test for paired=FALSE
-    ## and usual exact McNemar confidence intervals for paired=TRUE
-    if (is.null(tsmethod) & paired){ tsmethod<-"central"
-    } else if (is.null(tsmethod)) tsmethod<-"minlike"
+    ## default to usual two-sided Fisher's exact test 
+    ## for paired=FALSE
+    ## and usual exact McNemar confidence intervals 
+    ## for paired=TRUE
+    if (is.null(tsmethod) & paired){ 
+        tsmethod<-"central"
+    } else if (is.null(tsmethod) & !midp){
+        tsmethod<-"minlike"
+    } else if (is.null(tsmethod) & midp){
+        tsmethod<-"central"
+    }
+    tsmethod<-char.expand(tsmethod,
+                 c("minlike","blaker","central"))
+    if (tsmethod!="blaker" & tsmethod!="minlike" & tsmethod!="central") stop("tsmethod must be 'blaker', 'central' or 'minlike'.")
+    if (midp & alternative=="two.sided" & (tsmethod=="minlike" | tsmethod=="blaker")) stop("midp option not supported for tsmethod='minlike' or 'blaker' ")
 
     nr <- nrow(x)
     nc <- ncol(x)
@@ -69,54 +83,84 @@ function(x, y = NULL, or = 1, alternative = "two.sided",
     } else {
 
         if (alternative=="less" | alternative=="greater"){
-            OUT<-fisher.test(x,or=or,alternative=alternative,conf.int=conf.int,conf.level=conf.level)
-            OUT$method<-"One-sided Fisher's Exact Test"
+            if (midp){
+                # run fisher.test to get estimate 
+                OUT<-fisher.test(x,or=or,alternative=alternative,conf.int=FALSE)
+                pvalandCI<-fisherCalcMidp(x,or,alternative,conf.int,conf.level)
+                OUT$conf.int<-pvalandCI$conf.int
+                OUT$p.value<-pvalandCI$p.value
+                OUT$method<-"One-sided Fisher's Exact Test (mid-p version)"
+            } else {
+                OUT<-fisher.test(x,or=or,alternative=alternative,conf.int=conf.int,conf.level=conf.level)
+                OUT$method<-"One-sided Fisher's Exact Test"
+            }
         } else {
-            #xmat<-x
-            #m <- sum(x[, 1])
-            #n <- sum(x[, 2])
-            #k <- sum(x[1, ])
-            #x <- x[1, 1]
-            tsmethod<-char.expand(tsmethod,c("minlike","blaker","central"))
-            if (tsmethod!="blaker" & tsmethod!="minlike" & tsmethod!="central") stop("tsmethod must be 'blaker', 'central' or 'minlike'.")
             if (tsmethod=="minlike"){
-                OUT<-fisher.test(x,or=or,alternative="two.sided",conf.int=FALSE) 
+                # there is no midp=TRUE for minlike or blaker
+                OUT<-fisher.test(x,or=or,
+                   alternative="two.sided",conf.int=FALSE) 
                 if (conf.int){
-                    OUT$conf.int<-exact2x2CI(x,tsmethod="minlike",conf.level=conf.level,
-                        tol=tol)
+                    OUT$conf.int<-exact2x2CI(x,
+                          tsmethod="minlike",
+                          conf.level=conf.level,
+                          tol=tol)
                 } else {
                     OUT$conf.int<-NULL
                 }
                 OUT$method<-"Two-sided Fisher's Exact Test (usual method using minimum likelihood)"
             } else if (tsmethod=="blaker"){
-                OUT<-fisher.test(x,or=or,alternative="two.sided",conf.int=FALSE) 
+                OUT<-fisher.test(x,or=or,
+                      alternative="two.sided",conf.int=FALSE) 
                 if (conf.int){
-                    OUT$conf.int<-exact2x2CI(x,tsmethod="blaker",conf.level=conf.level,
+                    OUT$conf.int<-exact2x2CI(x,
+                        tsmethod="blaker",conf.level=conf.level,
                         tol=tol)
                 } else {
                     OUT$conf.int<-NULL
                 }
-                OUT$p.value<-exact2x2Pvals(x,or,tsmethod="blaker")$pvals
+                OUT$p.value<-exact2x2Pvals(x,or,
+                             tsmethod="blaker")$pvals
                 OUT$method<-"Blaker's Exact Test"
             } else if (tsmethod=="central"){
-                OUT<-fisher.test(x,or=or,alternative=alternative,conf.int=conf.int,
-                    conf.level=conf.level)
-                pless<-fisher.test(x,or=or,alternative="less",conf.int=FALSE)$p.value
-                pgreater<-fisher.test(x,or=or,alternative="greater",conf.int=FALSE)$p.value
-                OUT$p.value<-min(1,2*min(pless,pgreater))
-                OUT$method<-"Central Fisher's Exact Test"
+                if (midp){
+                    # run fisher.test to get estimate
+                    OUT<-fisher.test(x,or=or,
+                        alternative=alternative,conf.int=FALSE)
+                    pvalandCI<-fisherCalcMidp(x,or,
+                        alternative,conf.int,conf.level)
+                    OUT$p.value<-pvalandCI$p.value
+                    OUT$conf.int<-pvalandCI$conf.int
+                    OUT$method<-"Central Fisher's Exact Test (mid-p version)"
+                } else {
+                    OUT<-fisher.test(x,or=or,
+                        alternative=alternative,conf.int=conf.int,
+                        conf.level=conf.level)
+                    pless<-fisher.test(x,or=or,
+                        alternative="less",conf.int=FALSE)$p.value
+                    pgreater<-fisher.test(x,or=or,
+                        alternative="greater",conf.int=FALSE)$p.value
+                    OUT$p.value<-min(1,2*min(pless,pgreater))
+                    OUT$method<-"Central Fisher's Exact Test"
+                }
             } 
         }
     }
     if (plot){
+        if (midp) stop("plot not supported for midp=TRUE")
         ci<-OUT$conf.int
         if (is.null(ci)){
              ci<-fisher.test(x,or=or,alternative=alternative,
                     conf.level=conf.level)$conf.int
         }
-        lowerRange<-ifelse(ci[1]==0, .8*min(or,ci[2]), .8*min(ci[1],or) )
-        upperRange<-ifelse(ci[2]==Inf, 1.2*max(or,ci[1]), 1.2*max(ci[2],or) )
-        exact2x2Plot(x, tsmethod = tsmethod, alternative=alternative, orRange=c(lowerRange,upperRange),paired=paired, doci=TRUE, alphaline=TRUE,col="gray",pch=16,cex=.5)
+        lowerRange<-ifelse(ci[1]==0, .8*min(or,ci[2]), 
+                                     .8*min(ci[1],or) )
+        upperRange<-ifelse(ci[2]==Inf, 1.2*max(or,ci[1]), 
+                                       1.2*max(ci[2],or) )
+        exact2x2Plot(x, tsmethod = tsmethod,
+            alternative=alternative, 
+            orRange=c(lowerRange,upperRange),
+            paired=paired, doci=TRUE,
+            alphaline=TRUE,col="gray",pch=16,cex=.5)
         points(or,OUT$p.value,col="black")
     }
 

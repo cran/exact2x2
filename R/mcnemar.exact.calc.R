@@ -1,4 +1,4 @@
-mcnemar.exact.calc<-function(bb,cc,or,alternative, tsmethod="central",conf.level=.95){
+mcnemar.exact.calc<-function(bb,cc,or,alternative, tsmethod="central",conf.level=.95, midp=FALSE){
     ## for following see equation 5.2, p. 164, Breslow and Day, 1980,
     ## Statistical Methods in Cancer Research, Vol 1
     p<- or/(or+1)
@@ -6,7 +6,7 @@ mcnemar.exact.calc<-function(bb,cc,or,alternative, tsmethod="central",conf.level
     if (bb+cc==0){
         x<-list(p.value=1,estimate=NA, statistic=bb, conf.int=c(0,1), parameter=bb+cc)
     } else {
-        x<-binom.exact(bb,bb+cc,p=p,alternative=alternative,tsmethod=tsmethod,conf.level=conf.level)
+        x<-binom.exact(bb,bb+cc,p=p,alternative=alternative,tsmethod=tsmethod,conf.level=conf.level,midp=midp)
     }
     x$estimate<- x$estimate/(1-x$estimate)
     attr(x$estimate,"names")<-"odds ratio"
@@ -20,6 +20,8 @@ mcnemar.exact.calc<-function(bb,cc,or,alternative, tsmethod="central",conf.level
     } else { 
         x$method<-"Exact McNemar-type test"
     }
+    if (midp) x$method<-"Mid-p McNemar test"
+
     if (alternative=="two.sided"){
         cidescription<-switch(tsmethod,
             central="(with central confidence intervals)",

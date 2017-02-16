@@ -1,19 +1,33 @@
 \name{exact2x2-internal}
 \alias{exact2x2CI}
 \alias{mcnemar.exact.calc}
+\alias{fisherCalcMidp}
 %\name{fisher.blaker.pvals}
 \alias{exact2x2Pvals}
+\alias{binomMeldCalcInt}
+\alias{binomMeldCalcMC}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Internal functions for exact2x2. Not to be called by user.}
 \description{
 The function \code{exact2x2Pvals} can calculate p-values for a vector of odds ratios.
 The function \code{exact2x2CI} is the code that calculates the confidence intervals for the two-sided 
-Fisher's exact test and Blaker's exact test.  
+Fisher's exact test and Blaker's exact test.  The functions \code{binomMeldCalcInt} and \code{binomMeldCalcMC}
+are called by \code{\link{binomMeld.test}}.
 }
 \usage{
+fisherCalcMidp(x,or,alternative,conf.int,conf.level)
 exact2x2Pvals(x, or, relErr=1+10^(-7),tsmethod = "minlike", alternative="two.sided")
 exact2x2CI(x, tsmethod="minlike", conf.level=0.95, tol=0.00001, orRange=c(10^-10,10^10))
-mcnemar.exact.calc(bb,cc,or,alternative,tsmethod="central",conf.level=.95)
+mcnemar.exact.calc(bb,cc,or,alternative,tsmethod="central",conf.level=.95, midp=FALSE)
+binomMeldCalcInt(x1,n1,x2,n2,nullparm=NULL, 
+           parmtype=c("difference","oddsratio","ratio"),
+           conf.level=0.95, conf.int=TRUE,
+           alternative=c("two.sided","less","greater"), midp=FALSE, eps=10^-8)
+binomMeldCalcMC(x1,n1,x2,n2,nullparm=NULL, 
+                           parmtype=c("difference","oddsratio","ratio"),
+                           conf.level=0.95, conf.int=TRUE,
+                           alternative=c("two.sided","less","greater"),
+                           midp=FALSE,nmc=10^6)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -21,11 +35,14 @@ mcnemar.exact.calc(bb,cc,or,alternative,tsmethod="central",conf.level=.95)
   \item{or}{odds ratio, may be a vector}
   \item{relErr}{relative error. This is used to handle true ties on the computer. (see details). }
   \item{tsmethod}{either "minlike","blaker", "central"}
+  \item{conf.int}{logical, calculate CI?}
   \item{conf.level}{confidence level}
   \item{tol}{tolerance}
   \item{orRange}{range for search for odds ratio confidence interval}
  \item{alternative}{indicates the alternative hypothesis and must be
     one of \code{"two.sided"}, \code{"greater"} or \code{"less"}.}
+\item{midp}{logical. Do midp adjustment?
+}
 }
 \details{P-values for both the two-sided Fisher's exact and Blaker's exact test add probabilities from the opposite tail if 
 either the cumulative probabilities (for Blaker's test) or the probabilities (Fisher's test) are less than or equal to those 

@@ -2,7 +2,7 @@
 \alias{power2x2}
 \alias{ss2x2}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{Calculate exact power or sample size for two independent binomials.
+\title{Calculate exact power or sample size for conditional tests for two independent binomials.
 }
 \description{
 Power is calculated by \code{power2x2} which calls \code{\link{exact2x2}} function repeatedly. Default (strict=FALSE) does not count rejections in the wrong direction. 

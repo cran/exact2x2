@@ -12,7 +12,7 @@ binomMeld.test(x1, n1, x2, n2, nullparm = NULL,
     parmtype = c("difference", "oddsratio", "ratio"), 
     conf.level = 0.95, conf.int=TRUE, 
     alternative = c("two.sided", "less", "greater"), 
-    eps = 10^-8)
+    midp=FALSE, nmc=0, eps=10^-8)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -25,13 +25,22 @@ binomMeld.test(x1, n1, x2, n2, nullparm = NULL,
   \item{conf.level}{confidence level}
   \item{conf.int}{logical, calculate confidence intervals?}
   \item{alternative}{alternative hypothesis, one of "two.sided", "less", or "greater" (see details)}
+  \item{midp}{logical, do mid-p version of p-value and confidence intervals?}
+  \item{nmc}{integer,  number of Monte Carlo replications for p-value and CI calculations, 0 (default) means calculate by numeric integration instead}
   \item{eps}{small number used to adjust numeric integration (see note)}
 }
 \details{
 Assume X1~ Binomial(n1,p1) and X2~Binomial(n2,p2). We want to test hypotheses on a function of p1 and p2. The functions are given by parmtype: difference tests p2-p1,
 ratio tests p2/p1, and odds ratio tests p2(1-p1)/(p1(1-p2)).  Let g(p1,p2) be one of the three functions. So when alternative is "less" we test H0: g(p1,p2) >= nullparm vs. H1: g(p1,p2)<nullparm.
 
-For details see Fay, Proschan, and Brittain (2014). 
+For details when \code{midp=FALSE} see Fay, Proschan, and Brittain (2015). 
+
+When \code{midp=TRUE}, the method performs the mid-p version on the p-value and the associated confidence intervals. 
+This means that we replace the confidence distribution random variables in the p-value and CI calculations
+with a random variable that is a mixture of the lower and upper CD random variables. For example, if W1L and W1U are the 
+lower and upper confidence distribution random variables for group 1, then we replace those values in all calculations 
+with W1midp = U1*W1L + (1-U1)*W1U, where U1 is a Bernoulli with parameter 0.5. 
+For a discussion of mid-p p-values and the associated confidence intervals in a closely related context, see the vignette on mid p-values or Fay and Brittain (2016, especially the Appendix).
 }
 \value{
 An object of class 'htest'. A list with elements
@@ -46,14 +55,20 @@ An object of class 'htest'. A list with elements
 \item{data.name}{character explicit description of data}
 }
 \references{
-Fay, MP, Proschan, MA, and Brittain, E (2014) Combining One Sample Confidence Procedures for Inferences in the Two Sample Case (to appear in Biometrics). 
+Fay, MP, Proschan, MA, and Brittain, E (2015) Combining One Sample Confidence Procedures for Inferences in the Two Sample Case. Biometrics 71: 146-156. 
 
+Fay, Michael P., and Erica H. Brittain. (2016). Finite sample pointwise confidence intervals for a survival distribution with right-censored data. Statistics in medicine. 35: 2726-2740.
 }
 \author{Michael P. Fay}
 \note{For numeric integration, the integrate function may have problems if nearly all of the integrand values are about 0 within the range of integration. Because of this, 
 we use the eps value to make sure we integrate over ranges in which the integrand is nontrivially greater than 0. We restrict the range then add eps back to the p-value 
 so that if the integrate function works perfectly, then the p-values would be very slightly conservative (for very small eps). 
 There is no need to adjust the eps value. See code for detailed description of how eps is used in the calculation before changing it from the default.
+
+An alternative method of calculation is to use Monte Carlo simulation (option with \code{nmc>0}). 
+This provides a check of the numeric integration. 
+There is no need to do Monte Carlo simulations for routine use. Please inform the package maintainer if the p-values or confidence intervals are substantially different when \code{nmc=0} and \code{nmc=10^7}.
+
 }
 %\section{Warning }{....} ~
 %\seealso{}
