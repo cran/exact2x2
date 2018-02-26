@@ -133,6 +133,7 @@ When \code{midp=TRUE} the mid p-value is calculated (and the associated confiden
 The mid p-value was studied by Lancaster (1961), see vignette on mid p-values for details. 
 }
 \value{
+The function \code{uncondExact2x2Pvals} returns a (n1+1) by (n2+1) matrix of p-values for all possible x1 and x2 values, while \code{uncondExact2x2} returns
 a list of class 'htest' with elements:
 \item{statistic}{proportion in sample 1}
 \item{parameter}{proportion in sample 2}

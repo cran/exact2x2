@@ -1,3 +1,6 @@
+1.6.2
+ - add borrTest (boundary optimal rejection region test), an unconditional exact test for the two-sample case for comparing test to control where all controls are expected to fail.
+
 1.5.2
  - add exact unconditional tests (see help for uncondExact2x2) including Boschloo test (see boschloo function). Includes plotting function for ordering function (plotT), vignettes on details and validation. Sally Hunsberger helped with writing these functions. 
  - add extra Appendix to Exact McNemar vignette to explain equation 1 better (thanks to Christian Holm Hansen for pointing out the lack of clarity there and for comments on the new explanation, and for Michael Proschan for help with the new Appendix A).

@@ -36,3 +36,19 @@ citEntry(entry="Article",
   header = "When using binomMeld.test cite:"
 )
 
+citEntry(entry="Article",
+  title        = "A boundary-optimized rejection region test for the two-sample binomial problem",
+  author       = personList(
+as.person("Erin E. Gabriel"),
+as.person("Martha Nason"),
+as.person("Michael P. Fay"),
+as.person("Dean A. Follmann")), 
+  journal      = "Statistics in Medicine",
+  year         = "2018",
+  volume       = "37",
+  number       = "7",  
+  pages        = "?--?",
+  textVersion  ="Gabriel, EE, Nason, M, Fay, MP, Follmann, DA. (2018). A boundary-optimized rejection region test for the two-sample binomial problem. Statistics in Medicine DOI: 10.1002/sim.7579.",
+  header = "When using boundary-optimized rejection region tests (boorTest) cite:"
+)
+

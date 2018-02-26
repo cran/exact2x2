@@ -8,7 +8,8 @@ export(exact2x2Pvals,exact2x2,exact2x2CI,exact2x2Plot,
  constrMLE.oddsratio, getDeltaGrid, getPDQD, getPI, getPrange,
  pickTstat, power2grid, 
  ucControl, createR, fillsquare, getColor, plotRankMat, plotT, orderMat,
- Power2x2, SS2x2, uncondPower2x2)
+ Power2x2, SS2x2, uncondPower2x2,
+ borrControl, borrTest, borrOrdering, borrPvals, borrPreCalc)
 
 S3method("plotT", "function")
 S3method("plotT", "numeric")

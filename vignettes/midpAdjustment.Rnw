@@ -51,7 +51,7 @@ is
 p({\bf x}, \Theta_0) & = & \sup_{\theta \in \Theta_0} Pr_{\theta} \left[ T({\bf X}) \geq T({\bf x}) \right].
 \end{eqnarray*}
 These exact p-values are necessarily conservative because  for most $\theta \in \Theta_0$ we have \\ $Pr_{\theta} \left[ p({\bf X}, \Theta_0) \leq \alpha \right] < \alpha$.
-A less conservative approach, {\em but on that is no longer valid (i.e.,  no longer exact)}, is to use a mid-p value. The mid-p value is 
+A less conservative approach, {\em but one that is no longer valid (i.e.,  no longer exact)}, is to use a mid-p value. The mid-p value is 
 \begin{eqnarray*}
 p_{mid}({\bf x}, \Theta_0) & = & \sup_{\theta \in \Theta_0} \left\{  Pr_{\theta} \left[ T({\bf X}) > T({\bf x}) \right] + \frac{1}{2} Pr_{\theta} \left[ T({\bf X}) = T({\bf x}) \right] \right\}.
 \end{eqnarray*}
