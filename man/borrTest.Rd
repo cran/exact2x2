@@ -99,11 +99,13 @@ The function \code{borrPvals} returns a (n1+1) by (n2+1) matrix of p-values for 
 \item{data.name}{description of data}
 }
 \references{
-Gabriel, EE, Nason, M, Fay, MP, and Follmann, DA. (2018). A boundary-optimized rejection region test for the two-sample binomial problem. Statistics in Medicine. 37(7)  (DOI: 10.1002/sim.7579).
+Gabriel, EE, Nason, M, Fay, MP, and Follmann, DA. (2018). A boundary-optimized rejection region test for the two-sample binomial problem. Statistics in Medicine. 37(7): 1047-1058  (DOI: 10.1002/sim.7579).
 
-Antonio Martin Andres. Letter to the editor about Gabriel et al. Statistics in Medicine (to appear).
 
-Gabriel, EE, Nason, M, Fay, MP, and Follmann, DA. Reply to letter from Martin Andres. Statistics in Medicine (to appear).
+Gabriel, EE, Nason, M, Fay, MP, and Follmann, DA. (2018). Reply to letter from Martin Andres. Statistics in Medicine 37(14): 2303-2306.
+
+Martin Andres, Antonio. (2018). Letter to the editor about Gabriel et al. Statistics in Medicine 37(14) 2301-2302.
+
 }
 \author{
 Martha Nason, Erin Gabriel, Michael P. Fay

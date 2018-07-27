@@ -1,3 +1,6 @@
+1.6.3
+ -fix bug in borrTest. There was a warning statement that gave an error when borrControl$orderFunc=NULL (which was the default!). 
+
 1.6.2
  - add borrTest (boundary optimal rejection region test), an unconditional exact test for the two-sample case for comparing test to control where all controls are expected to fail.
 

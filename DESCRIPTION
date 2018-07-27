@@ -1,8 +1,8 @@
 Package: exact2x2
 Type: Package
 Title: Exact Tests and Confidence Intervals for 2x2 Tables
-Version: 1.6.2
-Date: 2018-02-22
+Version: 1.6.3
+Date: 2018-07-27
 Author: Michael P. Fay, Sally A. Hunsberger, Martha Nason, Erin Gabriel
 Maintainer: Michael P. Fay <mfay@niaid.nih.gov>
 Depends: R (>= 2.10), stats (>= 3.1.1), exactci, ssanv
@@ -11,6 +11,6 @@ License: GPL-3
 LazyLoad: yes
 Suggests: testthat, Exact
 NeedsCompilation: no
-Packaged: 2018-02-26 18:12:34 UTC; faym
+Packaged: 2018-07-27 21:27:13 UTC; faym
 Repository: CRAN
-Date/Publication: 2018-02-26 22:11:12 UTC
+Date/Publication: 2018-07-27 21:50:03 UTC

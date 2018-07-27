@@ -447,7 +447,8 @@ borrTest<-function(x1,n1,x2,n2, tuningParm=0.025,
                   conf.int = TRUE, conf.level = 0.975, controlUC=ucControl(),
                   controlborr=borrControl(),...){
   # n1=nC and n2=nT
-  if ( (n1>20 | n2>20 | tuningParm!=0.025) | controlborr$orderFunc=="AlphaGrid") message("calculations may take a long time, see controlborr for options to increase speed, perhaps at the cost of accuracy")
+
+  if ( (n1>20 | n2>20 | tuningParm!=0.025) | (!is.null(controlborr$orderFunc) && controlborr$orderFunc=="AlphaGrid")) message("calculations may take a long time, see controlborr for options to increase speed, perhaps at the cost of accuracy")
   borrMat<-borrOrdering(n1,n2,tuningParm=tuningParm,
                         controlborr=controlborr)$rankMat
   Tstat.borrT <- function(X1, N1, X2, N2, delta0) {
