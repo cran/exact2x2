@@ -1,3 +1,6 @@
+1.6.3.1
+ -No changes to the functions in exact2x2. Just changed test scripts that called exact.test from the Exact R package. Version 2.0 of Exact changed the argument in exact.test from 'interval' to 'np.interval', so that created an error for our test functions. Now test works as long as you use Exact version 2.0 or greater.
+
 1.6.3
  -fix bug in borrTest. There was a warning statement that gave an error when borrControl$orderFunc=NULL (which was the default!). 
 

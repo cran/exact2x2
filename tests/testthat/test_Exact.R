@@ -13,7 +13,7 @@ test_that("pooled",{
   # gamma=1e-06
   expect_equal(
     round(
-    exact.test(xmat, alternative="less", beta=1e-06, interval=TRUE, method="z-pooled", npNumbers=1000, to.plot = FALSE)$p.value,4),
+    exact.test(xmat, alternative="less", beta=1e-06, np.interval=TRUE, method="z-pooled", npNumbers=1000, to.plot = FALSE)$p.value,4),
     round(
       uncondExact2x2(x1,n1,x2,n2, alternative="less", parmtype="difference", method="wald-pooled", 
                       control=ucControl(nPgrid=1000), gamma=1e-06)$p.value,4)
@@ -21,7 +21,7 @@ test_that("pooled",{
   # gamma=0
   expect_equal(
     round(
-      exact.test(xmat, alternative="less", interval=FALSE, method="z-pooled", npNumbers=1000, to.plot = FALSE)$p.value,4),
+      exact.test(xmat, alternative="less", np.interval=FALSE, method="z-pooled", npNumbers=1000, to.plot = FALSE)$p.value,4),
     round(
       uncondExact2x2(x1,n1,x2,n2, alternative="less", parmtype="difference", method="wald-pooled", 
                      control=ucControl(nPgrid=1000), gamma=0)$p.value,4)
@@ -37,7 +37,7 @@ context("Exact: Boschloo")
 test_that("less, greater, two.sided",{
   expect_equal(
     round(
-      exact.test(xmat, alternative="less", interval=FALSE, 
+      exact.test(xmat, alternative="less", np.interval=FALSE, 
                  method="Boschloo", npNumbers=1000, to.plot = FALSE)$p.value,4),
     round(
       boschloo(x1,n1,x2,n2, alternative="less", tsmethod="minlike",
@@ -45,7 +45,7 @@ test_that("less, greater, two.sided",{
   )
   expect_equal(
     round(
-      exact.test(xmat, alternative="greater", interval=FALSE, 
+      exact.test(xmat, alternative="greater", np.interval=FALSE, 
                  method="Boschloo", npNumbers=1000, to.plot = FALSE)$p.value,4),
     round(
       boschloo(x1,n1,x2,n2, alternative="greater", tsmethod="minlike",
@@ -53,7 +53,7 @@ test_that("less, greater, two.sided",{
   )
   expect_equal(
     round(
-      exact.test(xmat, alternative="two.sided", interval=FALSE, 
+      exact.test(xmat, alternative="two.sided", np.interval=FALSE, 
                  method="Boschloo", npNumbers=1000, to.plot = FALSE)$p.value,4),
     round(
       boschloo(x1,n1,x2,n2, alternative="two.sided", tsmethod="minlike",
@@ -76,7 +76,7 @@ test_that("less, greater, two.sided",{
   # first gamma=0
   expect_equal(
     round(
-      exact.test(xmat, alternative="two.sided", interval=FALSE, 
+      exact.test(xmat, alternative="two.sided", np.interval=FALSE, 
                  method="z-pooled", npNumbers=1000, to.plot = FALSE)$p.value,4),
     round(
       uncondExact2x2(x1,n1,x2,n2, alternative="two.sided", tsmethod="square", method="wald-pooled",
@@ -86,7 +86,7 @@ test_that("less, greater, two.sided",{
   # we both get 0.03781
   expect_equal(
     round(
-      exact.test(xmat, alternative="two.sided", interval=TRUE, beta=0.001, 
+      exact.test(xmat, alternative="two.sided", np.interval=TRUE, beta=0.001, 
                  method="z-pooled", npNumbers=1000, to.plot = FALSE)$p.value,4),
     round(
       uncondExact2x2(x1,n1,x2,n2, alternative="two.sided", tsmethod="square", method="wald-pooled",
