@@ -65,7 +65,7 @@ the power functions return only the power. The sample size function returns a li
 %\note{}
 
 \seealso{
-For power and sample size for conditional exact tests (e.g., Fisher's exact tests) see  \code{\link{power2x2}} and \code{\link{ss2x2}}.
+For power and sample size for conditional exact tests (e.g., Fisher's exact tests) see  \code{\link{power2x2}} and \code{\link{ss2x2}}. For power for the boundary-optimized rejection region (BORR) test  see \code{\link{powerBorr}}.
 }
 \examples{
 library(exact2x2)

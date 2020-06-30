@@ -1,3 +1,11 @@
+1.6.4
+ -change author field in DESCRIPTION file
+ - fixed exact2x2 so that midp works when paired=TRUE
+ -add mcnemarExactDP for exact McNemar-type tests (i.e., exact conditional tests with paired data) with confidence intervals on the difference in proportions 
+ -added powerPaired2x2 for the exact McNemar-type test power 
+ -fixed typos in man page for power2x2 (thanks to Eric Leifer). 
+ -added powerBorr to get power for the  boundary-optimized rejection region (BORR) test 
+
 1.6.3.1
  -No changes to the functions in exact2x2. Just changed test scripts that called exact.test from the Exact R package. Version 2.0 of Exact changed the argument in exact.test from 'interval' to 'np.interval', so that created an error for our test functions. Now test works as long as you use Exact version 2.0 or greater.
 

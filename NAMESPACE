@@ -8,8 +8,9 @@ export(exact2x2Pvals,exact2x2,exact2x2CI,exact2x2Plot,
  constrMLE.oddsratio, getDeltaGrid, getPDQD, getPI, getPrange,
  pickTstat, power2grid, 
  ucControl, createR, fillsquare, getColor, plotRankMat, plotT, orderMat,
- Power2x2, SS2x2, uncondPower2x2,
- borrControl, borrTest, borrOrdering, borrPvals, borrPreCalc)
+ Power2x2, SS2x2, uncondPower2x2, powerPaired2x2,
+ borrControl, borrTest, borrOrdering, borrPvals, borrPreCalc, powerBorr,
+ mcnemarExactDP)
 
 S3method("plotT", "function")
 S3method("plotT", "numeric")
@@ -21,7 +22,7 @@ import(exactci)
 importFrom(ssanv,uniroot.integer)
 importFrom(stats,pbeta,dbeta,qbeta, rbeta, quantile, integrate,uniroot,
  complete.cases,fisher.test, dhyper, phyper, qnorm, pnorm,
- dbinom,pbinom,qbinom,approx,rbinom, binom.test)
+ dbinom,pbinom,qbinom,approx,rbinom, binom.test,dmultinom)
 
 importFrom(utils,packageDescription)
 importFrom(graphics, points, lines, plot, polygon, par, mtext)

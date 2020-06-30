@@ -1,16 +1,20 @@
 Package: exact2x2
 Type: Package
 Title: Exact Tests and Confidence Intervals for 2x2 Tables
-Version: 1.6.3.1
-Date: 2019-10-16
-Author: Michael P. Fay, Sally A. Hunsberger, Martha Nason, Erin Gabriel
+Version: 1.6.4.1
+Date: 2020-06-29
+Author: Michael P. Fay [aut, cre], 
+  Sally A. Hunsberger [ctb], 
+  Martha Nason [ctb], 
+  Erin Gabriel [ctb],
+  Keith Lumbard [ctb]
 Maintainer: Michael P. Fay <mfay@niaid.nih.gov>
 Depends: R (>= 2.10), stats (>= 3.1.1), exactci, ssanv
-Description: Calculates conditional exact tests (Fisher's exact test, Blaker's exact test, or  exact McNemar's test) and unconditional exact tests (including score-based tests on differences in proportions, ratios of proportions, and odds ratios, and Boshcloo's test) with appropriate matching confidence intervals, and provides power and sample size calculations. Gives melded confidence intervals for the binomial case. Gives boundary-optimized rejection region test (Gabriel, et al, 2018, <DOI:10.1002/sim.7579>), an unconditional exact test for the situation where the controls are all expected to fail.
+Description: Calculates conditional exact tests (Fisher's exact test, Blaker's exact test, or  exact McNemar's test) and unconditional exact tests (including score-based tests on differences in proportions, ratios of proportions, and odds ratios, and Boshcloo's test) with appropriate matching confidence intervals, and provides power and sample size calculations. Gives melded confidence intervals for the binomial case (Fay, et al, 2015, <DOI:10.1111/biom.12231>). Gives boundary-optimized rejection region test (Gabriel, et al, 2018, <DOI:10.1002/sim.7579>), an unconditional exact test for the situation where the controls are all expected to fail. 
 License: GPL-3
 LazyLoad: yes
-Suggests: testthat, Exact (>= 2.0)
+Suggests: testthat, Exact (>= 2.0), ggplot2, grid, gridExtra
 NeedsCompilation: no
-Packaged: 2019-10-16 13:35:05 UTC; faym
+Packaged: 2020-06-30 17:54:25 UTC; faym
 Repository: CRAN
-Date/Publication: 2019-10-16 19:00:02 UTC
+Date/Publication: 2020-06-30 20:20:08 UTC

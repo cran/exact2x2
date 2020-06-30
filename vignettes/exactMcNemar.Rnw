@@ -18,7 +18,7 @@
 \begin{center}
 {\Large \bf Exact McNemar's Test and Matching Confidence Intervals} \\
 Michael P. Fay \\
-April 25, 2016\footnote{The April 25, 2016  version adds Appendix A, and moves the first appendix to Appendix B.}
+June 29, 2020\footnote{The June 29, 2020 version added a section with {\sf powerPaired2x2}. The April 25, 2016  version added Appendix A, and moved the first appendix to Appendix B.}
 \end{center}
 
 <<echo=FALSE,results=hide,eval=T>>=
@@ -138,6 +138,49 @@ Using $x$ defined earlier, here is the exact McNemar's test with the central con
 mcnemar.exact(x)
 @
 
+
+
+
+
+
+
+\section*{Power for Exact McNemar Test}
+
+
+McNemar's test is for paired binary observations. Let $Y_{i1}$ and $Y_{i2}$  be the responses from the 
+$i$th pair, where $Y_{i1}$ is the response from the control individual in the pair, and $Y_{i2}$
+is the response from the test individual in the pair. 
+Let the response of the $i$th pair be $[Y_{i1}, Y_{i2}]$. Then there are only 4 types of pairs according to their responses, type a: $(0,0)$, type b: $(0,1)$, type c: $(1,0)$, and type d: $(1,1)$, which align with the 4 cells in the $2 \times 2$ table.  Let $\pi_a$, $\pi_b$, $\pi_c$ and $\pi_d$ denote the probability of observing a pair of each type.
+
+
+
+
+The paired exact McNemar test (including one-sided versions) only uses the pairs of type b and c.
+So for the power calculation we only need $\pi_b$, 
+$\pi_c$, and the total number of pairs. 
+
+The function {\sf powerPaired2x2} calculates the power of the exact McNemar test. 
+
+
+
+
+
+Here is the result when $\pi_b=.5$ and $\pi_c=.3$ and the number of pairs equals $100$:
+<<>>=
+powerPaired2x2(pb=.5,pc=.3,npairs=100)
+@
+
+
+
+
+
+
+
+
+
+
+
+
 \section*{Appendix A: Relationship of Odds for Conditional Data and Odds Ratio for Unconditional Data} 
 
 Let $Y_{ij}$ be the $j$th binary response from the $i$th pair. For example, $Y_{i1}$ could be the binary response from the twin randomized to the control group in the  $i$th set of twins,
@@ -236,6 +279,21 @@ F(x)=\bar{F}(n-x) = \sum_{i: f(i) \leq f(x) \mbox{ and } i>n/2} f(i).
   $x$ with $\min \left\{F(x), \bar{F}(x) \right\} \leq F(b)$ will also give the same p-value and $p_b$ is equivalent to the other p-values.
 \item[Case 3, $b>n/2$:] By symmetry, we can show through similar arguments to Case 2 that all 4 p-values are equivalent. 
 \end{description}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

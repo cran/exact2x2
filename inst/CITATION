@@ -47,8 +47,22 @@ as.person("Dean A. Follmann")),
   year         = "2018",
   volume       = "37",
   number       = "7",  
-  pages        = "?--?",
-  textVersion  ="Gabriel, EE, Nason, M, Fay, MP, Follmann, DA. (2018). A boundary-optimized rejection region test for the two-sample binomial problem. Statistics in Medicine DOI: 10.1002/sim.7579.",
+  pages        = "1047--1058",
+  textVersion  ="Gabriel, EE, Nason, M, Fay, MP, Follmann, DA. (2018). A boundary-optimized rejection region test for the two-sample binomial problem. Statistics in Medicine 37:1047-1058 (letter-response: 37:2301-2306).",
   header = "When using boundary-optimized rejection region tests (boorTest) cite:"
 )
+
+
+citEntry(entry="Article",
+  title        = "Confidence Intervals for Difference in Proportions for Matched Pairs Compatible with Exact McNemars or Sign Tests",
+  author       = personList(
+as.person("Michael P. Fay"),
+as.person("Keith Lumbard")), 
+  journal = "unpublished manuscript",
+  year="2020",
+  textVersion  ="Fay MP, and Lumbard, K (2020). Confidence Intervals for Difference in Proportions for Matched Pairs Compatible with Exact McNemars or Sign Tests. (unpublished manuscript).",
+  header = "When using mcnemarExactDP cite:"
+)
+
+
 

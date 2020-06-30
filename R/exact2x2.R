@@ -79,7 +79,8 @@ function(x, y = NULL, or = 1, alternative = "two.sided",
     if (nr!=2 || nc!=2) stop("table must be 2 by 2")
 
     if (paired){
-        OUT<-mcnemar.exact.calc(x[1,2],x[2,1],or=or,alternative=alternative,tsmethod=tsmethod,conf.level=conf.level)
+        # fixed June 26, 2020: previously left of midp=midp in next call
+        OUT<-mcnemar.exact.calc(x[1,2],x[2,1],or=or,alternative=alternative,tsmethod=tsmethod,conf.level=conf.level, midp=midp)
     } else {
 
         if (alternative=="less" | alternative=="greater"){

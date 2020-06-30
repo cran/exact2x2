@@ -25,3 +25,9 @@ mcnemar.test(x,correct=FALSE)
 mcnemar.exact(x)
 
 
+###################################################
+### code chunk number 5: exactMcNemar.Rnw:169-170
+###################################################
+powerPaired2x2(pb=.5,pc=.3,npairs=100)
+
+

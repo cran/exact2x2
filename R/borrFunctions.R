@@ -524,3 +524,14 @@ borrPvals<-function(n1,n2, tuningParm=0.025,
 #                          controlborr = borrControl(nAlphaGrid = 1000, nThetaGrid=10000, maxIter=0)) 
 #save(orderPreCalc, file="R/sysdata.rda")
 
+
+powerBorr<- function(n1,n2,p1,p2,alpha=0.025,...){
+  pvals<-borrPvals(n1,n2,conf.int=FALSE,...)
+  X1<- 0:n1
+  X2<- 0:n2
+  f1<- dbinom(X1,n1,p1)
+  f2<- dbinom(X2,n2,p2)
+  f<- matrix(rep(f1,n2+1)*rep(f2,each=n1+1),n1+1,n2+1)
+  power<- sum(f[pvals<=alpha])
+  power
+}

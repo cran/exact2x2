@@ -2,6 +2,7 @@
 \alias{borrTest}
 \alias{borrPvals}
 \alias{borrOrdering}
+\alias{powerBorr}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Boundary-Optimized Rejection Region Test}
@@ -26,6 +27,8 @@ borrPvals(n1,n2, tuningParm=0.025,
 
 borrOrdering(n1,n2,tuningParm = .025,
             controlborr=borrControl())
+            
+powerBorr(n1,n2,p1,p2,alpha=0.025,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -70,8 +73,17 @@ a list of control parameters to define algorithms in the call to \code{\link{unc
   \item{controlborr}{
 a list of control parameters to define algorithms, see \code{\link{borrControl}}
 }
+\item{p1}{
+probability of an event in group 1
+}
+\item{p2}{
+probability of an event in group 2
+}
+\item{alpha}{
+alpha-level for rejecting, reject when p-value \deqn{latex}{\leq} alpha
+}
   \item{\dots}{
-extra arguments passed (for future development)
+extra arguments passed (only used for \code{powerBorr}, passes arguments to the \code{borrPvals} function)
 }
 }
 \details{
@@ -82,8 +94,9 @@ where we expect all n1 individuals that got the control vaccine to have the even
 
 
 The function \code{borrTest} tests the results of one study, and returns 
-an \code{htest} object. The function \code{borrPvals} calculates the p-values for every possible result of a study. The function \code{borrOrdering} orders every possible result of the study. 
-See \code{\link{borrOrderingInternal}} for calculation details.
+an \code{htest} object. The function \code{borrPvals} calculates the p-values for every possible result of a study. The function \code{borrOrdering} orders every possible result of the study.
+See \code{\link{borrOrderingInternal}} for calculation details. The function \code{powerBorr} calculates the power
+where p-values are calculated by \code{borrPvals} and rejection is when \deqn{latex}{p \leq} alpha.
 
 }
 \value{

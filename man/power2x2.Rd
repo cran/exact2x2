@@ -47,7 +47,9 @@ calculate the very unlikely values of X0 and X1 unless errbound=0. Power is exac
 
 When strict=FALSE we do not count rejections in the wrong direction. This means that we must know the direction of the rejection, so two.sided tests are calculated as one.sided tests (in the correct direction) with level equal to sig.level/2. This is like using the tsmethod='central'. 
 
-When \code{approx}=TRUE for \code{power2x2} use a continuity corrected normal approximation (Fleiss, 1981, p. 44). For \code{ss2x2}
+When \code{approx}=TRUE for \code{power2x2} use a continuity corrected normal approximation (Fleiss, 1981, p. 44). For \code{ss2x2} the calculations may be slow, so use 
+\code{print.steps=TRUE} to see progress. 
+
 }
 \value{
  Both \code{power2x2} and \code{ss2x2} return an object of class 'power.htest'. A list with elements
@@ -61,7 +63,8 @@ When \code{approx}=TRUE for \code{power2x2} use a continuity corrected normal ap
 \item{note}{note about error bound}
 \item{method}{description}
 }
-%\references{ ~put references to the literature/web site here ~ }
+\references{ 
+Fleiss. JL (1981) Statistical Methods for Rates and Proportions (second edition). Wiley. }
 \author{ Michael P. Fay }
 \note{ The calculations in ss2x2 can be slow when p0 is close to p1 and/or the power is large. If p0 and p1 are close with large power, it may be safer to first calculate ss2x2 with approx=TRUE
 to see what the starting value will be close to. If the starting sample sizes are large (>100), it may take a while.
