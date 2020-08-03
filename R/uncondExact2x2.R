@@ -726,16 +726,51 @@ getPDQD <- function(DELTA, Tstat, x1, n1, x2, n2, allx, ally, K1,K2, XX1, XX2,
                                                          qbinom(1 - errbound/2, n1, pi1) + 1)
       XX2 <- max(0, qbinom(errbound/2, n2, pi2) - 1):min(n2, 
                                                          qbinom(1 - errbound/2, n2, pi2) + 1)
-      K1 <- choose(n1, XX1)
-      K2 <- choose(n2, XX2)
+      # Aug 2, 2020: change to lchoose to avoid overflow
+      K1 <- lchoose(n1, XX1)
+      K2 <- lchoose(n2, XX2)
       allx <- rep(XX1, length(XX2))
       ally <- rep(XX2, each = length(XX1))
       Tall <- Tstat(allx, n1, ally, n2, DELTA)
       T0<- Tall[allx==x1 & ally==x2]
       
     }
-    fx <- rep(K1 * pi1^XX1 * (1 - pi1)^(n1 - XX1), length(XX2))
-    fy <- rep(K2 * pi2^XX2 * (1 - pi2)^(n2 - XX2), each = length(XX1))
+    # Aug 2, 2020: fixed error 
+    # here is an example that gave an incorrect p-value of 1
+    # for versions <= 1.6.4.1
+    # uncondExact2x2(x1=125, n1=1125,  x2=23, n2=30)
+    # the true answer is a very small p-value
+    #
+    # to fix: changed K1 and K2 to lchoose to avoid overflow
+    # so must change fx and fy also
+    if (pi1==0 | pi1==1){
+      fx.once<-  rep(0,length(XX1))
+      if (pi1==0){
+        fx.once[XX1==0]<- 1 
+      } else if (pi1==1){
+        fx.once[XX1==n1]<- 1 
+      }
+    } else {
+      fx.once<- exp(K1 + XX1*log(pi1)+ (n1-XX1)*log(1-pi1))      
+    }
+    if (pi2==0 | pi2==1){
+      fy.once<-  rep(0,length(XX2))
+      if (pi2==0){
+        fy.once[XX2==0]<- 1 
+      } else if (pi2==1){
+        fy.once[XX2==n2]<- 1 
+      }
+    } else {
+      fy.once<- exp(K2 + XX2*log(pi2)+ (n2-XX2)*log(1-pi2))      
+    }
+    fx <- rep(fx.once, length(XX2))
+    fy <- rep(fy.once, each = length(XX1))
+    # end of Aug 2, 2020 fix
+    # OLD CODE...Sometimes it would give K1<-choose() values of Inf so that f would have 
+    # NaN values 
+    #fx <- rep(K1 * pi1^XX1 * (1 - pi1)^(n1 - XX1), length(XX2))
+    #fy <- rep(K2 * pi2^XX2 * (1 - pi2)^(n2 - XX2), each = length(XX1))
+    
     f <- fx * fy
     ## sum(f) may be slightly less than 1 if errbound>0, standardize so sums to 1
     f<-f/sum(f)
@@ -800,7 +835,7 @@ getPDQD <- function(DELTA, Tstat, x1, n1, x2, n2, allx, ally, K1,K2, XX1, XX2,
   out <- list(Pd = Pd, Qd = Qd)
   out
 }
-######################### End of get PDQD function
+######################### End of getPDQD function
 
 
 ######## unconditional function method=='simpleTB' means simple tiebreak note
@@ -889,8 +924,11 @@ uncondExact2x2 <- function(x1, n1, x2, n2,
     if (errbound == 0) {
       XX1 <- 0:n1
       XX2 <- 0:n2
-      K1 <- choose(n1, XX1)
-      K2 <- choose(n2, XX2)
+      # Aug 2, 2020: change to lchoose to avoid overflow
+      # need to change the way fx and fy are calculated later 
+      # to make it work out correctly
+      K1 <- lchoose(n1, XX1)
+      K2 <- lchoose(n2, XX2)
     }
     
 

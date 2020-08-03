@@ -1,8 +1,8 @@
 Package: exact2x2
 Type: Package
 Title: Exact Tests and Confidence Intervals for 2x2 Tables
-Version: 1.6.4.1
-Date: 2020-06-29
+Version: 1.6.5
+Date: 2020-08-02
 Author: Michael P. Fay [aut, cre], 
   Sally A. Hunsberger [ctb], 
   Martha Nason [ctb], 
@@ -15,6 +15,6 @@ License: GPL-3
 LazyLoad: yes
 Suggests: testthat, Exact (>= 2.0), ggplot2, grid, gridExtra
 NeedsCompilation: no
-Packaged: 2020-06-30 17:54:25 UTC; faym
+Packaged: 2020-08-03 01:36:57 UTC; faym
 Repository: CRAN
-Date/Publication: 2020-06-30 20:20:08 UTC
+Date/Publication: 2020-08-03 06:30:17 UTC

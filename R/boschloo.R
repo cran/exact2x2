@@ -5,8 +5,8 @@ boschloo<-function(x1, n1, x2, n2, alternative = c("two.sided", "less", "greater
   alternative<-match.arg(alternative)
   tsmethod<-match.arg(tsmethod)
   
-
- if (midp){
+  
+  if (midp){
     # when midp=TRUE, use the same ordering function for all
     # types of alternatives, but changes with delta0
     T<-function(X1,N1,X2,N2,delta0=1){
@@ -14,8 +14,8 @@ boschloo<-function(x1, n1, x2, n2, alternative = c("two.sided", "less", "greater
       pval<-rep(NA,m)
       for (i in 1:m){
         pval[i]<-exact2x2(matrix(c(X2[i],N2-X2[i],X1[i],N1-X1[i]),2,2),
-                 or=delta0, conf.int=FALSE, 
-                 midp=TRUE, alternative="less")$p.value
+                          or=delta0, conf.int=FALSE, 
+                          midp=TRUE, alternative="less")$p.value
       }
       pval
     }

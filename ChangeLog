@@ -1,3 +1,6 @@
+1.6.5
+ -fixed uncondExact2x2 (and functions that call it, like boschloo) so othat it does not give a wrong p-value when the choose function goes to Inf. It gave mistakenly gave p=1. Now the function uses the lchoose function to avoid that problem (thanks to Sven Garbade for finding the bug).
+
 1.6.4
  -change author field in DESCRIPTION file
  - fixed exact2x2 so that midp works when paired=TRUE

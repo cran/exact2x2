@@ -16,14 +16,14 @@ creates unconditional exact tests that have power optimized when group 1 is expe
 \tabular{ll}{
 Package: \tab bpcp\cr
 Type: \tab Package\cr
-Version: \tab 1.6.4.1\cr
-Date: \tab 2020-06-29\cr
+Version: \tab 1.6.5\cr
+Date: \tab 2020-08-02\cr
 License: \tab GPL3\cr
 LazyLoad: \tab yes\cr
 }
 }
 \author{
-Michael P. Fay, Sally A. Hunsberger, Martha Nason, Erin Gabriel
+Michael P. Fay, Sally A. Hunsberger, Martha Nason, Erin Gabriel, Keith Lumbard
 
 Maintainer: Michael P. Fay <mfay@niaid.nih.gov>
 
