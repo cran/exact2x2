@@ -5,19 +5,19 @@
 Exact Tests and Confidence Intervals for 2x2 Tables
 }
 \description{
-There are 7 main functions in the package. 
+There are 8 main functions in the package. 
 The \code{\link{exact2x2}} function calculates the exact conditional tests with matching confidence intervals as detailed in Fay (2010a <DOI:10.1093/biostatistics/kxp050>,2010b). The functions \code{\link{ss2x2}} and \code{\link{power2x2}} calculate the sample size and power related to the tests of \code{exact2x2}. The \code{\link{uncondExact2x2}}
-and \code{\link{boschloo}} functions calculate unconditional exact tests.
+and \code{\link{boschloo}} functions calculate unconditional exact tests (see Fay  and Hunsberger, 2021, <DOI:10.1214/21-SS131>).
 The \code{\link{binomMeld.test}} function calculates melded confidence intervals for two sample binomial inferences (see Fay, Proschan, and Brittain, 2015 <DOI:10.1111/biom.12231>).
 Finally, the \code{\link{borrTest}} function calculates the boundary optimized rejection region test that 
-creates unconditional exact tests that have power optimized when group 1 is expected to have 100 percent failure. For example, in vaccine challenge studies where the control group are all expected to get infected (see Gabriel, et al, 2018 <DOI:10.1002/sim.7579>, the letter about that paper by Martin Andres <DOI:10.1002/sim.7630>, and the response <DOI:10.1002/sim.7684>).
+creates unconditional exact tests that have power optimized when group 1 is expected to have 100 percent failure. For example, in vaccine challenge studies where the control group are all expected to get infected (see Gabriel, et al, 2018 <DOI:10.1002/sim.7579>, the letter about that paper by Martin Andres <DOI:10.1002/sim.7630>, and the response <DOI:10.1002/sim.7684>). The  \code{\link{mcnemarExactDP}} function give p-values and confidence intervals compatible with exact McNemar's or sign tests (Fay and Lumbard, 2021, <DOI:10.1002/sim.8829>).
  }
 \details{
 \tabular{ll}{
 Package: \tab bpcp\cr
 Type: \tab Package\cr
-Version: \tab 1.6.5\cr
-Date: \tab 2020-08-02\cr
+Version: \tab 1.6.6\cr
+Date: \tab 2021-12-08\cr
 License: \tab GPL3\cr
 LazyLoad: \tab yes\cr
 }
@@ -35,6 +35,7 @@ Fay, M. P. (2010a). Confidence intervals that Match Fisher's exact and Blaker's 
 
 Fay, M.P. (2010b). Two-sided Exact Tests and Matching Confidence Intervals for Discrete Data. R Journal 2(1):53-58.
 
+Fay, M.P. and Hunsberger, S.A. (2021). Practical Valid Inferences for the Two-Sample Binomial Problem. Statistics Surveys 15:72-110.
 
 Fay, MP, Proschan, MA, and Brittain, E (2015). Combining One Sample Confidence Procedures for Inference in the Two Sample Case. Biometrics. 71: 146-156. 
 

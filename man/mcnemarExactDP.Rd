@@ -39,7 +39,7 @@ of the difference in proportions. The p-values will be identical between the two
 confidence intervals will be different.
 
 For this function, we use the melding idea (Fay, et al, 2015), to create compatable confidence intervals
-    with exact versions of McNemars test. For details see Fay and Lumbard (2020).
+    with exact versions of McNemars test. For details see Fay and Lumbard (2021).
  See Fagerland, et al (2013) for other parameters and methods related to paired binary responses. 
     The advantage of this version is that it is exact, and faster than the unconditional exact methods (which may be more powerful). 
 }
@@ -57,7 +57,7 @@ For this function, we use the melding idea (Fay, et al, 2015), to create compata
 \references{
 Fay, MP, Proschan, MA, and Brittain, E (2015). Combining one-sample confidence procedures for inference in the two-sample case. Biometrics,71(1),146-156.
 
-Fay MP, and Lumbard, K (2020). Confidence Intervals for Difference in Proportions for Matched Pairs Compatible with Exact McNemars or Sign Tests. (unpublished manuscript).
+Fay MP, and Lumbard, K (2021). Confidence Intervals for Difference in Proportions for Matched Pairs Compatible with Exact McNemars or Sign Tests. Statistics in Medicine, 40(5): 1147-1159.
 
 Fagerland, Lydersen and Laake (2013), Recommended tests and confidence
 intervals for paired binomial proportions. Statitics in Medicine, 33:2850-2875.

@@ -28,22 +28,30 @@ function(p0,p1,n0,n1=NULL,sig.level=0.05,alternative=c("two.sided","one.sided"),
     }
     if (approx){
         if (paired==TRUE) stop("no approximate method written for McNemar's test yet")
-        Crit<- qnorm(1-SIG.LEVEL)
-        delta<-p0-p1
         ## see e.g., Chow, Shao and Wang, 2008,p.89. SS Calcs in CLin Research, 2nd edition
+        #delta<-p0-p1
         #V0<-p0*(1-p0)/n0
         #V1<-p1*(1-p1)/n1
-        #prob.reject<- pnorm( abs(delta)/sqrt(V0+V1) - Crit )
+        #prob.reject<- pnorm( abs(delta)/sqrt(V0+V1) -  qnorm(1-SIG.LEVEL) )
 
 
         ## see Fleiss, 1981, p. 44
-
+        ## or Fleiss, Levin, and Paik (2003) Statistical Methods for Rates and Proportions, 3rd edition, p. 76
         r<- n1/n0
         m<-n0
         pbar<- (p0 + r*p1)/(r+1)
         se<- sqrt( pbar*(1-pbar)*(r+1)/(m*r) )
-        z<- (abs(delta) - (1/(2*m))*((r+1)/r)  )/se
-        prob.reject<- pnorm( z - Crit )
+        # use continuity correction
+        z<- (abs(p1-p0) - (1/(2*m))*((r+1)/r)  )/se
+        if (ALT!="two.sided"){
+          # strict=F & ALT="two.sided" changed above to ALT="less" or ALT="greater" and SIG.LEVEL<-SIG.LEVEL/2
+          Crit<- qnorm(1-SIG.LEVEL)
+          prob.reject<- pnorm( z - Crit )
+        } else {
+          # strict=T & ALT="two.sided"
+          Crit<- qnorm(1-SIG.LEVEL/2)
+          prob.reject<- pnorm( z-Crit) + pnorm(-Crit - z)
+        }
 
     } else {
         ilow<-max(0,qbinom(eps/2,n0,p0)-1)

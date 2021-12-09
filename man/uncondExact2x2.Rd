@@ -131,6 +131,8 @@ proper answer. So method='user-fixed' should be used by advanced users only.
 When \code{midp=TRUE} the mid p-value is calculated (and the associated confidence interval if \code{conf.int=TRUE}) instead of the standard p-value. Loosely speaking, the standard p-value calculates the probability of observing equal or more extreme responses, while the  mid p-value calculates the probability of more extreme responses plus 1/2 the probability of equally extreme responses. The tests and confidence intervals when 
 \code{midp=TRUE} are not exact, but give type I error rates and coverage of confidence intervals closer to the nominal values.
 The mid p-value was studied by Lancaster (1961), see vignette on mid p-values for details. 
+
+See Fay and Hunsberger (2021) for a review paper giving the details for these kinds of unconditional exact tests.
 }
 \value{
 The function \code{uncondExact2x2Pvals} returns a (n1+1) by (n2+1) matrix of p-values for all possible x1 and x2 values, while \code{uncondExact2x2} returns
@@ -149,6 +151,8 @@ a list of class 'htest' with elements:
 Berger, R. L. and Boos, D. D. (1994). P values maximized
 over a confidence set for the nuisance parameter. Journal
 of the American Statistical Association 89 1012-1016.
+
+Fay, M.P. and Hunsberger, S.A. (2021). Practical valid inferences for the two-sample binomial problem. Statistics Surveys 15:72-110.
 
 Lancaster, H.O. (1961). Significance tests in discrete distributions. JASA 56: 223-234.
 
