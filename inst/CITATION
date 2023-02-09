@@ -1,70 +1,68 @@
 citHeader("To cite exact2x2 in publications use:")
 
-citEntry(entry="Article",
-  title        = "Confidence intervals that match Fisher's exact or Blaker's exact tests",
-  author       = personList(as.person("Michael P. Fay")), 
-  journal      = "Biostatistics",
-  year         = "2010",
-  volume       = "11",
-  number       = "2",  
-  pages        = "373--374",
-  url ="https://www.niaid.nih.gov/about/brb-staff-fay",
-  textVersion  ="Fay MP (2010). Confidence intervals that match Fisher's exact or Blaker's exact tests. Biostatistics. 11:373-374",
-  header = "When using Fisher's exact or Blaker's exact test for 2x2 tables cite:"
-)
-
-citEntry(entry="Article",
-  title        = "Two-sided Exact Tests and Matching Confidence Intervals for Discrete Data",
-  author       = personList(as.person("Michael P. Fay")), 
-  journal      = "R Journal",
-  year         = "2010",
-  volume       = "2",
-  number       = "1",  
-  pages        = "53--58",
-  url ="https://journal.r-project.org/",
-  textVersion  ="Fay MP (2010). Two-sided Exact Tests and Matching Confidence Intervals for Discrete Data. R Journal 2(1):53-58.",
-  header = "When using the exact McNemar's test (paired=TRUE) cite:"
-)
-
-citEntry(entry="Article",
-  title        = "Combining one sample confidence procedures for inference in the two sample case",
-  author       = personList(as.person("Michael P. Fay"),as.person("Michael A. Proschan"),as.person("Erica Brittain")), 
-  journal      = "Biometrics",
-  year ="2014",
-  url ="https://www.niaid.nih.gov/about/brb-staff-fay",
-  textVersion  ="Fay MP,  Proschan, MA, Brittain, E, (2015). Combining one sample confience procedures for inference in the two sample case. Biometrics 71: 146-156.",
-  header = "When using binomMeld.test cite:"
-)
-
-citEntry(entry="Article",
-  title        = "A boundary-optimized rejection region test for the two-sample binomial problem",
-  author       = personList(
-as.person("Erin E. Gabriel"),
-as.person("Martha Nason"),
-as.person("Michael P. Fay"),
-as.person("Dean A. Follmann")), 
-  journal      = "Statistics in Medicine",
-  year         = "2018",
-  volume       = "37",
-  number       = "7",  
-  pages        = "1047--1058",
-  textVersion  ="Gabriel, EE, Nason, M, Fay, MP, Follmann, DA. (2018). A boundary-optimized rejection region test for the two-sample binomial problem. Statistics in Medicine 37:1047-1058 (letter-response: 37:2301-2306).",
-  header = "When using boundary-optimized rejection region tests (boorTest) cite:"
+bibentry(bibtype="Article",
+                  title        = "Confidence intervals that match Fisher's exact or Blaker's exact tests",
+                  author       = person(given="Michael P.", family="Fay"), 
+                  journal      = "Biostatistics",
+                  year         = "2010",
+                  volume       = "11",
+                  number       = "2",  
+                  pages        = "373--374",
+                  textVersion  ="Fay MP (2010). Confidence intervals that match Fisher's exact or Blaker's exact tests. Biostatistics. 11:373-374",
+                  header = "When using Fisher's exact or Blaker's exact test for 2x2 tables cite:"
 )
 
 
-citEntry(entry="Article",
-  title        = "Confidence Intervals for Difference in Proportions for Matched Pairs Compatible with Exact McNemars or Sign Tests",
-  author       = personList(
-as.person("Michael P. Fay"),
-as.person("Keith Lumbard")), 
-  journal = "Statistics in Medicine",
-  year="2021",
-  volume="40",
-  number="5",
-  pages="1147--1159",
-  textVersion  ="Fay MP, and Lumbard, K (2021). Confidence Intervals for Difference in Proportions for Matched Pairs Compatible with Exact McNemars or Sign Tests. Statistics in Medicine 40(5):1147-1159.",
-  header = "When using mcnemarExactDP cite:"
+bibentry(bibtype="Article",
+         title        = "Two-sided Exact Tests and Matching Confidence Intervals for Discrete Data",
+         author       = person("Michael P. Fay"), 
+         journal      = "R Journal",
+         year         = "2010",
+         volume       = "2",
+         number       = "1",  
+         pages        = "53--58",
+         url ="https://journal.r-project.org/",
+         textVersion  ="Fay MP (2010). Two-sided Exact Tests and Matching Confidence Intervals for Discrete Data. R Journal 2(1):53-58.",
+         header = "When using the exact McNemar's test (paired=TRUE) cite:"
+)
+
+bibentry(bibtype="Article",
+         title        = "Combining one sample confidence procedures for inference in the two sample case",
+         author       = person(c("Michael P. Fay","Michael A. Proschan","Erica Brittain")), 
+         journal      = "Biometrics",
+         year ="2015",
+         textVersion  ="Fay MP,  Proschan, MA, Brittain, E, (2015). Combining one sample confience procedures for inference in the two sample case. Biometrics 71: 146-156.",
+         header = "When using binomMeld.test cite:"
+)
+
+bibentry(bibtype="Article",
+         title        = "A boundary-optimized rejection region test for the two-sample binomial problem",
+         author       = person(
+           c("Erin E. Gabriel",
+           "Martha Nason",
+           "Michael P. Fay",
+           "Dean A. Follmann")), 
+         journal      = "Statistics in Medicine",
+         year         = "2018",
+         volume       = "37",
+         number       = "7",  
+         pages        = "1047--1058",
+         textVersion  ="Gabriel, EE, Nason, M, Fay, MP, Follmann, DA. (2018). A boundary-optimized rejection region test for the two-sample binomial problem. Statistics in Medicine 37:1047-1058 (letter-response: 37:2301-2306).",
+         header = "When using boundary-optimized rejection region tests (boorTest) cite:"
+)
+
+
+bibentry(bibtype="Article",
+         title        = "Confidence Intervals for Difference in Proportions for Matched Pairs Compatible with Exact McNemars or Sign Tests",
+         author       = person(
+           c("Michael P. Fay","Keith Lumbard")), 
+         journal = "Statistics in Medicine",
+         year="2021",
+         volume="40",
+         number="5",
+         pages="1147--1159",
+         textVersion  ="Fay MP, and Lumbard, K (2021). Confidence Intervals for Difference in Proportions for Matched Pairs Compatible with Exact McNemars or Sign Tests. Statistics in Medicine 40(5):1147-1159.",
+         header = "When using mcnemarExactDP cite:"
 )
 
 

@@ -46,6 +46,7 @@ arguments passed to \code{\link{exact2x2}} (except these arguments cannot be pas
 }
 \details{
 When \code{alternative='one.sided'} then the test automatically picks the side that is most powerful.
+At this point there is no ssPaired2x2 function.
 }
 \value{
 An object of class 'power.htest' with elements:

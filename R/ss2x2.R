@@ -12,6 +12,7 @@ paired=FALSE,strict=FALSE,tsmethod=NULL,nullOddsRatio=1,errbound=10^-6,print.ste
     NULLOR<-nullOddsRatio
     EB<-errbound
 
+    if (paired) stop("paired=TRUE no longer allowed, try using powerPaired2x2 repeatedly")
     ## create root function for uniroot.integer
 
 

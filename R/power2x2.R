@@ -4,11 +4,11 @@ function(p0,p1,n0,n1=NULL,sig.level=0.05,alternative=c("two.sided","one.sided"),
 
     if (p0>1 | p1>1 | p0<0 | p1<0) stop("p0 and p1 should be between 0 and 1")
     if (is.null(n1)) n1<-n0
-    if (paired & any(n0 != n1)) stop("n0 must equal n1 when paired=TRUE")
+    #if (paired & any(n0 != n1)) stop("n0 must equal n1 when paired=TRUE")
 
-    if (paired) warning("Assumes independent binomials for power calculations, may not be a good assumption for paired=TRUE (McNemar's) tests")
+    if (paired) stop("paired argument not allowed anymore, use powerPaired2x2") 
+    #warning("Assumes independent binomials for power calculations, may not be a good assumption for paired=TRUE (McNemar's) tests")
     # use same argument names as in exact2x2, but do not want double naming when calling
-    PAIRED<-paired
     TSMETHOD<-tsmethod
     eps<-errbound
     alt<-match.arg(alternative)
@@ -27,7 +27,7 @@ function(p0,p1,n0,n1=NULL,sig.level=0.05,alternative=c("two.sided","one.sided"),
         } else { ALT<-"greater" } 
     }
     if (approx){
-        if (paired==TRUE) stop("no approximate method written for McNemar's test yet")
+        #if (paired==TRUE) stop("no approximate method written for McNemar's test yet")
         ## see e.g., Chow, Shao and Wang, 2008,p.89. SS Calcs in CLin Research, 2nd edition
         #delta<-p0-p1
         #V0<-p0*(1-p0)/n0
@@ -63,7 +63,7 @@ function(p0,p1,n0,n1=NULL,sig.level=0.05,alternative=c("two.sided","one.sided"),
                 # it would be slightly faster not put data in matrix form, but to keep from making programming errors,
                 # just call exact2x2
                 x<-matrix(c(n0-i,i,n1-j,j),2,2)
-                pval<-exact2x2(x,or=nullOddsRatio, alternative=ALT, tsmethod=TSMETHOD, conf.int=FALSE, paired=PAIRED, plot=FALSE)$p.value
+                pval<-exact2x2(x,or=nullOddsRatio, alternative=ALT, tsmethod=TSMETHOD, conf.int=FALSE, paired=FALSE, plot=FALSE)$p.value
                 if (pval<=SIG.LEVEL){ 
                     prob.reject<-prob.reject+ dbinom(i,n0,p0)*dbinom(j,n1,p1) 
                 }
@@ -74,13 +74,14 @@ function(p0,p1,n0,n1=NULL,sig.level=0.05,alternative=c("two.sided","one.sided"),
     if (is.null(TSMETHOD)) TSMETHOD<-"NULL (see exact2x2 help)"
     if (paired==FALSE & strict==FALSE){
         METHOD<-"Power for Fisher's Exact Test"
-    } else if (paired==TRUE & strict==FALSE){
-        METHOD<-"Power for McNemar's Exact Test"
-    } else if (paired==FALSE & strict){
+    }  else if (paired==FALSE & strict){
         METHOD<-paste("Power for exact conditional test including power to reject in the wrong direction, tsmethod=",TSMETHOD)
-    } else if (paired==TRUE & strict){
-        METHOD<-"Power for McNemar's Exact Test, including power to reject in the wrong direction"
-    }
+    } 
+    #else if (paired==TRUE & strict==FALSE){
+    # METHOD<-"Power for McNemar's Exact Test"
+    #} else if (paired==TRUE & strict){
+    #    METHOD<-"Power for McNemar's Exact Test, including power to reject in the wrong direction"
+    #}
 
     if (approx) METHOD<- paste("Approximate",METHOD)
 

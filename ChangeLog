@@ -1,3 +1,7 @@
+1.6.7
+ -edited man pages for power2x2 and ss2x2 to state that paired=TRUE is not allowed, and direct users to powerPaired2x2
+ -added stop statement to give an error for paired=TRUE for power2x2 and ss2x2
+
 1.6.6
  -fixed power2x2 when approx=T and strict=T (thanks to John Lawrence for pointing out the problem).  
  -updated references

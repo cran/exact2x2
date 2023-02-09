@@ -35,7 +35,7 @@ ss2x2(p0,p1,power=.80,n1.over.n0=1,sig.level=0.05,
   \item{tsmethod}{two.sided method, ignored if strict=FALSE, or alternative equals 'less' or 'greater'. 
        see \code{\link{exact2x2}} for details.}
   \item{nullOddsRatio}{null odds ratio value for tests}
-  \item{paired}{logical. TRUE gives power for McNemar's test, FALSE are all other tests (see warning)}
+  \item{paired}{must be FALSE, for TRUE instead use \code{\link{powerPaired2x2}}}
 \item{print.steps}{logical, print steps for calculation of sample size?}
   \item{errbound}{bound on error of calculation }
 \item{approx}{give sample size or power using normal approximation only}
@@ -74,10 +74,8 @@ Note when strict=FALSE (default), the two.sided results at the 0.05 level for Fi
 \section{Warning }{
 There may be convergence issues using strict=FALSE with tsmethod="minlike" or "blaker" since the power is not guaranteed to be increasing in the sample size.  
 
-When paired=TRUE the model for the power calculation is fairly restrictive. It assumes that there is no correlation between the two groups. A better power function is probably needed for this case.
-
 } 
-\seealso{See  \code{\link{ss.nonadh}} function (refinement="Fisher.exact") from the \code{ssanv} package for calculation that accounts for nonadherence in proportion of subjects. That function calls \code{\link{fisher.test}} }
+\seealso{See  \code{\link{ss.nonadh}} function (refinement="Fisher.exact") from the \code{ssanv} package for calculation that accounts for nonadherence in proportion of subjects. That function calls \code{\link{fisher.test}}. For power for McNemar-like test see \code{\link{powerPaired2x2}} }
 \examples{
 power2x2(.2,.8,12,15)
 # calculate sample size with 2:1 allocation to groups
