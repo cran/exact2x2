@@ -1,3 +1,9 @@
+1.6.9
+ -minor change: typo in borrOrderingInternal.Rd
+
+1.6.8
+ -minor change 
+
 1.6.7
  -edited man pages for power2x2 and ss2x2 to state that paired=TRUE is not allowed, and direct users to powerPaired2x2
  -added stop statement to give an error for paired=TRUE for power2x2 and ss2x2

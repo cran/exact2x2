@@ -62,11 +62,11 @@ vector of theta values for theta2, usually determined by \code{controlborr$nThet
 \item{n.trt}{
 n2 (notation matches the Gabriel, et al paper)
 }
-\item{n.cntrl}{
+\item{n.ctrl}{
 n1 (notation matches the Gabriel, et al paper)
 }
 \item{max.uninf.ctrls}{
-set to n.cntrl, see code before changing it
+set to n.ctrl, see code before changing it
 }
 \item{forceConvex}{
 logical, should always be TRUE. If you want to try FALSE check the code first.
