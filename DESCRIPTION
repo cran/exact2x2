@@ -1,20 +1,36 @@
 Package: exact2x2
 Type: Package
 Title: Exact Tests and Confidence Intervals for 2x2 Tables
-Version: 1.6.9
-Date: 2024-01-25
-Author: Michael P. Fay [aut, cre], 
-  Sally A. Hunsberger [ctb], 
-  Martha Nason [ctb], 
-  Erin Gabriel [ctb],
-  Keith Lumbard [ctb]
-Maintainer: Michael P. Fay <mfay@niaid.nih.gov>
+Version: 1.7.0
+Date: 2025-08-20
+Authors@R: c(person(given = c("Michael", "P."),
+                      family = "Fay",
+                      role = c("aut", "cre"),
+                      email = "mfay@niaid.nih.gov"),
+               person(given = c("Sally", "A."),
+                      family = "Hunsberger",
+                      role = "ctb"),
+               person(given = "Martha",
+                      family = "Nason",
+                      role = "ctb"),
+               person(given = "Erin",
+                      family = "Gabriel",
+                      role = "ctb"),
+               person(given = "Keith",
+                      family = "Lumbard",
+                      role = "ctb"))
 Depends: R (>= 2.10), stats (>= 3.1.1), exactci, ssanv
 Description: Calculates conditional exact tests (Fisher's exact test, Blaker's exact test, or  exact McNemar's test) and unconditional exact tests (including score-based tests on differences in proportions, ratios of proportions, and odds ratios, and Boshcloo's test) with appropriate matching confidence intervals, and provides power and sample size calculations. Gives melded confidence intervals for the binomial case (Fay, et al, 2015, <DOI:10.1111/biom.12231>). Gives boundary-optimized rejection region test (Gabriel, et al, 2018, <DOI:10.1002/sim.7579>), an unconditional exact test for the situation where the controls are all expected to fail. Gives confidence intervals compatible with exact McNemar's or sign tests (Fay and Lumbard, 2021, <DOI:10.1002/sim.8829>). For review of these kinds of exact tests see Fay and Hunsberger (2021, <DOI:10.1214/21-SS131>).
 License: GPL-3
 LazyLoad: yes
 Suggests: testthat, Exact (>= 2.0), ggplot2, grid, gridExtra
 NeedsCompilation: no
-Packaged: 2024-01-25 18:35:19 UTC; faym
+Packaged: 2025-08-20 19:15:47 UTC; faym
+Author: Michael P. Fay [aut, cre],
+  Sally A. Hunsberger [ctb],
+  Martha Nason [ctb],
+  Erin Gabriel [ctb],
+  Keith Lumbard [ctb]
+Maintainer: Michael P. Fay <mfay@niaid.nih.gov>
 Repository: CRAN
-Date/Publication: 2024-01-25 19:10:02 UTC
+Date/Publication: 2025-08-20 19:40:13 UTC

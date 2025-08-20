@@ -1,3 +1,7 @@
+1.7.0
+ - change to Authors@R style in DESCRIPTION
+ - fix Rd file linkes to have package anchors
+
 1.6.9
  -minor change: typo in borrOrderingInternal.Rd
 

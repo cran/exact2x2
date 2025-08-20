@@ -5,9 +5,9 @@
 \title{Calculate exact power or sample size for conditional tests for two independent binomials.
 }
 \description{
-Power is calculated by \code{power2x2} which calls \code{\link{exact2x2}} function repeatedly. Default (strict=FALSE) does not count rejections in the wrong direction. 
+Power is calculated by \code{power2x2} which calls \code{\link[exact2x2]{exact2x2}} function repeatedly. Default (strict=FALSE) does not count rejections in the wrong direction. 
 
-Sample size is calculated by \code{ss2x2} which calls \code{power2x2} repeatedly finding the lowest sample size that has at least the nominal power, using the \code{\link{uniroot.integer}} function from the \code{ssanv} package. 
+Sample size is calculated by \code{ss2x2} which calls \code{power2x2} repeatedly finding the lowest sample size that has at least the nominal power, using the \code{\link[ssanv]{uniroot.integer}} function from the \code{ssanv} package. 
 }
 \usage{
 power2x2(p0,p1,n0,n1=NULL,sig.level=0.05,
@@ -33,9 +33,9 @@ ss2x2(p0,p1,power=.80,n1.over.n0=1,sig.level=0.05,
 \item{alternative}{character, either "two.sided" or "one.sided", one sided tests the proper direction according to p0 and p1}
   \item{strict}{use strict interpretation of two-sided test, if TRUE counts rejections in wrong direction}
   \item{tsmethod}{two.sided method, ignored if strict=FALSE, or alternative equals 'less' or 'greater'. 
-       see \code{\link{exact2x2}} for details.}
+       see \code{\link[exact2x2]{exact2x2}} for details.}
   \item{nullOddsRatio}{null odds ratio value for tests}
-  \item{paired}{must be FALSE, for TRUE instead use \code{\link{powerPaired2x2}}}
+  \item{paired}{must be FALSE, for TRUE instead use \code{\link[exact2x2]{powerPaired2x2}}}
 \item{print.steps}{logical, print steps for calculation of sample size?}
   \item{errbound}{bound on error of calculation }
 \item{approx}{give sample size or power using normal approximation only}
@@ -75,7 +75,7 @@ Note when strict=FALSE (default), the two.sided results at the 0.05 level for Fi
 There may be convergence issues using strict=FALSE with tsmethod="minlike" or "blaker" since the power is not guaranteed to be increasing in the sample size.  
 
 } 
-\seealso{See  \code{\link{ss.nonadh}} function (refinement="Fisher.exact") from the \code{ssanv} package for calculation that accounts for nonadherence in proportion of subjects. That function calls \code{\link{fisher.test}}. For power for McNemar-like test see \code{\link{powerPaired2x2}} }
+\seealso{See  \code{\link[ssanv]{ss.nonadh}} function (refinement="Fisher.exact") from the \code{ssanv} package for calculation that accounts for nonadherence in proportion of subjects. That function calls \code{\link[stats]{fisher.test}}. For power for McNemar-like test see \code{\link[exact2x2]{powerPaired2x2}} }
 \examples{
 power2x2(.2,.8,12,15)
 # calculate sample size with 2:1 allocation to groups

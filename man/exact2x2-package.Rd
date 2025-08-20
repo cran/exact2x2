@@ -16,8 +16,8 @@ creates unconditional exact tests that have power optimized when group 1 is expe
 \tabular{ll}{
 Package: \tab bpcp\cr
 Type: \tab Package\cr
-Version: \tab 1.6.9\cr
-Date: \tab 2024-01-25\cr
+Version: \tab 1.7.0\cr
+Date: \tab 2025-08-20\cr
 License: \tab GPL3\cr
 LazyLoad: \tab yes\cr
 }

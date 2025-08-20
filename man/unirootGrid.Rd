@@ -44,11 +44,11 @@ is calculated only \code{power2+1} times. The `root' is the element that is clos
 either on the positive side (\code{pos.side=TRUE}) or not.
 
 
-The \code{unirootGrid} function calls \code{\link{uniroot.integer}} and finds roots based on grid search. 
-The functions \code{\link{power2gridRatio}} and \code{\link{power2gridDifference}}
+The \code{unirootGrid} function calls \code{\link[ssanv]{uniroot.integer}} and finds roots based on grid search. 
+The functions \code{\link[exact2x2]{power2gridRatio}} and \code{\link[exact2x2]{power2gridDifference}}
 create grids for searching (0,Inf) and (-1,1) respectively. 
-The \code{\link{power2gridRatio}} grid is equally spaced on the log scale with about half of the grid between 0.5 and 2.
-The function \code{\link{power2grid}} allows more flexibility in defining grids.
+The \code{\link[exact2x2]{power2gridRatio}} grid is equally spaced on the log scale with about half of the grid between 0.5 and 2.
+The function \code{\link[exact2x2]{power2grid}} allows more flexibility in defining grids.
 }
 \value{
 A list with elements:
@@ -69,7 +69,7 @@ Michael P. Fay
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{\link{uniroot}} and \code{\link{uniroot.integer}}
+\code{\link[stats]{uniroot}} and \code{\link[ssanv]{uniroot.integer}}
 }
 \examples{
 # print.steps prints all iterations, 

@@ -1,4 +1,12 @@
 
+# the power2grid functions partition the range of the parameter
+# space of the two binomial parameters (e.g., ratio or difference) into  
+# 2^power2 intervals
+
+
+# power2gridRatio(3) partitions (0,Inf) into 8 intervals,
+# with 4 intervals for values between 0 and 1, 
+#  and 4 intervals for values between 1 and Inf
 
 power2gridRatio<-function(power2=3){
   denom<- 2^(power2-1)
@@ -6,11 +14,24 @@ power2gridRatio<-function(power2=3){
   c(y/denom,denom/rev(y)[-1])
 }
 
+#power2gridRatio(3)
+
+# power2gridDifference(3) partitions (-1,1) into 8 intervals,
+# with 4 intervals for values between -1 and 0, 
+#  and 4 intervals for values between  0 and 1
+
 power2gridDifference<-function(power2=3){
   denom<- 2^(power2-1)
   y<-0:denom
   c(y/denom-1,y[-1]/denom)
 }
+
+#power2gridDifference(3)
+
+# power2grid allows user to set the range
+# and defines the borders between intervals
+# as either equally spaced on the log scale
+# or on the arithmetic scale
 
 power2grid<-function(power2=3,from=10,to=1,dolog=TRUE){
   if (dolog){
@@ -20,6 +41,11 @@ power2grid<-function(power2=3,from=10,to=1,dolog=TRUE){
   }
   out
 }
+
+#  partition (10,1) equally spaced on log scale
+#log10(power2grid(3),from=10,to=1)
+#  partition (10,1) equally spaced on the arithmetic scale
+#power2grid(3,from=10,to=1,dolog=FALSE)
 
 unirootGrid<-function(func,power2=12, step.up=TRUE, pos.side=FALSE, print.steps=FALSE,power2grid=power2gridRatio,...){
   
